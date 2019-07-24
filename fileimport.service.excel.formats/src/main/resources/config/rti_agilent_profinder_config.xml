@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<file format="97-2007">
+    <sheets>
+        <sheet id="de.hswt.fi.rti.excel.agilent.targets" identifierRow="0" contentRow="1" optional="false">
+           	<groups>
+        		<group id = "G2" requiredColumns = "all">
+    		        <columns>
+            	    	<column id ="de.hswt.fi.rti.excel.agilent.target.label" name="Compound Name" />
+                		<column id ="de.hswt.fi.rti.excel.agilent.target.mass" name="Mass" />
+                		<column id ="de.hswt.fi.rti.excel.agilent.target.formula" name="Formula" />
+		                <column id ="de.hswt.fi.rti.excel.agilent.target.rt" name="RT" />
+        		    </columns>
+				</group>
+			</groups>
+        </sheet>
+    </sheets>
+</file>

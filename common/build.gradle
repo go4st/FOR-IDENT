@@ -1,0 +1,8 @@
+dependencies {
+    compile "org.apache.poi:poi-ooxml"
+    compile "org.apache.commons:commons-lang3"
+    compile "org.apache.commons:commons-text"
+    compile "com.google.guava:guava"
+    compile "org.owasp.encoder:encoder"
+    compile "org.springframework.boot:spring-boot-starter"
+}

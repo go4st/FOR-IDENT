@@ -1,0 +1,6 @@
+dependencies {
+    compile project(":search.service.search.api")
+    compile project(":search.service.mass.search.model")
+    compile project(":database.importer.compounds.api")
+    compile project (":filehandler")
+}

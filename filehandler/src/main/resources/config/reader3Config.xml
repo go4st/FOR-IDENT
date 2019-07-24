@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE file SYSTEM "dtd/readerConfig.dtd">
+<file quoteChar="&quot;" delimiterChar="," endOfLineSymbol="\n">
+    <sheets>
+        <sheet id = "S0" identifierRow="0" contentRow="1" >
+        	<groups>
+        		<group id = "G1" requiredColumns = "all">
+		            <columns>
+		                <column id = "C0" name="#" multiple="false" />
+		                <column id = "C1" name="Name" multiple="false" />
+		                <column id = "C2" name="Formula" multiple="false" />
+		                <column id = "C3" name="Include" multiple="false" />
+		                <column id = "C4" name="Mass (Da)" multiple="false" />
+		                <column id = "C5" name="Found At Mass (Da)" multiple="false" />
+		                <column id = "C6" name="Control Found At Mass (Da)" multiple="false" />
+		                <column id = "C7" name="Width (Da)" multiple="false" />
+		                <column id = "C8" name="Adduct" multiple="false" />
+		                <column id = "C9" name="Expected RT (min)" multiple="false" />
+		                <column id = "C10" name="RT Width (min)" multiple="false" />
+		                <column id = "C11" name="Found At RT (min)" multiple="false" />
+		                <column id = "C12" name="Control Found At RT (min)" multiple="false" />
+		                <column id = "C13" name="Library Score" multiple="false" />
+		                <column id = "C14" name="Library Hit" multiple="false" />
+		                <column id = "C15" name="Formula Finder Result" multiple="false" />
+		                <column id = "C16" name="Intensity" multiple="false" />
+		                <column id = "C17" name="Control Intensity" multiple="false" />
+		                <column id = "C18" name="Known Concentration" multiple="false" />
+		                <column id = "C19" name="Calculated Concentration" multiple="false" />
+		                <column id = "C20" name="Area" multiple="false" />
+		                <column id = "C21" name="Control Area" multiple="false" />
+		                <column id = "C22" name="Isotope" multiple="false" />
+		                <column id = "C23" name="Threshold (cps)" multiple="false" />
+		                <column id = "C24" name="Threshold (ratio of control)" multiple="false" />
+		                <column id = "C25" name="Formula Finder Score" multiple="false" />
+		                <column id = "C26" name="Int Std" multiple="false" />
+		                <column id = "C27" name="Combined Score" multiple="false" />
+		                <column id = "C28" name="Mass Error Score" multiple="false" />
+		                <column id = "C29" name="RT Score" multiple="false" />
+		                <column id = "C30" name="Isotope Score" multiple="false" />
+		                <column id = "C31" name="Non-Targeted Peak" multiple="false" />
+		                <column id = "C32" name="S:N" multiple="false" />
+		                <column id = "C33" name="Fragment Mass (Da)" multiple="false" />
+		                <column id = "C34" name="Comments" multiple="false" />
+		                <column id = "C35" name="Extraction Mass (Da)" multiple="false" />
+		                <column id = "C36" name="Error (ppm)" multiple="false" />
+		                <column id = "C37" name="Control Error (ppm)" multiple="false" />
+		                <column id = "C38" name="Error (mDa)" multiple="false" />
+		                <column id = "C39" name="Control Error (mDa)" multiple="false" />
+		                <column id = "C40" name="RT Delta (min)" multiple="false" />
+		                <column id = "C41" name="Control RT Delta (min)" multiple="false" />
+		                <column id = "C42" name="RT % Error" multiple="false" />
+		                <column id = "C43" name="Control RT % Error" multiple="false" /> 
+		            </columns>
+	            </group>
+            </groups>
+        </sheet>
+    </sheets>
+</file>

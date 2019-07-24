@@ -1,0 +1,9 @@
+dependencies {
+	compile project(":beans")
+	compile project(":common")
+	compile project(":model")
+	
+	compile "com.fasterxml.jackson.core:jackson-annotations"
+	compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "org.eclipse.persistence:eclipselink"
+}

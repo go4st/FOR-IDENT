@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<file format="97-2007">
+    <sheets>
+        <sheet id="de.hswt.fi.rti.excel.sciex.targets" identifierRow="0" contentRow="1" optional="false">
+        	<groups>
+        		<group id = "G2" requiredColumns = "all">
+		            <columns>
+        		        <column id ="de.hswt.fi.rti.excel.sciex.target.label" name="Name" />
+                		<column id ="de.hswt.fi.rti.excel.sciex.target.mass" name="Found At Mass (Da)" />
+		                <column id ="de.hswt.fi.rti.excel.sciex.target.rt" name="Found At RT (min)" />
+                		<column id ="de.hswt.fi.rti.excel.sciex.target.formula" name="Formula Finder Result" />
+		            </columns>
+				</group>
+			</groups>
+        </sheet>
+    </sheets>
+</file>

@@ -1,0 +1,6 @@
+dependencies {
+	compile project(":fileimport.service.api")
+	compile "org.springframework.boot:spring-boot-starter-web"
+
+	testCompile project(":fileimport.service.api").sourceSets.test.output
+}

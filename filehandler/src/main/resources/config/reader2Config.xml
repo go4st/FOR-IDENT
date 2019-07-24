@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE file SYSTEM "dtd/readerConfig.dtd">
+<file format="2007">
+    <sheets>
+        <sheet id = "S0" name="calibration" identifierRow="0" contentRow="3" >
+        	<groups>
+        		<group id = "G1" requiredColumns = "all">
+		            <columns>
+		                <column id = "C0" name="substance name" multiple="false" />
+		                <column id = "C1" name="logp" multiple="false" />
+		                <column id = "C2" name="rt" multiple="true" />
+		            </columns>
+            	</group>
+            </groups>
+        </sheet>
+    </sheets> 
+</file>

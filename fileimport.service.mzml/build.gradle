@@ -1,0 +1,6 @@
+dependencies {
+	compile "uk.ac.ebi.jmzml:jmzml:1.7.4"
+	compile project(":fileimport.service.api")
+
+	testCompile project(":fileimport.service.api").sourceSets.test.output
+}

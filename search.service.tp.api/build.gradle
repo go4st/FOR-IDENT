@@ -1,0 +1,5 @@
+dependencies {
+	compile project(":common")
+	compile project(":processing.service.model")
+	compile project(":search.service.tp.model")
+}

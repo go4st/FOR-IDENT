@@ -1,0 +1,6 @@
+INSERT INTO `for_ident_playground`.`tbl_user` (`ID`, `ENABLED`, `FIRSTNAME`, `LASTNAME`, `MAIL`, `ORGANISATION`, `PASSWORD`, `USERNAME`) VALUES ('1', '1', 'Luke', 'Skywalker', 'luke@skywalker.com', 'Rebellallianz', '12345', 
+'luke');
+INSERT INTO `for_ident_playground`.`tbl_user` (`ID`, `ENABLED`, `FIRSTNAME`, `LASTNAME`, `MAIL`, `ORGANISATION`, `PASSWORD`, `USERNAME`) VALUES ('2', '1', 'Leia', 'Organa-Solo', 'leia@skywalker.com', 'Rebellenallianz', '67890', 
+'leia');
+INSERT INTO `for_ident_playground`.`tbl_user` (`ID`, `ENABLED`, `FIRSTNAME`, `LASTNAME`, `MAIL`, `ORGANISATION`, `PASSWORD`, `USERNAME`) VALUES ('3', '1', 'Anakin', 'Skywalker', 'darth@rebelscumm.com', 'Imperium', '2580', 
+'vader');

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<file format="97-2007">
+    <sheets>
+        <sheet id="de.hswt.fi.rti.excel.sciex.msms.calibration" name="calibration" identifierRow="0" contentRow="3" optional="true" >
+        	<groups>
+        		<group id = "G1" requiredColumns = "all">
+		            <columns>
+        		        <column id ="de.hswt.fi.rti.excel.sciex.msms.calibration.substancename" name="substance name" />
+                		<column id ="de.hswt.fi.rti.excel.sciex.msms.calibration.logD" name="logD" />
+    	            	<column id ="de.hswt.fi.rti.excel.sciex.msms.calibration.rt" name="rt" multiple="true" />
+	    	        </columns>
+				</group>
+			</groups>
+        </sheet>
+        <sheet id="de.hswt.fi.rti.excel.sciex.msms" identifierRow="0" contentRow="1" optional="false">
+        	<groups>
+        		<group id = "G1" requiredColumns = "3">
+		            <columns>
+            	    	<column id ="de.hswt.fi.rti.excel.sciex.msms.targetnames" name="Name" />
+        	        	<column id ="de.hswt.fi.rti.excel.sciex.msms.mass" name="Found At Mass (Da)" />
+            	    	<column id ="de.hswt.fi.rti.excel.sciex.msms.rt" name="Found At RT (min)" />
+            	    	<column id ="de.hswt.fi.rti.excel.sciex.msms.formula" name="Formula Finder Result" />
+            	    	<column id ="de.hswt.fi.rti.excel.sciex.msms.peaknames" name="MS/MS Sheet" required="true"/>
+		            </columns>
+				</group>
+			</groups>
+        </sheet>
+    </sheets>
+</file>

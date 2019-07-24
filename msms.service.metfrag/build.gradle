@@ -1,0 +1,6 @@
+dependencies {
+    compile project(":msms.service.api")
+	compile (name: "MetFragLib-2.3")
+
+    compile "org.openscience.cdk:cdk-bundle"
+}

@@ -1,0 +1,176 @@
+= API Documentation
+:toc: left
+:toclevels: 3
+:sectnums:
+:sectnumlevels: 3
+
+== Overview
+The following describes the resources that make up the official FOR-IDENT API.
+If you have any suggestions or problems, feel free to link:mailto:gilg@hswt.de?subject=API[contact us].
+
+== General
+The API is available over HTTPS only.
+
+All content is served as JSON UTF-8.
+
+Empty values are declared as null and not ommited.
+
+== Pagination
+Requests that return more than one item will be paginated to 100 results by default.
+You can specify furher pages with the page parameter.
+It is also possible to specify the page size using the size parameter.
+
+== Endpoint Overview
+This sections gives a brief overview of all available endpoints.
+
+For detailed information see the relevant sections.
+
+.Overview of the available endpoints
+[cols="1,5,5"]
+|===
+|Method |URL |Brief description
+
+|GET
+|/api/categories
+|Returns a list of all categories. Every entry is associated with one or more category
+
+|GET
+|/api/substances/inchiKeys
+|Returns a list of all Inchi Keys from the database
+
+|GET
+|/api/substances/ids
+|Returns a list of all STOFF-IDENT ids from the database. Every entry is associated
+with exactly one STOFF-IDENT id
+
+|GET
+|/api/substances/inchiKeysAndStoffidentIds
+|Returns a tuple containing a combination of Inchi Key and STOFF-IDENT ids
+
+|GET
+|/api/substances?elementalFormula=C16H12Cl2N4O4
+|Returns a list of entries matching the given formula
+
+|GET
+|/api/substances?accurateMassMin=100&accurateMassMax=200
+|Returns a list of entries matching the given formula
+
+|GET
+|/api/substances?id=SI00000001&id=SI00000002&id=PI00000001&id=PI00000002
+|Returns an entry for each of the matching ids
+
+|GET
+|/api/substances?inchiKey=VEQOALNAAJBPNY-UHFFFAOYSA-N
+|Returns the entry for the given Inchi Key if it exists
+|===
+
+=== List last update
+List the date of the last data update. The Date is formatted in the following
+format: YYYY-DD-MM
+
+include::{snippets}/list-last-update-time/curl-request.adoc[]
+include::{snippets}/list-last-update-time/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/list-last-update-time/http-response.adoc[]
+
+=== List all Inchi Keys
+List all Inchi Keys. If no Inchi Key is present null is returned
+
+include::{snippets}/inchi-keys-root-entry-point-is-available/curl-request.adoc[]
+include::{snippets}/inchi-keys-root-entry-point-is-available/http-request.adoc[]
+
+==== Parameter
+include::{snippets}/inchi-keys-root-entry-point-is-available/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/inchi-keys-root-entry-point-is-available/http-response.adoc[]
+
+=== List all STOFF-IDENT Ids
+List all STOFF-IDENT Ids. If no STOFF-IDENT Id is present null is returned
+
+include::{snippets}/stoffident-ids-root-entry-point-is-available/curl-request.adoc[]
+include::{snippets}/stoffident-ids-root-entry-point-is-available/http-request.adoc[]
+
+==== Parameter
+include::{snippets}/stoffident-ids-root-entry-point-is-available/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/stoffident-ids-root-entry-point-is-available/http-response.adoc[]
+
+=== List all Inchi Keys and STOFF-IDENT Ids
+Return a list of tuples, where each tuple contains the STOFF-IDENT Id and
+corresponding Inchi Key. If one of the values is missing, null is returned
+
+include::{snippets}/inchi-keys-and-stoffident-ids-root-entry-point-is-available/curl-request.adoc[]
+include::{snippets}/inchi-keys-and-stoffident-ids-root-entry-point-is-available/http-request.adoc[]
+
+==== Parameter
+include::{snippets}/inchi-keys-and-stoffident-ids-root-entry-point-is-available/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/inchi-keys-and-stoffident-ids-root-entry-point-is-available/http-response.adoc[]
+
+=== List Substances by elemental formula
+
+List all substances matching for the given formula
+
+include::{snippets}/list-substance-by-elemental-formula/curl-request.adoc[]
+include::{snippets}/list-substance-by-elemental-formula/http-request.adoc[]
+
+==== Parameter
+include::{snippets}/list-substance-by-elemental-formula/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/list-substance-by-elemental-formula/http-response.adoc[]
+
+=== List Substances by mass range
+
+List all substances matching the given mass range. The range between
+accurateMassMin and accurateMassMax must not be greater than 200.
+If no entry is present null is returned
+
+include::{snippets}/list-substance-by-mass-range/curl-request.adoc[]
+include::{snippets}/list-substance-by-mass-range/http-request.adoc[]
+
+==== Parameter
+include::{snippets}/list-substance-by-mass-range/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/list-substance-by-mass-range/http-response.adoc[]
+
+=== List Substances by STOFF-IDENT Ids
+
+List all substances matching the given STOFF-IDENT Ids.
+If no entry with the given Id is present null is returned
+
+include::{snippets}/list-substance-by-stoffident-id/curl-request.adoc[]
+include::{snippets}/list-substance-by-stoffident-id/http-request.adoc[]
+
+==== Parameter
+include::{snippets}/list-substance-by-stoffident-id/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/list-substance-by-stoffident-id/http-response.adoc[]
+
+=== List Substances by Inchi Key
+
+List the substance with the given Inchi Key.
+If no entry with the given Inchi Key is present null is returned
+
+include::{snippets}/list-substance-by-inchi-key/curl-request.adoc[]
+include::{snippets}/list-substance-by-inchi-key/http-request.adoc[]
+
+==== Parameter
+include::{snippets}/list-substance-by-inchi-key/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/list-substance-by-inchi-key/http-response.adoc[]

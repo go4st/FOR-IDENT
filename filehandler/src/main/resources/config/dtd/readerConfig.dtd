@@ -1,0 +1,24 @@
+<!ELEMENT file (sheets)>
+<!ATTLIST file format (97|2007|97-2007) #IMPLIED
+			   quoteChar CDATA #IMPLIED
+			   delimiterChar CDATA #IMPLIED
+			   endOfLineSymbol CDATA #IMPLIED
+>
+<!ELEMENT sheets (sheet+)>
+<!ELEMENT sheet (groups)>
+<!ATTLIST sheet id ID #REQUIRED
+				name CDATA #IMPLIED
+				identifierRow CDATA #REQUIRED
+				contentRow CDATA #REQUIRED
+>
+<!ELEMENT groups (group+)>
+<!ELEMENT group (columns)>
+<!ATTLIST group id ID #REQUIRED
+				requiredColumns CDATA #REQUIRED
+>
+<!ELEMENT columns (column+)>
+<!ELEMENT column EMPTY>
+<!ATTLIST column id ID #REQUIRED
+				 name CDATA #REQUIRED 
+		 		 multiple (true|false) #REQUIRED
+>

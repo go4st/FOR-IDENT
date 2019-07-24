@@ -1,0 +1,9 @@
+﻿DROP TABLE tbl_logd;
+DROP TABLE tbl_logp;
+DROP TABLE tbl_additionalNames;
+DROP TABLE tbl_massBankIds;
+DROP TABLE tbl_substances_tbl_categories;
+DROP TABLE tbl_substances_tbl_source_list;  
+DROP TABLE tbl_categories;
+DROP TABLE tbl_substances;
+DROP TABLE tbl_source_list;

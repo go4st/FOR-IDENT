@@ -1,0 +1,88 @@
+{
+  "version": "v1-DRAFT",
+  "identifier": "ExampleSearch",
+  "features": [
+    {
+      "identifier": "Amantadin",
+      "precursorMass": 152.143265994439,
+      "neutralFormula": "C10H17N",
+      "retentionTime": 5.08055067694997,
+      "aduct": -1,
+      "fragments": [
+        {
+          "mz": 67.0545886697714,
+          "absoluteIntensity": 361
+        },
+        {
+          "mz": 77.0388841404489,
+          "absoluteIntensity": 1240
+        },
+        {
+          "mz": 79.0543173088268,
+          "absoluteIntensity": 1492
+        },
+        {
+          "mz": 81.0700398876892,
+          "absoluteIntensity": 552
+        },
+        {
+          "mz": 91.0539980694497,
+          "absoluteIntensity": 842
+        },
+        {
+          "mz": 93.0697906289385,
+          "absoluteIntensity": 1875
+        },
+        {
+          "mz": 107.085177721938,
+          "absoluteIntensity": 1026
+        },
+        {
+          "mz": 135.11656650017,
+          "absoluteIntensity": 6993
+        }
+      ]
+    },
+    {
+      "identifier": "Simeton",
+      "precursorMass": 198.135076978148,
+      "neutralFormula": "C8H15N5O",
+      "retentionTime": 5.48038670565246,
+      "aduct": -1,
+      "fragments": [
+        {
+          "mz": 43.0313581297257,
+          "absoluteIntensity": 361
+        },
+        {
+          "mz": 57.0454549074468,
+          "absoluteIntensity": 1240
+        },
+        {
+          "mz": 58.0297052591329,
+          "absoluteIntensity": 1492
+        },
+        {
+          "mz": 68.0246762259361,
+          "absoluteIntensity": 552
+        },
+        {
+          "mz": 71.0604959288052,
+          "absoluteIntensity": 842
+        },
+        {
+          "mz": 83.0232068950724,
+          "absoluteIntensity": 1875
+        },
+        {
+          "mz": 85.0759283312984,
+          "absoluteIntensity": 1026
+        },
+        {
+          "mz": 96.0551865227522,
+          "absoluteIntensity": 6993
+        }
+      ]
+    }
+  ]
+}

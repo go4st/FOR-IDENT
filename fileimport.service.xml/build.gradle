@@ -1,0 +1,8 @@
+dependencies {
+	compile project(":fileimport.service.api")
+	compile project(":calculation.service.api")
+	compile "org.springframework.boot:spring-boot-starter-web"
+	compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml"
+
+	testCompile project(":fileimport.service.api").sourceSets.test.output
+}

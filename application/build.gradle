@@ -1,0 +1,136 @@
+plugins {
+	id "org.asciidoctor.convert" version "1.5.6"
+}
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+apply from: "$rootDir/gradle/versioning.gradle"
+group = "de.hswt.fi"
+version = project.projectVersion
+
+configurations {
+	runtimeAgent
+}
+dependencies {
+	runtimeAgent("org.springframework:spring-instrument:5.1.8.RELEASE")
+}
+
+// Fix for windows too long classpath
+task pathingJar(type: Jar) {
+	dependsOn configurations.runtime
+	appendix = 'pathing'
+
+	doFirst {
+		manifest {
+			attributes "Class-Path": configurations.runtime.files.collect {
+				it.toURI().toURL().toString().replaceFirst(/file:\/+/, '/').replaceAll(' ', '%20')
+			}.join(" ")
+		}
+	}
+}
+bootRun {
+	dependsOn pathingJar
+	doFirst {
+		classpath = files(sourceSets.main.output.files, pathingJar.archivePath)
+	}
+	jvmArgs = ["-javaagent:${configurations.runtimeAgent.asPath}", "-Dspring.profiles.active=development"]
+}
+
+bootJar {
+	classifier = 'boot'
+	archiveName = 'de.hswt.fi.application.jar'
+	manifest {
+		attributes("Implementation-Version": project.projectVersion)
+	}
+}
+
+dependencies {
+	compile project(":application.properties")
+	compile project(":beans")
+	compile project(":calculation.service.api")
+	compile project(":calculation.service.cdk")
+	compile project(":calculation.service.rti.api")
+	compile project(":calculation.service.rti.default")
+	compile project(":common")
+	compile project(":database.importer.compounds.api")
+	compile project(":database.importer.compounds.excel")
+	compile project(":database.importer.tp.api")
+	compile project(":database.importer.tp.default")
+	compile project(":database.importer.tp.envipath")
+	compile project(":documentation")
+	compile project(":export.service.excel")
+	compile project(":filehandler")
+	compile project(":fileimport.service.api")
+	compile project(":fileimport.service.csv")
+	compile project(":fileimport.service.default")
+	compile project(":fileimport.service.excel")
+	compile project(":fileimport.service.excel.formats")
+	compile project(":fileimport.service.json")
+	compile project(":fileimport.service.mzml")
+	compile project(":fileimport.service.txt")
+	compile project(":fileimport.service.xml")
+	compile project(":gradle")
+	compile project(":i18n.vaadin")
+	compile project(":libraries")
+	compile project(":mail.service")
+	compile project(":model")
+	compile project(":msms.service.api")
+	compile project(":msms.service.metfrag")
+	compile project(":msms.service.model")
+	compile project(":processing.service.api")
+	compile project(":processing.service.default")
+	compile project(":processing.service.model")
+	compile project(":resources")
+	compile project(":search.service.mass.search.api")
+	compile project(":search.service.mass.search.default")
+	compile project(":search.service.mass.search.model")
+	compile project(":search.service.rti.api")
+	compile project(":search.service.rti.default")
+	compile project(":search.service.rti.model")
+	compile project(":search.service.search.api")
+	compile project(":search.service.search.stoffident")
+	compile project(":search.service.search.plantident")
+	compile project(":search.service.tp.api")
+	compile project(":search.service.tp.default")
+	compile project(":search.service.tp.model")
+	compile project(":security.service.api")
+	compile project(":security.service.model")
+	compile project(":security.service.vaadin")
+	compile project(":ui.vaadin")
+	compile project(":userproperties.service.api")
+	compile project(":userproperties.service.default")
+	compile project(":userproperties.service.model")
+	compile project(":web.service.default")
+
+	runtime "org.postgresql:postgresql"
+	runtime "org.eclipse.persistence:eclipselink"
+	runtime "com.h2database:h2"
+
+	testCompile "org.springframework.security:spring-security-test"
+	testCompile "org.springframework.restdocs:spring-restdocs-mockmvc"
+}
+
+// Taken from https://github.com/spring-projects/spring-restdocs
+// ext['spring-restdocs.version'] = '1.2.1.RELEASE'
+
+// defer resolution until execution time
+test.doFirst {
+	jvmArgs = ["-javaagent:${configurations.runtimeAgent.asPath}"]
+}
+
+ext { snippetsDir = file('build/generated-snippets') }
+
+test { outputs.dir snippetsDir }
+
+asciidoctor {
+	attributes \
+        'snippets': snippetsDir
+	outputDir snippetsDir
+	dependsOn test
+}
+
+jar {
+	dependsOn asciidoctor
+	from ("${asciidoctor.outputDir}/html5") { into 'static/' }
+}

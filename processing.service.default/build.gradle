@@ -1,0 +1,8 @@
+dependencies {
+	compile project(":filehandler")
+	compile project(":msms.service.api")
+	compile project(":processing.service.api")
+	compile project(":search.service.mass.search.api")
+	compile project(":search.service.rti.api")
+	compile project(":search.service.tp.api")
+}

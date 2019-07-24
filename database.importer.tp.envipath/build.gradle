@@ -1,0 +1,6 @@
+dependencies {
+	compile project(":database.importer.tp.api")
+	compile project(":calculation.service.api")
+	
+	compile "org.springframework.boot:spring-boot-starter-web"
+}

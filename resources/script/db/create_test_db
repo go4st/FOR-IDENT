@@ -1,0 +1,4 @@
+## MariaDB commands used for creating Database User, Privilieges and actual Database
+CREATE USER "anakin" identified by "ARTWOyavin4";
+GRANT ALL PRIVILEGES ON *.* TO "anakin" WITH GRANT OPTION;
+CREATE DATABASE  for_ident_playground;

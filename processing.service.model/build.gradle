@@ -1,0 +1,9 @@
+dependencies {
+	compile project(":msms.service.api")
+	compile project(":msms.service.model")
+	compile project(":common")
+	compile project(":search.service.search.api")
+	compile project(":search.service.mass.search.model")
+	compile project(":search.service.rti.model")
+	compile project(":search.service.tp.model")
+}

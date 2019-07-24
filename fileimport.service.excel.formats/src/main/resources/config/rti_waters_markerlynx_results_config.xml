@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<file format="97-2007">
+    <sheets>
+        <sheet id="de.hswt.fi.rti.excel.waters.targets" identifierRow="6" contentRow="7" optional="false">
+        	<groups>
+        		<group id = "G2" requiredColumns = "all">
+		            <columns>
+        		        <column id ="de.hswt.fi.rti.excel.waters.target.label" name="ID" />
+                		<column id ="de.hswt.fi.rti.excel.waters.target.mass" name="m/z" />
+		                <column id ="de.hswt.fi.rti.excel.waters.target.rt" name="Ret. Time" />
+		            </columns>
+				</group>
+			</groups>
+        </sheet>
+    </sheets>
+</file>

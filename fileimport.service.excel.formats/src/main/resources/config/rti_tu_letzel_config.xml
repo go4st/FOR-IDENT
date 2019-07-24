@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<file format="97">
+    <sheets>
+        <sheet id="de.hswt.fi.rti.excel.ptletzel.targets" name="targets" identifierRow="0" contentRow="3" optional="false">
+        	<groups>
+        		<group id = "G2" requiredColumns = "all">
+		            <columns>
+        		        <column id ="de.hswt.fi.rti.excel.ptletzel.target.identifier" name="identifier" />
+                		<column id ="de.hswt.fi.rti.excel.ptletzel.target.accuratemass" name="accurate mass" />
+                		<column id ="de.hswt.fi.rti.excel.ptletzel.target.formula" name="elemental formula" />
+		                <column id ="de.hswt.fi.rti.excel.ptletzel.target.rt" name="rt" multiple="true" />
+		            </columns>
+				</group>
+			</groups>
+        </sheet>
+    </sheets>
+</file>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE file SYSTEM "dtd/readerConfig.dtd">
+<file format="2007">
+    <sheets>
+        <sheet id="substances" name="Substances" identifierRow="0" contentRow="1" >
+        	<groups>
+        		<group id = "G1" requiredColumns = "all">
+		            <columns>
+		                <column id ="name" name="Name" multiple="false" />
+		                <column id ="nameSource" name="Name source" multiple="false" />
+		                <column id ="cas" name="CAS" multiple="false" />
+		                <column id ="casSource" name="CAS source" multiple="false" />
+		                <column id ="ec" name="EC number" multiple="false" />
+		                <column id ="ecSource" name="EC number source" multiple="false" />
+		                <column id ="smiles" name="SMILES" multiple="false" />
+		                <column id ="smilesSource" name="SMILES source" multiple="false" />
+		                <column id ="iupac" name="IUPAC" multiple="false" />
+		                <column id ="iupacSource" name="IUPAC source" multiple="false" />
+		                <column id ="formula" name="Formula" multiple="false" />
+		                <column id ="formulaSource" name="Formula source" multiple="false" />
+		                <column id ="mass" name="Mass" multiple="false" />
+		                <column id ="massSource" name="Mass source" multiple="false" />
+		                <column id ="pka" name="PKa" multiple="false" />
+		                <column id ="pkaSource" name="PKa source" multiple="false" />
+		                <column id ="tonnage" name="Tonnage" multiple="false" />
+		                <column id ="tonnageSource" name="Tonnage source" multiple="false" />
+		                <column id ="boilingPoint" name="Boiling point" multiple="false" />
+		                <column id ="boilingPointSource" name="Boiling point source" multiple="false" />
+		                <column id ="logp" name="logP" multiple="true" />
+		                <column id ="logpSource" name="logP source" multiple="true" />
+		                <column id ="logd" name="logD" multiple="true" />
+		                <column id ="logdSource" name="logD source" multiple="true" />
+		                <column id ="waterSolubility" name="Water solubility" multiple="true" />
+		                <column id ="waterSolubilitySource" name="Water solubility source" multiple="true" />
+		                <column id ="additionalNames" name="Additional names" multiple="true" />
+		                <column id ="additionalNamesSource" name="Additional names source" multiple="true" />
+		            </columns>
+            	</group>
+            </groups>
+        </sheet>
+    </sheets>
+</file>

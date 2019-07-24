@@ -1,0 +1,73 @@
+package de.hswt.fi.processing.service.def;
+
+import de.hswt.fi.model.Feature;
+import de.hswt.fi.model.FeatureSet;
+import de.hswt.fi.model.Peak;
+import de.hswt.fi.processing.service.model.ProcessingJob;
+import de.hswt.fi.processing.service.model.ProcessingSettings;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Component
+@Scope("prototype")
+public class PreProcessingService {
+
+	public void updateFeatures(ProcessingJob job) {
+
+        ProcessingSettings settings = job.getSettings();
+
+        updateFeaturesNeutralMass(job.getFeatureSet(), settings);
+        settings.setPrecursorPpm(settings.getRequestedPrecursorPpm());
+
+        if (job.getSettings().getIntensityThreshold() != 0d) {
+            filterIntensitiesBelowThreshold(job);
+        }
+
+        initRelativeIntensity(job);
+    }
+
+    private void filterIntensitiesBelowThreshold(ProcessingJob job) {
+        job.getFeatureSet().getFeatures().forEach(f -> filterIntensitiesBelowThreshold(f, job.getSettings()
+                .getIntensityThreshold()));
+    }
+
+    private void filterIntensitiesBelowThreshold(Feature feature, double threshold) {
+        List<Peak> belowThreshold = feature.getPeaks().stream().filter(p -> p.getIntensity() < threshold)
+                .collect(Collectors.toList());
+        feature.getPeaks().removeAll(belowThreshold);
+    }
+
+    private void updateFeaturesNeutralMass(FeatureSet featureSet, ProcessingSettings settings) {
+        for (Feature feature : featureSet.getFeatures()) {
+            Double neutralMass;
+            if (feature.isMassCalculated() && feature.getFormulaDerivedMass() != null) {
+                neutralMass = feature.getFormulaDerivedMass();
+            } else {
+                neutralMass = feature.getPrecursorMass() + settings.getIonisation().getIonisation();
+            }
+            feature.setNeutralMass(neutralMass);
+        }
+    }
+
+    private void initRelativeIntensity(ProcessingJob job) {
+        job.getFeatureSet().getFeatures().forEach(this::initRelativeIntensity);
+    }
+
+    private void initRelativeIntensity(Feature feature) {
+
+        Optional<Peak> maxPeak = feature.getPeaks().stream().max(Comparator.comparingDouble(Peak::getIntensity));
+
+        Optional<Peak> thresholdPeak = feature.getPeaks().stream().filter(p -> p.getIntensity() >= 100).findAny();
+
+        if (thresholdPeak.isPresent() && maxPeak.isPresent()) {
+            double max = maxPeak.get().getIntensity();
+            feature.getPeaks().forEach(p -> p.setRelativeIntensity(p.getIntensity() * 1000 / max));
+            feature.setRelativeFactor(max / 1000.0);
+        }
+    }
+}

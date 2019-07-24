@@ -1,0 +1,200 @@
+plugins {
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+    id "org.sonarqube" version "2.6.2"
+    id "org.zeroturnaround.gradle.jrebel" version "1.1.8"
+    id "org.springframework.boot" version "2.1.3.RELEASE"
+}
+
+// Dependency Versions
+ext {
+    springBootVersion = "2.1.3.RELEASE"
+    vaadinVersion = "8.7.0"
+    vaadinSpringVersion = "3.1.1"
+    vaadinSpringAddons = "2.0.0.RELEASE"
+    vaadinSpringExtensions = "2.0.0.RELEASE"
+    cdkVersion = "2.0"
+}
+
+wrapper.gradleVersion = '5.1'
+
+// Sonar configuration
+apply plugin: "org.sonarqube"
+def combinedTestCoverageFile = "$rootDir/build/jacoco/allTestCoverage.exec"
+sonarqube {
+    properties {
+        property "sonar.projectVersion", System.getenv("BUILD_NUMBER")
+        property "sonar.java.binaries", "."
+        property "sonar.sources", "src"
+        property "sonar.language", "java"
+        property "sonar.binaries", "build/classes"
+        property "sonar.jacoco.reportPaths", combinedTestCoverageFile
+        property "sonar.coverage.exclusions", "**/*application*/*, **/*api/**/*, **/*beans/*, **/*model/**/*, **/resources/**/*, **/*vaadin/**/*"
+    }
+}
+
+subprojects {
+
+    apply plugin: "java"
+    apply plugin: "rebel"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = 'UTF-8'
+
+    apply plugin: "eclipse"
+    apply plugin: "idea"
+
+    idea {
+        module {
+            inheritOutputDirs = true
+        }
+    }
+
+    repositories() {
+        mavenCentral()
+        maven { url = "https://maven.vaadin.com/vaadin-prereleases" }
+        maven { url = "http://maven.vaadin.com/vaadin-addons" }
+        maven { url = "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url = "http://repo.spring.io/repo/" }
+        maven { url = "http://www.ebi.ac.uk/~maven/m2repo" }
+
+        // Needed for jmzml related dependency
+        maven { url = "http://repo.spring.io/plugins-release/" }
+        flatDir {
+            dirs "$rootProject.projectDir/libraries/metfrag"
+            dirs "$rootProject.projectDir/libraries/chemspider"
+            dirs "$rootProject.projectDir/libraries/custom"
+        }
+    }
+
+    // Coverage report of sub projects with combining task
+    apply plugin: 'jacoco'
+
+    task combinedTest(type: Test) {
+        jacoco {
+            destinationFile = file(combinedTestCoverageFile)
+        }
+    }
+
+    sonarqube {
+        properties {
+            property "sonar.jacoco.reportPaths", combinedTestCoverageFile
+        }
+    }
+
+    // Manage transitive dependencies
+    apply plugin: "io.spring.dependency-management"
+
+    dependencyManagement {
+
+        imports {
+            mavenBom "com.vaadin:vaadin-bom:$vaadinVersion"
+            mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+        }
+
+        dependencies {
+
+            //Syntactic Sugar
+            dependencySet(group: "org.springframework.boot", version: "$springBootVersion") {
+                entry "spring-boot-starter"
+                entry "spring-boot-starter-web"
+                entry "spring-boot-starter-logging"
+                entry "spring-boot-starter-mail"
+                entry "spring-boot-starter-freemarker"
+                entry "spring-boot-starter-security"
+                entry "spring-boot-starter-validation"
+                entry "spring-boot-starter-data-mongodb"
+                entry("spring-boot-starter-data-jpa")
+            }
+
+            dependencySet(group: 'com.vaadin', version: "$vaadinSpringVersion") {
+                entry "vaadin-spring"
+                entry "vaadin-spring-boot"
+                entry "vaadin-spring-boot-starter"
+            }
+
+            dependencySet(group: "org.vaadin.spring.extensions", version: "$vaadinSpringExtensions") {
+                entry "vaadin-spring-ext-security"
+                entry "vaadin-spring-ext-core"
+                entry "vaadin-spring-ext-boot"
+            }
+
+            dependencySet(group: "org.vaadin.spring.addons", version: "$vaadinSpringAddons") {
+                entry "vaadin-spring-addon-eventbus"
+                entry "vaadin-spring-addon-sidebar"
+                entry "vaadin-spring-addon-i18n"
+            }
+            
+            dependency("org.openscience.cdk:cdk-bundle:2.0") {
+                // Do NOT use following dependencies due to strict GPL license!!
+                exclude "org.openscience.cdk:cdk-qsaratomic"
+                exclude "org.openscience.cdk:cdk-legacy"
+            }
+
+            // Common
+            dependency "org.apache.commons:commons-text:1.3"
+            dependency "org.apache.commons:commons-lang3:3.6"
+            dependency "commons-beanutils:commons-beanutils:1.9.3"
+            dependency "commons-validator:commons-validator:1.6"
+            dependency "com.google.guava:guava:23.0"
+            dependency "com.google.code.gson:gson:2.8.2"
+            dependency "javax.inject:javax.inject:1"
+            dependency "javax.servlet:javax.servlet-api:4.0.0"
+
+            // DB related
+            dependency "org.postgresql:postgresql:42.1.4"
+
+            dependency ("org.eclipse.persistence:eclipselink:2.7.3") {
+                exclude "org.eclipse.persistence:javax.persistence"
+            }
+            dependency "org.eclipse.persistence:org.eclipse.persistence.jpa:2.7.3"
+
+            dependency "com.h2database:h2:1.4.197"
+            
+            dependency("org.openscience.cdk:cdk-bundle:2.0")
+            dependency "org.codehaus.woodstox:woodstox-core-asl:4.4.1"
+            dependency "org.owasp.encoder:encoder:1.2.1"
+
+            // Specific versioned dependencies is necessary at the moment
+            dependency "org.apache.poi:poi-ooxml:3.13"
+            dependency "xml-apis:xml-apis:1.4.01"
+
+
+            dependency "javax.el:javax.el-api:3.0.0"
+        }
+    }
+
+    dependencies {
+        testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+    }
+
+    // Disable transitive dependecnies
+    configurations {
+        runtime.exclude group: "org.slf4j", module: "slf4j-log4j12"
+        runtime.exclude group: "org.eclipse.jetty", module: "jetty-server"
+        runtime.exclude group: "org.eclipse.jetty", module: "jetty-webapp"
+    }
+
+    // Quickfix for eclipse
+    eclipse {
+        classpath {
+            containers.remove("org.eclipse.jdt.launching.JRE_CONTAINER")
+            containers "org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"
+            // Following block of code is to remove .pom classpath entries in .classpath files
+            file {
+                whenMerged { classpath ->
+                    Iterator i = classpath.entries.iterator()
+                    while (i.hasNext()) {
+                        org.gradle.plugins.ide.eclipse.model.ClasspathEntryclasspathEntry = i.next()
+                        if (classpathEntry.kind.equals("lib") && classpathEntry.path.endsWith(".pom")) {
+                            println("Removing " + classpathEntry + " from classpath entry")
+                            i.remove()
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

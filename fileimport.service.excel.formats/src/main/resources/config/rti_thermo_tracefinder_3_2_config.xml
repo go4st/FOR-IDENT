@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<file format="97-2007">
+    <sheets>
+        <sheet id="de.hswt.fi.rti.excel.thermo.targets" identifierRow="0" contentRow="1" optional="false" >
+        	<groups>
+        		<group id = "G2" requiredColumns = "all">
+		            <columns>
+        		        <column id ="de.hswt.fi.rti.excel.thermo.target.label" name="Match Result Name" />
+                		<column id ="de.hswt.fi.rti.excel.thermo.target.mass" name="m/z (Apex)" />
+        	        	<column id ="de.hswt.fi.rti.excel.thermo.target.formula" name="Formula" />
+		                <column id ="de.hswt.fi.rti.excel.thermo.target.rt" name="RT (Measured)" />
+		            </columns>
+				</group>
+			</groups>
+        </sheet>
+    </sheets>
+</file>

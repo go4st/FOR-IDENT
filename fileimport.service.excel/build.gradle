@@ -1,0 +1,7 @@
+dependencies {
+	compile project(":filehandler")
+	compile project(":model")
+	compile project(":fileimport.service.api")
+	compile project(":calculation.service.api")
+	compile project(":calculation.service.rti.api")
+}

@@ -1,0 +1,5 @@
+dependencies {
+	compile project(":calculation.service.rti.api")
+	compile project(":search.service.rti.model")
+	compile project(":search.service.mass.search.api")
+}

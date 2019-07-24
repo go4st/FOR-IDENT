@@ -1,0 +1,4 @@
+dependencies {
+	compile project(":search.service.tp.api")
+	compile project(":database.importer.tp.api")
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE file SYSTEM "dtd/readerConfig.dtd">
+<file format="2007">
+    <sheets>
+        <sheet id="substances" name="Substances" identifierRow="0" contentRow="1" >
+        	<groups>
+        		<group id = "G1" requiredColumns = "all">
+		            <columns>
+		                <column id ="name" name="Name" multiple="false" />
+		                <column id ="cas" name="CAS" multiple="false" />
+		                <column id ="ec" name="EC number" multiple="false" />
+		                <column id ="smiles" name="SMILES" multiple="false" />
+		                <column id ="iupac" name="IUPAC" multiple="false" />
+		                <column id ="formula" name="Formula" multiple="false" />
+		                <column id ="mass" name="Mass" multiple="false" />
+		                <column id ="pka" name="PKa" multiple="false" />
+		                <column id ="tonnage" name="Tonnage" multiple="false" />
+		                <column id ="boilingPoint" name="Boiling point" multiple="false" />
+		                <column id ="logp" name="logP" multiple="true" />
+		                <column id ="logd" name="logD" multiple="true" />
+		                <column id ="waterSolubility" name="Water solubility" multiple="true" />
+		                <column id ="additionalNames" name="Additional names" multiple="true" />
+		            </columns>
+            	</group>
+            </groups>
+        </sheet>
+    </sheets>
+</file>

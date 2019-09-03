@@ -211,7 +211,8 @@ jsMsChart.Axis = function(width, height, axisColor, axisOffsetX, axisOffsetY, do
 		var minDiff = Infinity;
 		var matchedFraction = null;
 
-		for (var fraction in availableFractions) {
+		for (var index in availableFractions) {
+			var fraction = availableFractions[index];
 			var diff = Math.abs(targetFraction - fraction);
 			if (diff < minDiff) {
 				minDiff = diff;
@@ -430,12 +431,17 @@ jsMsChart.Chart = function (element) {
 
 	    domain = {x: {min: Infinity, max: -Infinity}, y: {min: Infinity, max: -Infinity}};
 
-        for (var seriesKey in Object.keys(dataArray)) {
+        for (var index in Object.keys(dataArray)) {
+
+        	var seriesKey = Object.keys(dataArray)[index];
 
             var points = dataArray[seriesKey].points;
 
-            for (var point in points) {
-                if (point.x < domain.x.min) {
+            for (var pointIndex in points) {
+
+            	var point = points[pointIndex];
+
+            	if (point.x < domain.x.min) {
                     domain.x.min = point.x;
                 }
                 if (point.x > domain.x.max) {
@@ -464,7 +470,9 @@ jsMsChart.Chart = function (element) {
 
         var offsetY = 0;
 
-        for (var seriesKey in Object.keys(dataArray)) {
+        for (var index in Object.keys(dataArray)) {
+
+        	var seriesKey = Object.keys(dataArray)[index];
 
             var series = dataArray[seriesKey];
 
@@ -476,7 +484,7 @@ jsMsChart.Chart = function (element) {
             seriesGroup.setAttributeNS(null, 'id', 'series[' + seriesKey + ']');
 
             for (var point in dataPoints) {
-                seriesGroup.append(drawData(color, point));
+                seriesGroup.append(drawData(color, dataPoints[point]));
             }
 
             var legendGroup = document.createElementNS(jsMsChart.svgns, 'g');

@@ -51,7 +51,7 @@ public class PlantidentCompoundService extends AbstractCompoundService {
 
 	@Override
 	public boolean isAccessible() {
-		return false;
+		return true;
 	}
 
 	@Override

@@ -99,6 +99,10 @@ public final class ValueFormatUtil {
 		return round(value, 3);
 	}
 
+	public static Double roundCalibrationSignal(Double value) {
+		return round(value, 3);
+	}
+
 	private static void validateInput(Double input, Locale locale) {
 		Assert.notNull(input, "input must not be empty");
 		Assert.notNull(locale, "Locale must not be null");

@@ -6,8 +6,7 @@ package de.hswt.fi.application;
 
 import de.hswt.fi.database.importer.compounds.api.StoffIdentImporter;
 import de.hswt.fi.search.service.search.api.CompoundSearchService;
-import de.hswt.fi.search.service.search.plantident.config.PlantidentDatabaseConfiguration;
-import de.hswt.fi.search.service.search.stoffident.config.StoffidentDatabaseConfiguration;
+import de.hswt.fi.search.service.search.compound.config.CompoundDatabaseConfiguration;
 import de.hswt.fi.security.service.api.SecurityService;
 import de.hswt.fi.security.service.model.Group;
 import de.hswt.fi.security.service.model.Groups;
@@ -56,8 +55,7 @@ public class TestApplicationContext implements CommandLineRunner {
     public void run(String... args) {
         initGroups();
         initAdminAccount();
-        initTestData(StoffidentDatabaseConfiguration.DATABASE_NAME, SI_TEST_COMPOUND_DATA);
-        initTestData(PlantidentDatabaseConfiguration.DATABASE_NAME, PI_TEST_COMPOUND_DATA);
+        initTestData(CompoundDatabaseConfiguration.DATABASE_NAME, SI_TEST_COMPOUND_DATA);
     }
 
 

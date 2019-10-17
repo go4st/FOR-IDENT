@@ -7,6 +7,7 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
+import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
@@ -91,6 +92,12 @@ public class DefaultMainUi extends UI {
 
 		setLocale(VaadinSession.getCurrent().getLocale());
 		LocaleContextHolder.setLocale(getLocale());
+        setErrorHandler(new DefaultErrorHandler() {
+            @Override
+            public void error(com.vaadin.server.ErrorEvent event) {
+                new CustomNotification.Builder("", i18n.get(UIMessageKeys.DEFAULT_ERROR_MESSAGE), Notification.Type.ERROR_MESSAGE);
+            }
+        });
 	}
 
 	@Override

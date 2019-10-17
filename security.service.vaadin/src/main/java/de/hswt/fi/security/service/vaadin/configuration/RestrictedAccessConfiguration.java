@@ -77,6 +77,8 @@ public class RestrictedAccessConfiguration extends WebSecurityConfigurerAdapter 
 		.frameOptions()
 		.sameOrigin();
 
+		http.cors().disable();
+
 		http
 		.exceptionHandling()
 		.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));

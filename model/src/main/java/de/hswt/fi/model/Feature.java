@@ -38,6 +38,8 @@ public class Feature implements Serializable {
 
     private Double logD;
 
+    private Double henryConstant;
+
     @BeanColumn(i18nId = I18nKeys.FEATURE_FORMULA_DERIVED_MASS, format = "%.4f", selector = true)
     private Double formulaDerivedMass;
 
@@ -58,6 +60,7 @@ public class Feature implements Serializable {
         this.retentionTime = builder.retentionTime;
         this.retentionTimeIndex = builder.retentionTimeIndex;
         this.logD = builder.logD;
+        this.henryConstant = builder.henryConstant;
         this.formulaDerivedMass = builder.formulaDerivedMass;
         this.neutralFormula = builder.neutralFormula;
         this.massCalculated = builder.massCalculated;
@@ -89,16 +92,24 @@ public class Feature implements Serializable {
         return logD;
     }
 
+    public void setLogD(Double logD) {
+        this.logD = logD;
+    }
+
+    public Double getHenryConstant() {
+        return henryConstant;
+    }
+
+    public void setHenryConstant(Double henryConstant) {
+        this.henryConstant = henryConstant;
+    }
+
     public String getNeutralFormula() {
         return neutralFormula;
     }
 
     public void setNeutralFormula(String neutralFormula) {
         this.neutralFormula = neutralFormula;
-    }
-
-    public void setLogD(Double logD) {
-        this.logD = logD;
     }
 
     public boolean isMassCalculated() {
@@ -159,6 +170,7 @@ public class Feature implements Serializable {
                 Objects.equals(retentionTimeIndex, feature.retentionTimeIndex) &&
                 Objects.equals(retentionTime, feature.retentionTime) &&
                 Objects.equals(logD, feature.logD) &&
+                Objects.equals(henryConstant, feature.henryConstant) &&
                 Objects.equals(formulaDerivedMass, feature.formulaDerivedMass) &&
                 Objects.equals(neutralMass, feature.neutralMass) &&
                 Objects.equals(peaks, feature.peaks) &&
@@ -167,7 +179,7 @@ public class Feature implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, precursorMass, neutralFormula, retentionTimeIndex, retentionTime, logD,
+        return Objects.hash(identifier, precursorMass, neutralFormula, retentionTimeIndex, retentionTime, logD, henryConstant,
                 formulaDerivedMass, neutralMass, massCalculated, peaks, relativeFactor);
     }
 
@@ -218,6 +230,8 @@ public class Feature implements Serializable {
 
         private Double logD;
 
+        private Double henryConstant;
+
         private Double formulaDerivedMass;
 
         private Double neutralMass;
@@ -261,6 +275,11 @@ public class Feature implements Serializable {
 
         public Builder withLogD(Double logD) {
             this.logD = logD;
+            return this;
+        }
+
+        public Builder withHenryConstant(Double henryConstant) {
+            this.henryConstant = henryConstant;
             return this;
         }
 

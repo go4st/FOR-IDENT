@@ -1,4 +1,0 @@
-dependencies {
-	compile project(":search.service.search.api")
-	compile project(":search.service.rti.model")
-}

@@ -2,6 +2,8 @@ package de.hswt.fi.ui.vaadin;
 
 public class UIMessageKeys {
 
+	public static final String DEFAULT_ERROR_MESSAGE = "DEFAULT_ERROR_MESSAGE";
+
 	private UIMessageKeys() {
 		// Prevent instantiation
 	}
@@ -657,7 +659,7 @@ public class UIMessageKeys {
 
 	public static final String RTI_DATA_CALIBRATION_COLUMN_RTI = "RTI_DATA_CALIBRATION_COLUMN_RTI";
 
-	public static final String RTI_DATA_CALIBRATION_COLUMN_LOG_D = "RTI_DATA_CALIBRATION_COLUMN_LOG_D";
+	public static final String RTI_DATA_CALIBRATION_COLUMN_SIGNAL = "RTI_DATA_CALIBRATION_COLUMN_SIGNAL";
 
 	public static final String RTI_DATA_CALIBRATION_COLUMN_MEAN_RT = "RTI_DATA_CALIBRATION_COLUMN_MEAN_RT";
 

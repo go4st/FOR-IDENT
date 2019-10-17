@@ -200,9 +200,9 @@ public class ProcessingDataComponent extends ContainerContentComponent {
 				.setCaption(i18n.get(UIMessageKeys.RTI_DATA_CALIBRATION_COLUMN_RTI))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(FOLLOWING_DIGITS_RTI));
 
-		calibrationDataGrid.addColumn(RTICalibrationData::getLogD)
+		calibrationDataGrid.addColumn(RTICalibrationData::getSignal)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_SMALL)
-				.setCaption(i18n.get(UIMessageKeys.RTI_DATA_CALIBRATION_COLUMN_LOG_D))
+				.setCaption(i18n.get(UIMessageKeys.RTI_DATA_CALIBRATION_COLUMN_SIGNAL))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(FOLLOWING_DIGITS_LOGD));
 
 		calibrationDataGrid.addColumn(RTICalibrationData::getMeanRt)

@@ -108,7 +108,7 @@ public class DefaultFeatureContentImporter implements FeatureContentImporter {
 		}
 
 		rtiCalculationService.calculateRetentionTimeIndex(featureSet.getRtiCalibrationData());
-		rtiCalculationService.calculateLogD(featureSet.getRtiCalibrationData(),
+		rtiCalculationService.calculateSignal(featureSet.getRtiCalibrationData(),
 				new ArrayList<>(featureSet.getFeatures()));
 		rtiCalculationService.filterInvalidRTs(featureSet.getRtiCalibrationData());
 	}

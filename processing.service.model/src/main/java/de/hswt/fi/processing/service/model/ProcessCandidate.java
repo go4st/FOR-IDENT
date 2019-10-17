@@ -4,9 +4,9 @@ import de.hswt.fi.beans.annotations.BeanColumn;
 import de.hswt.fi.beans.annotations.BeanComponent;
 import de.hswt.fi.model.Score;
 import de.hswt.fi.msms.service.model.MsMsCandidate;
+import de.hswt.fi.search.service.index.model.IndexSearchResult;
 import de.hswt.fi.search.service.mass.search.model.Entry;
 import de.hswt.fi.search.service.mass.search.model.MassSearchResult;
-import de.hswt.fi.search.service.rti.model.RtiSearchResult;
 import de.hswt.fi.search.service.tp.model.PathwayCandidate;
 
 @BeanComponent
@@ -28,7 +28,7 @@ public class ProcessCandidate {
 	private MassSearchResult massSearchResult = null;
 
 	@BeanColumn
-	private RtiSearchResult rtiSearchResult = null;
+	private IndexSearchResult indexSearchResult = null;
 
 	private PathwayCandidate pathwayCandidate = null;
 
@@ -85,12 +85,12 @@ public class ProcessCandidate {
 		this.massSearchResult = massSearchResult;
 	}
 
-	public RtiSearchResult getRtiSearchResult() {
-		return rtiSearchResult;
+	public IndexSearchResult getIndexSearchResult() {
+		return indexSearchResult;
 	}
 
-	public void setRtiProcessingResult(RtiSearchResult rtiSearchResult) {
-		this.rtiSearchResult = rtiSearchResult;
+	public void setIndexSearchResult(IndexSearchResult indexSearchResult) {
+		this.indexSearchResult = indexSearchResult;
 	}
 
 	public void setBestMatch(boolean bestMatch) {
@@ -117,7 +117,7 @@ public class ProcessCandidate {
 		if (massSearchResult != null) {
 			return massSearchResult.getEntry();
 		} else {
-			return rtiSearchResult.getEntry();
+			return indexSearchResult.getEntry();
 		}
 	}
 }

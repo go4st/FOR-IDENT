@@ -34,8 +34,6 @@
 @import "components/customprogressbar";
 @import "components/customeasyuploads";
 
-@import "components/cookieconsent";
-
 @import "img/svg.scss";
 
 $v-included-components: 
@@ -113,8 +111,6 @@ $v-loading-indicator-color: valo-focus-color($context: $v-color-white);
 
 	@include custom-switch;
 
-	@include cookie-consent;
-
 	.v-tabsheet-tabcontainer-content-component {
 		font-size: 130%;
 
@@ -123,4 +119,15 @@ $v-loading-indicator-color: valo-focus-color($context: $v-color-white);
 			line-height: 2.2;
 		}
 	}
+
+  .cookie-consent {
+    width: 100%;
+    height: 3rem;
+
+    padding: 0.75rem;
+    text-align: center;
+
+    background-color: $v-theme-color-alternative3;
+    color: $v-theme-color-alternative1;
+  }
 }

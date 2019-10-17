@@ -40,7 +40,7 @@ public abstract class AbstractCalibrationExcelReader extends ExcelReader {
 
 	protected abstract String getCalibrationRtId();
 
-	protected abstract String getCalibrationLogDId();
+	protected abstract String getCalibrationSignalId();
 
 	/*
 	 * (non-Javadoc)
@@ -66,9 +66,9 @@ public abstract class AbstractCalibrationExcelReader extends ExcelReader {
 
 		ColumnDefinition substanceColumn = sheetDefinition.getIdentifierColumns().get(getCalibrationSubstanceId());
 		ColumnDefinition rtColumn = sheetDefinition.getIdentifierColumns().get(getCalibrationRtId());
-		ColumnDefinition logDColumn = sheetDefinition.getIdentifierColumns().get(getCalibrationLogDId());
+		ColumnDefinition signalColumn = sheetDefinition.getIdentifierColumns().get(getCalibrationSignalId());
 
-		if (substanceColumn == null || rtColumn == null || !rtColumn.getMultiple() || logDColumn == null) {
+		if (substanceColumn == null || rtColumn == null || !rtColumn.getMultiple() || signalColumn == null) {
 			return Collections.emptyList();
 		}
 
@@ -76,17 +76,17 @@ public abstract class AbstractCalibrationExcelReader extends ExcelReader {
 
 		for (int i = sheetDefinition.getContentRow(); i <= sheet.getLastRowNum() && i < maxLength; i++) {
 			String name;
-			Double logD;
+			Double signalValue;
 			Row row = sheet.getRow(i);
 
 			name = PoiUtil.getStringCellValue(row.getCell(substanceColumn.getColumnIndex()));
-			logD = ValueFormatUtil.roundLogD(PoiUtil.getDoubleCellValue(row.getCell(logDColumn.getColumnIndex())));
+			signalValue = ValueFormatUtil.roundCalibrationSignal(PoiUtil.getDoubleCellValue(row.getCell(signalColumn.getColumnIndex())));
 
-			if (name == null || name.isEmpty() || logD == null) {
+			if (name == null || name.isEmpty() || signalValue == null) {
 				continue;
 			}
 
-			RTICalibrationData calibration = new RTICalibrationData(name, logD);
+			RTICalibrationData calibration = new RTICalibrationData(name, signalValue);
 
 			List<Double> rtValues = extractRTValues(rtColumn, row);
 			

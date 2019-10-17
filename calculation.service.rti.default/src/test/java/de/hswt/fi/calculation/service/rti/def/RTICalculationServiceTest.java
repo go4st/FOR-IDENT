@@ -73,6 +73,7 @@ public class RTICalculationServiceTest {
 		}
 	}
 
+	//TODO Replace with Henry Constant test
 	@Test
 	public void calculateLogDTest() {
 		List<RTICalibrationData> calibrationData = createCalibrationTestData();
@@ -84,7 +85,7 @@ public class RTICalculationServiceTest {
 		targetFeatures.add(new Feature.Builder("Chloridazon", 222.0427).withRetentionTime(6.47153).build());
 
 		rtiCalculationService.calculateRetentionTimeIndex(calibrationData);
-		rtiCalculationService.calculateLogD(calibrationData, targetFeatures);
+		rtiCalculationService.calculateSignal(calibrationData, targetFeatures);
 
 		List<Double> referenceRTIs = Arrays.asList(74.00579, 73.39161, 96.21493, 82.81418);
 		List<Double> referenceLogDs = Arrays.asList(0.5683596, 0.5302798, 1.945326, 1.11448);

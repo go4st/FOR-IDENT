@@ -1,6 +1,7 @@
 package de.hswt.fi.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class RTICalibrationData implements Serializable {
 
@@ -8,7 +9,7 @@ public class RTICalibrationData implements Serializable {
 
 	private String identifier;
 
-	private double logD;
+	private double signal;
 
 	private double rti;
 
@@ -18,15 +19,15 @@ public class RTICalibrationData implements Serializable {
 	// Flag if this value will be used in the calibration curve
 	private boolean valid;
 
-	public RTICalibrationData(String name, double logD) {
+	public RTICalibrationData(String name, double signal) {
 		this.identifier = name;
-		this.logD = logD;
+		this.signal = signal;
 		valid = true;
 	}
 
-	public RTICalibrationData(String name, double logD, double meanRt) {
+	public RTICalibrationData(String name, double signal, double meanRt) {
 		this.identifier = name;
-		this.logD = logD;
+		this.signal = signal;
 		this.meanRt = meanRt;
 		valid = true;
 	}
@@ -39,12 +40,12 @@ public class RTICalibrationData implements Serializable {
 		this.identifier = identifier;
 	}
 
-	public double getLogD() {
-		return logD;
+	public double getSignal() {
+		return signal;
 	}
 
-	public void setLogD(double logD) {
-		this.logD = logD;
+	public void setSignal(double signal) {
+		this.signal = signal;
 	}
 
 	public double getRti() {
@@ -59,7 +60,7 @@ public class RTICalibrationData implements Serializable {
 		return meanRt;
 	}
 
-		public void setMeanRt(double meanRt) {
+	public void setMeanRt(double meanRt) {
 		this.meanRt = meanRt;
 	}
 
@@ -72,54 +73,25 @@ public class RTICalibrationData implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((identifier == null) ? 0 : identifier.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(logD);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(meanRt);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(rti);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		RTICalibrationData that = (RTICalibrationData) o;
+		return Double.compare(that.signal, signal) == 0 &&
+				Double.compare(that.rti, rti) == 0 &&
+				Double.compare(that.meanRt, meanRt) == 0 &&
+				valid == that.valid &&
+				Objects.equals(identifier, that.identifier);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		RTICalibrationData other = (RTICalibrationData) obj;
-		if (identifier == null) {
-			if (other.identifier != null) {
-				return false;
-			}
-		} else if (!identifier.equals(other.identifier)) {
-			return false;
-		}
-		if (Double.doubleToLongBits(logD) != Double.doubleToLongBits(other.logD)) {
-			return false;
-		}
-		if (Double.doubleToLongBits(meanRt) != Double.doubleToLongBits(other.meanRt)) {
-			return false;
-		}
-		if (Double.doubleToLongBits(rti) != Double.doubleToLongBits(other.rti)) {
-			return false;
-		}
-		return true;
+	public int hashCode() {
+		return Objects.hash(identifier, signal, rti, meanRt, valid);
 	}
 
 	@Override
 	public String toString() {
-		return "RTICalibrationData [identifier=" + identifier + ", logD=" + logD + ", rti=" + rti
+		return "RTICalibrationData [identifier=" + identifier + ", signal=" + signal + ", rti=" + rti
 				+ ", meanRt=" + meanRt + "]";
 	}
 

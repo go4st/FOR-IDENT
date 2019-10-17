@@ -23,20 +23,15 @@ import java.net.URL;
 @Scope("prototype")
 public class CalibrationExcelReader extends AbstractCalibrationExcelReader {
 
-	/** The Constant ID. */
 	private static final String ID = "de.hswt.fi.rti.excel.calibration";
 
-	/** The Constant CALIBRATION_SHEET_NAME. */
 	private static final String CALIBRATION_SHEET_NAME = "de.hswt.fi.rti.excel.calibration.sheet";
 
-	/** The Constant CALIBRATION_SHEET_SUBSTANCE_NAME. */
 	private static final String CALIBRATION_SHEET_SUBSTANCE_NAME = "de.hswt.fi.rti.excel.calibration.substancename";
 
-	/** The Constant CALIBRATION_SHEET_RT. */
 	private static final String CALIBRATION_SHEET_RT = "de.hswt.fi.rti.excel.calibration.rt";
 
-	/** The Constant CALIBRATION_SHEET_LOGD. */
-	private static final String CALIBRATION_SHEET_LOGD = "de.hswt.fi.rti.excel.calibration.logD";
+	private static final String CALIBRATION_SHEET_SIGNAL = "de.hswt.fi.rti.excel.calibration.signal";
 
 	/*
 	 * (non-Javadoc)
@@ -69,7 +64,7 @@ public class CalibrationExcelReader extends AbstractCalibrationExcelReader {
 	}
 
 	@Override
-	protected String getCalibrationLogDId() {
-		return CALIBRATION_SHEET_LOGD;
+	protected String getCalibrationSignalId() {
+		return CALIBRATION_SHEET_SIGNAL;
 	}
 }

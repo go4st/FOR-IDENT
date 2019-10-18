@@ -1,6 +1,6 @@
 package de.hswt.fi.database.importer.compounds.excel;
 
-import de.hswt.fi.database.importer.compounds.api.StoffIdentImporter;
+import de.hswt.fi.database.importer.compounds.api.CompoundImporter;
 import de.hswt.fi.search.service.mass.search.model.Entry;
 import de.hswt.fi.search.service.mass.search.model.SourceList;
 import de.hswt.fi.search.service.mass.search.model.properties.*;
@@ -28,65 +28,45 @@ import java.util.stream.Collectors;
  */
 @Component
 @Scope("prototype")
-public class StoffIdentExcelImporter implements StoffIdentImporter {
+public class HenryExcelImporter implements CompoundImporter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StoffIdentExcelImporter.class);
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(HenryExcelImporter.class);
     private static final String TARGET_SHEET_NAME = "Gesamtliste";
-
     private static final String INDEX = "Index";
-
     private static final String NAME = "Name";
-
     private static final String INCHI = "InChI";
-
     private static final String INCHI_KEY = "InChIKey";
-
     private static final String CAS = "CAS";
-
     private static final String SMILES = "SMILES";
-
     private static final String EC_NUMBER = "EC number";
-
     private static final String IUPAC = "IUPAC";
-
     private static final String FORMULA = "Formula";
-
     private static final String MASS = "Mass";
-
     private static final String TONNAGE = "Tonnage";
-
+    private static final String HENRY_BOND = "Henry constant (bond) [Pa-m³/mol]";
+    private static final String HENRY_GROUP = "Henry constant (group) [Pa-m³/mol]";
+    private static final String HENRY_EXPER = "Henry constant (exper database) [Pa-m³/mol]";
     private static final String LOG_P = "LogP";
-
     private static final String LOG_D = "LogD";
-
     private static final String ADDITIONAL_NAMES = "Additional Names";
-
     private static final String MASSBANK_ID = "Massbank IDs";
-
     private static final String CATEGORIES = "Categories";
-
     private static final String SID = "Public ID";
-
     private static final String SOURCE_TAGS = "Source-tag Name";
-
     private static final String EPA_CHEMISTRY_DASHBOARD_ID = "DTXSID";
+    private final DataFormatter formatter;
 
     private Set<String> mandatoryColumns;
-
     private Set<String> optionalColumns;
-
     private Map<String, Integer> columnMap;
-
     private SimpleDateFormat dateFormat;
-
     private Date lastModified;
-
     private CompoundSearchService compoundSearchService;
 
-    public StoffIdentExcelImporter() {
+    public HenryExcelImporter() {
         createMandatoryColumnList();
         createOptionalColumnList();
+        formatter = new DataFormatter();
     }
 
     private void createMandatoryColumnList() {
@@ -102,6 +82,9 @@ public class StoffIdentExcelImporter implements StoffIdentImporter {
         mandatoryColumns.add(FORMULA);
         mandatoryColumns.add(MASS);
         mandatoryColumns.add(TONNAGE);
+        mandatoryColumns.add(HENRY_BOND);
+        mandatoryColumns.add(HENRY_GROUP);
+        mandatoryColumns.add(HENRY_EXPER);
         mandatoryColumns.add(LOG_P);
         mandatoryColumns.add(LOG_D);
         mandatoryColumns.add(ADDITIONAL_NAMES);
@@ -117,7 +100,7 @@ public class StoffIdentExcelImporter implements StoffIdentImporter {
     }
 
     @Override
-    public boolean importStoffIdentDataSet(Path path, LocalDate date, CompoundSearchService compoundSearchService) {
+    public boolean importCompoundDataSet(Path path, LocalDate date, CompoundSearchService compoundSearchService) {
 
         if (!path.toFile().exists()) {
             LOGGER.debug("Invalid path to SI-Content file");
@@ -133,9 +116,16 @@ public class StoffIdentExcelImporter implements StoffIdentImporter {
 
         this.compoundSearchService = compoundSearchService;
 
-        Set<Entry> entries = importEntries(path).stream()
+        Set<Entry> importedEntries = importEntries(path);
+
+        Set<Entry> entries = importedEntries.stream()
                 .filter(distinctByKey(entry -> entry.getInchiKey().getValue()))
                 .collect(Collectors.toSet());
+
+        LOGGER.debug("Entries left after removing duplicate InchiKeys: {}", entries.size());
+
+        importedEntries.removeAll(entries);
+        importedEntries.forEach(duplicate -> System.out.println(duplicate.getPublicID() + "\t" + duplicate.getInchiKey() + "\t" + duplicate.getName()));
 
         entries.forEach(entry -> entry.setDatasourceName(compoundSearchService.getDatasourceName()));
 
@@ -280,11 +270,11 @@ public class StoffIdentExcelImporter implements StoffIdentImporter {
         }
 
         if (currentRow.getCell(columnMap.get(LOG_P)) != null) {
-            builder.withLogPValue(parseNumberValueProperty(currentRow, columnMap.get(LOG_P), LogPNumberProperty.class));
+            builder.withLogPValue(parseNumberValuePropertyWithPH(currentRow, columnMap.get(LOG_P), LogPNumberProperty.class));
         }
 
         if (currentRow.getCell(columnMap.get(LOG_D)) != null) {
-            builder.withLogDValue(parseNumberValueProperty(currentRow, columnMap.get(LOG_D), LogDNumberProperty.class));
+            builder.withLogDValue(parseNumberValuePropertyWithPH(currentRow, columnMap.get(LOG_D), LogDNumberProperty.class));
         }
     }
 
@@ -312,18 +302,56 @@ public class StoffIdentExcelImporter implements StoffIdentImporter {
         builder.withElementalFormula(parseEmbeddedStringValueProperty(currentRow, columnMap.get(FORMULA), FormulaStringProperty.class));
         builder.withTonnage(parseEmbeddedStringValueProperty(currentRow, columnMap.get(TONNAGE), TonnageStringProperty.class));
 
+        builder.withHenryBond(parseNumberValueProperty(currentRow, columnMap.get(HENRY_BOND), HenryConstantBondNumberProperty.class));
+        builder.withHenryGroup(parseNumberValueProperty(currentRow, columnMap.get(HENRY_GROUP), HenryConstantGroupNumberProperty.class));
+        builder.withHenryExper(parseNumberValueProperty(currentRow, columnMap.get(HENRY_EXPER), HenryConstantExperNumberProperty.class));
+
         if (isColumnValuePresent(EPA_CHEMISTRY_DASHBOARD_ID, currentRow)) {
             builder.withDtxsid(currentRow.getCell(columnMap.get(EPA_CHEMISTRY_DASHBOARD_ID)).getStringCellValue());
         }
 
         try {
-            builder.withAccurateMass(parseNumberValueProperty(currentRow, columnMap.get(MASS), MassNumberProperty.class));
+            builder.withAccurateMass(parseNumberValuePropertyWithPH(currentRow, columnMap.get(MASS), MassNumberProperty.class));
         } catch (IllegalArgumentException e) {
             LOGGER.debug(e.getMessage());
         }
     }
 
     private <T extends NumberValueProperty> T parseNumberValueProperty(Row row, Integer columnId, Class<T> type) {
+
+        Double value = null;
+
+        try {
+            value = Double.parseDouble(getStringValue(row, columnId));
+        } catch (NumberFormatException e1) {
+        } catch (IllegalStateException e) {
+            // Do not log/throw if optional cell chas wrong cell type
+        }
+
+        String source = getStringValue(row, columnId + 1);
+        Long date = parseDate(row, columnId + 2);
+
+        String editor = getStringValue(row, columnId + 3);
+        String additional = getStringValue(row, columnId + 4);
+
+        try {
+            T valueProperty = type.newInstance();
+            valueProperty.setValue(value);
+            valueProperty.setPh(null);
+            valueProperty.setCharge(null);
+            valueProperty.setSource(source);
+            valueProperty.setEditor(editor);
+            valueProperty.setAdditional(additional);
+            valueProperty.setLastModified(new Date(date == null ? System.currentTimeMillis() : date));
+            return valueProperty;
+        } catch (InstantiationException | IllegalAccessException e) {
+            LOGGER.error(e.getMessage());
+        }
+
+        return null;
+    }
+
+    private <T extends NumberValueProperty> T parseNumberValuePropertyWithPH(Row row, Integer columnId, Class<T> type) {
 
         Double value = null;
         Double ph = null;
@@ -334,7 +362,6 @@ public class StoffIdentExcelImporter implements StoffIdentImporter {
             ph = Double.parseDouble(getStringValue(row, columnId + 1));
             charge = Integer.parseInt(getStringValue(row, columnId + 2));
         } catch (NumberFormatException e1) {
-            return null;
         } catch (IllegalStateException e) {
             // Do not log/throw if optional cell chas wrong cell type
         }
@@ -375,7 +402,7 @@ public class StoffIdentExcelImporter implements StoffIdentImporter {
 
     private String getStringValue(Row row, int columnId) {
         Cell cell = row.getCell(columnId);
-        return cell != null ? cell.getStringCellValue() : "";
+        return cell != null ? formatter.formatCellValue(cell) : "";
     }
 
     private Long parseDate(Row row, int columnId) {

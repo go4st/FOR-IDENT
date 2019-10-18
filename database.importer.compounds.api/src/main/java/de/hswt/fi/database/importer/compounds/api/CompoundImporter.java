@@ -10,9 +10,9 @@ import java.util.Set;
 /**
  * Created by August Gilg on 05.10.2016.
  */
-public interface StoffIdentImporter {
+public interface CompoundImporter {
 
-    boolean importStoffIdentDataSet(Path path, LocalDate date, CompoundSearchService compoundSearchService);
+    boolean importCompoundDataSet(Path path, LocalDate date, CompoundSearchService compoundSearchService);
 
     Set<Entry> importEntries(Path path);
 }

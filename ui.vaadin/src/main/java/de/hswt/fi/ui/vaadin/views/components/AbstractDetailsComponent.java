@@ -9,10 +9,7 @@ import de.hswt.fi.application.properties.ApplicationProperties;
 import de.hswt.fi.calculation.service.api.CalculationService;
 import de.hswt.fi.common.ValueFormatUtil;
 import de.hswt.fi.search.service.mass.search.model.Entry;
-import de.hswt.fi.search.service.mass.search.model.properties.AbstractNumberProperty;
-import de.hswt.fi.search.service.mass.search.model.properties.AbstractStringProperty;
-import de.hswt.fi.search.service.mass.search.model.properties.NumberValueProperty;
-import de.hswt.fi.search.service.mass.search.model.properties.StringValueProperty;
+import de.hswt.fi.search.service.mass.search.model.properties.*;
 import de.hswt.fi.ui.vaadin.CustomValoTheme;
 import de.hswt.fi.ui.vaadin.UIMessageKeys;
 import de.hswt.fi.ui.vaadin.components.ContainerContentComponent;
@@ -33,10 +30,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Provider;
 import java.io.ByteArrayInputStream;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class AbstractDetailsComponent<ENTRY> extends ContainerContentComponent {
@@ -78,6 +72,8 @@ public abstract class AbstractDetailsComponent<ENTRY> extends ContainerContentCo
 	private DetailsSectionComponent categoriesComponent;
 
 	private DetailsSectionComponent listComponent;
+
+	private DetailsSectionComponent henryComponent;
 
 	private DetailsSectionComponent logPComponent;
 
@@ -171,6 +167,8 @@ public abstract class AbstractDetailsComponent<ENTRY> extends ContainerContentCo
 		generalComponent = createDetailsComponent(
 				i18n.get(UIMessageKeys.GENERAL_DETAILS_CAPTION));
 
+		henryComponent = createDetailsComponent(i18n.get(UIMessageKeys.HENRY_DETAILS_CAPTION));
+
 		categoriesComponent = createDetailsComponent(
 				i18n.get(UIMessageKeys.CATEGORIES_DETAILS_CAPTION));
 
@@ -210,6 +208,7 @@ public abstract class AbstractDetailsComponent<ENTRY> extends ContainerContentCo
 		updateWebSearchLinks();
 		updateGeneralContainer();
 
+		updateDetailsComponent(getHenryDetails(), henryComponent);
 		updateDetailsComponent(getCategoryDetails(), categoriesComponent);
 		updateDetailsComponent(getSourceListDetails(), listComponent);
 		updateDetailsComponent(getLogPDetails(), logPComponent);
@@ -256,11 +255,9 @@ public abstract class AbstractDetailsComponent<ENTRY> extends ContainerContentCo
 		if (currentEntry.getName() != null) {
 			properties.add(new DetailsProperty(createLink(i18n.get(UIMessageKeys.ABSTRACT_DETAILS_COMPONENT_WEB_SEARCH_BY_NAME), WEB_SEARCH_PREFIX + currentEntry.getName().getValue())));
 		}
-
 		if (currentEntry.getCas() != null) {
 			properties.add(new DetailsProperty(createLink(i18n.get(UIMessageKeys.ABSTRACT_DETAILS_COMPONENT_WEB_SEARCH_BY_CAS), WEB_SEARCH_PREFIX + currentEntry.getCas().getValue())));
 		}
-
 		if (currentEntry.getInchi() != null) {
 			properties.add(new DetailsProperty(createLink(i18n.get(UIMessageKeys.ABSTRACT_DETAILS_COMPONENT_WEB_SEARCH_BY_INCHI), WEB_SEARCH_PREFIX + currentEntry.getInchi().getValue())));
 		}
@@ -340,6 +337,17 @@ public abstract class AbstractDetailsComponent<ENTRY> extends ContainerContentCo
 					return details;
 				})
 				.collect(Collectors.toList());
+	}
+
+	private List<DetailsProperty> getHenryDetails() {
+		List<DetailsProperty> henryProperties = new ArrayList<>();
+		HenryConstantBondNumberProperty henryBond = currentEntry.getHenryBond();
+		HenryConstantGroupNumberProperty henryGroup = currentEntry.getHenryGroup();
+		HenryConstantExperNumberProperty henryExper = currentEntry.getHenryExper();
+		if (henryBond != null && henryBond.getValue() != null) henryProperties.add(getProperties(henryBond, i18n.get(UIMessageKeys.FI_ENTRY_HENRY_BOND)));
+		if (henryGroup != null && henryGroup.getValue() != null) henryProperties.add(getProperties(henryGroup, i18n.get(UIMessageKeys.FI_ENTRY_HENRY_GROUP)));
+		if (henryExper != null && henryExper.getValue() != null) henryProperties.add(getProperties(henryExper, i18n.get(UIMessageKeys.FI_ENTRY_HENRY_EXPER)));
+		return henryProperties;
 	}
 
 	private List<DetailsProperty> getLogPDetails() {

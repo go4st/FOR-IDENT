@@ -57,6 +57,12 @@ public class I18nKeys {
 
 	public static final String SI_MODEL_RESULT_SUMMARY_TITLE = "SI_MODEL_RESULT_SUMMARY_TITLE";
 
+	public static final String SI_MODEL_HENRY_BOND = "SI_MODEL_HENRY_BOND";
+
+	public static final String SI_MODEL_HENRY_GROUP = "SI_MODEL_HENRY_GROUP";
+
+	public static final String SI_MODEL_HENRY_EXPER = "SI_MODEL_HENRY_EXPER";
+
 	// file search
 
 	public static final String SI_MODEL_TARGET_IDENTIFIER = "SI_MODEL_TARGET_IDENTIFIER";

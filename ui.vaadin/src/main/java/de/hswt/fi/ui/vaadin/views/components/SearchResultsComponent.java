@@ -157,6 +157,24 @@ public class SearchResultsComponent
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
 				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_MASS));
 
+		grid.addFilterColumn(entry -> entry.getHenryBond().getValue())
+				.setFilterType(Double.class)
+				.setHidable(true)
+				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
+				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_BOND));
+
+		grid.addFilterColumn(entry -> entry.getHenryGroup().getValue())
+				.setFilterType(Double.class)
+				.setHidable(true)
+				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
+				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_GROUP));
+
+		grid.addFilterColumn(entry -> entry.getHenryExper().getValue())
+				.setFilterType(Double.class)
+				.setHidable(true)
+				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
+				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_EXPER));
+
 		grid.addFilterColumn(entry -> entry.getTonnage().getValue())
 				.setFilterType(String.class)
 				.setHidable(true)

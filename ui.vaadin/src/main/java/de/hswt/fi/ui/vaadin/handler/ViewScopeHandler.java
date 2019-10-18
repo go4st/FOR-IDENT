@@ -24,5 +24,6 @@ public class ViewScopeHandler {
 
 	@Autowired
 	private SearchResultsReportHandler reportSearchEntriesHandler;
-	
+
+
 }

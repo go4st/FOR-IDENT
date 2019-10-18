@@ -29,12 +29,16 @@ task pathingJar(type: Jar) {
 		}
 	}
 }
+
+def profiles = 'development'
+
 bootRun {
 	dependsOn pathingJar
 	doFirst {
 		classpath = files(sourceSets.main.output.files, pathingJar.archivePath)
 	}
-	jvmArgs = ["-javaagent:${configurations.runtimeAgent.asPath}", "-Dspring.profiles.active=initialization"]
+	jvmArgs = ["-javaagent:${configurations.runtimeAgent.asPath}"]
+	args = ["--spring.profiles.active=" + profiles]
 }
 
 bootJar {
@@ -92,7 +96,7 @@ dependencies {
 	compile project(":search.service.index.rti")
 	compile project(":search.service.index.rti.model")
 	compile project(":search.service.search.api")
-	compile project(":search.service.search.stoffident")
+	compile project(":search.service.search.compound")
 	compile project(":search.service.tp.api")
 	compile project(":search.service.tp.default")
 	compile project(":search.service.tp.model")

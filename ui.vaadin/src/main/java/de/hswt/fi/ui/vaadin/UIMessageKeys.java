@@ -256,6 +256,12 @@ public class UIMessageKeys {
 
 	public static final String SEARCH_RESULT_GRID_COLUMN_MASS = "SEARCH_RESULT_GRID_COLUMN_MASS";
 
+	public static final String SEARCH_RESULT_GRID_COLUMN_HENRY_BOND = "SEARCH_RESULT_GRID_COLUMN_HENRY_BOND";
+
+	public static final String SEARCH_RESULT_GRID_COLUMN_HENRY_GROUP = "SEARCH_RESULT_GRID_COLUMN_HENRY_GROUP";
+
+	public static final String SEARCH_RESULT_GRID_COLUMN_HENRY_EXPER = "SEARCH_RESULT_GRID_COLUMN_HENRY_EXPER";
+
 	public static final String SEARCH_RESULT_GRID_COLUMN_DATASOURCE = "SEARCH_RESULT_GRID_COLUMN_DATASOURCE";
 
 	// Change Password Window
@@ -451,6 +457,12 @@ public class UIMessageKeys {
 
 	public static final String FI_ENTRY_TONNAGE = "FI_ENTRY_TONNAGE";
 
+	public static final String FI_ENTRY_HENRY_BOND = "FI_ENTRY_HENRY_BOND";
+
+	public static final String FI_ENTRY_HENRY_GROUP = "FI_ENTRY_HENRY_GROUP";
+
+	public static final String FI_ENTRY_HENRY_EXPER = "FI_ENTRY_HENRY_EXPER";
+
 	public static final String FI_ENTRY_LOG_P = "FI_ENTRY_LOG_P";
 
 	public static final String FI_ENTRY_LOG_D = "FI_ENTRY_LOG_D";
@@ -483,6 +495,8 @@ public class UIMessageKeys {
 	public static final String STRUCTURE_DETAILS_CAPTION = "STRUCTURE_DETAILS_CAPTION";
 
 	public static final String GENERAL_DETAILS_CAPTION = "GENERAL_DETAILS_CAPTION";
+
+	public static final String HENRY_DETAILS_CAPTION = "HENRY_DETAILS_CAPTION";
 
 	public static final String CATEGORIES_DETAILS_CAPTION = "CATEGORIES_DETAILS_CAPTION";
 

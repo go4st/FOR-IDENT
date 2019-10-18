@@ -4,7 +4,7 @@ package de.hswt.fi.application;
  * Created by August Gilg on 31.10.2016.
  */
 
-import de.hswt.fi.database.importer.compounds.api.StoffIdentImporter;
+import de.hswt.fi.database.importer.compounds.api.CompoundImporter;
 import de.hswt.fi.search.service.search.api.CompoundSearchService;
 import de.hswt.fi.search.service.search.compound.config.CompoundDatabaseConfiguration;
 import de.hswt.fi.security.service.api.SecurityService;
@@ -35,8 +35,6 @@ public class TestApplicationContext implements CommandLineRunner {
 
     private static final String SI_TEST_COMPOUND_DATA = "SI_Content_Test_25.xlsx";
 
-    private static final String PI_TEST_COMPOUND_DATA = "PI_Content_Test_25.xlsx";
-
     @Autowired
     private SecurityService securityService;
 
@@ -44,7 +42,7 @@ public class TestApplicationContext implements CommandLineRunner {
     private List<CompoundSearchService> compoundSearchServices;
 
     @Autowired
-    private StoffIdentImporter stoffIdentImporter;
+    private CompoundImporter compoundImporter;
 
     public static void main(String[] args) {
         SpringApplication.run(TestApplicationContext.class, args);
@@ -98,7 +96,7 @@ public class TestApplicationContext implements CommandLineRunner {
         compoundSearchServices.stream()
                 .filter(compoundSearchService -> compoundSearchService.getDatasourceName().equals(databaseName))
                 .findFirst()
-                .ifPresent(sicss -> stoffIdentImporter.importStoffIdentDataSet(getResourcePath(testDataPathName), LocalDate.now(), sicss));
+                .ifPresent(sicss -> compoundImporter.importCompoundDataSet(getResourcePath(testDataPathName), LocalDate.now(), sicss));
     }
 
     private Path getResourcePath(String pathName) {

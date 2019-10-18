@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.vaadin.spring.annotation.PrototypeScope;
-import org.vaadin.spring.events.EventBus.ViewEventBus;
 import org.vaadin.spring.i18n.I18N;
 
 import javax.annotation.PostConstruct;
@@ -31,8 +30,6 @@ public class UploadCompoundDatabaseWindow extends AbstractWindow {
 	private static final long serialVersionUID = -7335967376753331255L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UploadCompoundDatabaseWindow.class);
-
-	private final ViewEventBus viewEventBus;
 
 	private final Path uploadCompoundDatabasePath;
 
@@ -49,18 +46,16 @@ public class UploadCompoundDatabaseWindow extends AbstractWindow {
 	private ComboBox<CompoundSearchService> searchServiceComboBox;
 
 	@Autowired
-	protected UploadCompoundDatabaseWindow(ComponentFactory componentFactory, I18N i18n, ViewEventBus viewEventBus,
+	protected UploadCompoundDatabaseWindow(ComponentFactory componentFactory, I18N i18n,
 										   @Qualifier(UIConstants.TEMP_DIRECTORY_UPLOAD_COMPOUND_DATABASE_PATH)
 												   Path uploadCompoundDatabasePath, List<CompoundSearchService> compoundSearchServices) {
 		super(componentFactory, i18n, false);
-		this.viewEventBus = viewEventBus;
 		this.uploadCompoundDatabasePath = uploadCompoundDatabasePath;
 		this.compoundSearchServices = compoundSearchServices;
 	}
 
 	@PostConstruct
 	private void afterConstruct() {
-		this.viewEventBus.subscribe(this);
 		setWidth(LayoutConstants.HUGE);
 	}
 

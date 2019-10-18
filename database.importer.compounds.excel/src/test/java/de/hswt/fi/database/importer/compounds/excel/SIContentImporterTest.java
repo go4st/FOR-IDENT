@@ -1,6 +1,6 @@
 package de.hswt.fi.database.importer.compounds.excel;
 
-import de.hswt.fi.database.importer.compounds.api.StoffIdentImporter;
+import de.hswt.fi.database.importer.compounds.api.CompoundImporter;
 import de.hswt.fi.search.service.mass.search.model.Entry;
 import de.hswt.fi.search.service.mass.search.model.SourceList;
 import de.hswt.fi.search.service.mass.search.model.properties.*;
@@ -24,7 +24,7 @@ public class SIContentImporterTest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SIContentImporterTest.class);
 
-	private StoffIdentImporter importer;
+	private CompoundImporter importer;
 
 	private SimpleDateFormat sdf;
 
@@ -32,7 +32,7 @@ public class SIContentImporterTest {
 
 	@Before
 	public void setUp() {
-		importer = new StoffIdentExcelImporter();
+		importer = new HenryExcelImporter();
 		referenceEntries = createReferenceData();
 	}
 

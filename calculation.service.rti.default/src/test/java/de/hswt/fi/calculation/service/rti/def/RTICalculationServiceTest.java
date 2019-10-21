@@ -92,7 +92,7 @@ public class RTICalculationServiceTest {
 
 		for (int i = 0; i < targetFeatures.size(); i++) {
 			Assert.assertTrue(equals(referenceRTIs.get(i), targetFeatures.get(i).getRetentionTimeIndex()));
-			Assert.assertTrue(equals(referenceLogDs.get(i), targetFeatures.get(i).getLogD()));
+			Assert.assertTrue(equals(referenceLogDs.get(i), targetFeatures.get(i).getRetentionTimeSignal()));
 		}
 	}
 }

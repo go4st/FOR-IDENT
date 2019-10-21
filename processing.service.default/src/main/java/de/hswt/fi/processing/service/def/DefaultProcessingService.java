@@ -16,7 +16,6 @@ import de.hswt.fi.search.service.index.model.IndexJob;
 import de.hswt.fi.search.service.index.model.IndexSearchResult;
 import de.hswt.fi.search.service.index.model.IndexSearchResults;
 import de.hswt.fi.search.service.index.model.IndexSettings;
-import de.hswt.fi.search.service.index.rti.model.RtiSearchResult;
 import de.hswt.fi.search.service.mass.search.api.MassSearchService;
 import de.hswt.fi.search.service.mass.search.model.FileSearchSettings;
 import de.hswt.fi.search.service.mass.search.model.MassSearchJob;
@@ -43,23 +42,14 @@ import java.util.stream.Collectors;
 public class DefaultProcessingService implements ProcessingService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProcessingService.class);
-
 	private PreProcessingService preProcessService;
-
 	private MassSearchService massSearchService;
-
 	private IndexSearchService indexSearchService;
-
 	private MsMsService msmsService;
-
 	private TransformationProductSearchService tpService;
-
 	private double scoreSumMax = 0.0;
-
 	private Consumer<ProcessingUnitState> stateUpdateCallback;
-
 	private ProcessResultSummary resultSummary;
-
 	private ProcessingSettings settings;
 
 	@Override
@@ -258,9 +248,6 @@ public class DefaultProcessingService implements ProcessingService {
 		for (PathwayCandidate pathwayCandidate : result.getInChiKeyPathwayCandidates()) {
 			known.get(pathwayCandidate.getInChiKey()).setPathwayCandidate(pathwayCandidate);
 		}
-
-		// Do not add pathway summary anymore because it is not very helpful
-		// resultSummary.addResultSummary(result.getResultSummary());
 
 		updateState(job.getSettings().getScoreSettings().getTpState(), UnitState.FINISHED);
 
@@ -468,8 +455,9 @@ public class DefaultProcessingService implements ProcessingService {
 		// For process candidates with no msmsCandidate found, an null msmsCandidate is created to display scoring
 		for (ProcessCandidate processCandidate : processResult.getCandidates()) {
 			if (processCandidate.getIndexSearchResult() == null) {
-				RtiSearchResult dummyResult = new RtiSearchResult(processCandidate.getMassSearchResult().getTargetIdentifier(), processCandidate.getMassSearchResult().getEntry(),
-						Double.NaN, Double.NaN, Double.NaN, Double.NaN, false, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, null, null);
+				IndexSearchResult dummyResult = indexSearchService.getDummyResult();
+				dummyResult.setTargetIdentifier(processCandidate.getMassSearchResult().getTargetIdentifier());
+				dummyResult.setEntry(processCandidate.getMassSearchResult().getEntry());
 				dummyResult.setScore(new Score(Double.NaN, 1.0d, Double.NaN));
 				processCandidate.setIndexSearchResult(dummyResult);
 			}

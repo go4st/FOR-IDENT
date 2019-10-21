@@ -236,7 +236,7 @@ public abstract class AbstractCompoundService implements CompoundSearchService {
 
 		getEntityManager().close();
 
-		LOGGER.debug("leaving search, return {} results", results.size());
+//		LOGGER.debug("leaving search, return {} results", results.size());
 		return results;
 	}
 

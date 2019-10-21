@@ -14,54 +14,32 @@ public class HenrySearchResult implements IndexSearchResult {
 	@BeanColumn(selector = true, i18nId = I18nKeys.RTI_MODEL_SCORE)
 	private Score score;
 
-	@BeanColumn(selector = true, i18nId = I18nKeys.RTI_MODEL_PH_DEPENDENCY,
-			i18nValuePropertyId = "i18nKey")
-	private MoleculePhDependency moleculePhDependency;
-
 	@BeanColumn(selector = true, i18nId = I18nKeys.RTI_MODEL_TARGET_IDENTIFIER)
 	private String targetIdentifier;
-
-	@BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_MODEL_TARGET_RT)
-	private Double targetRetentionTime;
 
 	@BeanColumn(format = "%.4f", selector = true, i18nId = I18nKeys.RTI_MODEL_TARGET_MASS)
 	private double targetMass;
 
-	@BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_MODEL_TARGET_LOG_D)
-	private Double targetLogD;
-
-	@BeanColumn(format = "%.1f", selector = true, i18nId = I18nKeys.RTI_MODEL_TARGET_PH)
-	private double targetPh;
-
-	private boolean calculatedTargetMass;
+	@BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_MODEL_TARGET_RT)
+	private Double retentionTime;
 
 	@BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_MODEL_RTI)
-	private Double rti;
+	private Double retentionTimeIndex;
 
-	@BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_MODEL_RESULT_LOG_D)
-	private Double resultLogD;
+	@BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_MODEL_RTI)
+	private Double retentionTimeSignal;
+
+	@BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_MODEL_RTI)
+	private Double deltaRetentionTimeSignal;
 
 	@BeanColumn(format = "%.4f", selector = true, i18nId = I18nKeys.RTI_MODEL_DELTA_MASS)
 	private double deltaMass;
-
-	@BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_MODEL_DELTA_LOG_D)
-	private Double deltaLogDRtiDb;
-
-	@BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_MODEL_ADJUSTED_LOG_D)
-	private Double adjustedLogD;
-
-	@BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_MODEL_ADJUSTED_DELTA_LOG_D)
-	private Double deltaLogDAdjustedDb;
 
 	// Entry is already annotated as BeanColumn in the mandatory processing result MassSearchResult
 	// and should not be included here again, to prevent doubled property id's (e.g. columns in export)
 	private Entry entry;
 
 	private double ppm;
-
-	private double ionisation;
-
-	private String stationaryPhase;
 
 	private boolean isFirst;
 
@@ -74,49 +52,32 @@ public class HenrySearchResult implements IndexSearchResult {
 	 *
 	 * @param targetIdentifier     the target identifier
 	 * @param entry                the entry
-	 * @param targetRetentionTime  the target retention time
-	 * @param targetPh             the target ph
-	 * @param targetLogD           the target logD
+	 * @param retentionTime  the target retention time
 	 * @param targetMass           the target mass
-	 * @param calculatedTargetMass the calculated target mass
-	 * @param adjustedLogD         the adjusted RTI logD
-	 * @param resultLogD           the result logD
 	 * @param ppm                  the ppm
-	 * @param rti                  the rti value
-	 * @param ionisation           the ionisation
-	 * @param stationaryPhase      the stationary phase
-	 * @param dependency           the dependency
+	 * @param retentionTimeIndex                  the rti value
 	 */
-	public HenrySearchResult(String targetIdentifier, Entry entry, Double targetRetentionTime,
-						   Double targetPh, Double targetLogD, Double targetMass, boolean calculatedTargetMass,
-						   Double adjustedLogD, Double resultLogD, Double ppm, Double rti, Double ionisation,
-						   String stationaryPhase, MoleculePhDependency dependency) {
-		this.targetIdentifier = targetIdentifier;
-		this.targetRetentionTime = targetRetentionTime;
-		this.entry = entry;
-		this.targetLogD = targetLogD;
-		this.targetMass = targetMass;
-		this.calculatedTargetMass = calculatedTargetMass;
-		this.adjustedLogD = adjustedLogD;
-		this.resultLogD = resultLogD;
-		this.ppm = ppm;
-		this.targetPh = targetPh;
-		this.rti = rti;
-		this.ionisation = ionisation;
-		this.stationaryPhase = stationaryPhase;
-		moleculePhDependency = dependency;
+	public HenrySearchResult(String targetIdentifier, Entry entry, Double retentionTime,
+						    Double targetMass, Double ppm, Double retentionTimeIndex, Double retentionTimeSignal) {
 
-		if (entry != null && entry.getAccurateMass() != null) {
+
+		Objects.requireNonNull(entry);
+
+		this.targetIdentifier = targetIdentifier;
+		this.retentionTime = retentionTime;
+		this.entry = entry;
+		this.targetMass = targetMass;
+		this.ppm = ppm;
+		this.retentionTimeIndex = retentionTimeIndex;
+		this.retentionTimeSignal = retentionTimeSignal;
+
+		if (entry.getAccurateMass() != null) {
 			deltaMass = entry.getAccurateMass().getValue() - targetMass;
 		}
 
-		// If no logD is present
-		if (this.targetLogD == null) {
-			available = false;
-		} else {
+		if (entry.getHenryBond() != null && entry.getHenryBond().getValue() != null && retentionTimeSignal != null) {
+			deltaRetentionTimeSignal = entry.getHenryBond().getValue() - retentionTimeSignal;
 			available = true;
-			deltaLogDRtiDb = targetLogD - resultLogD;
-			deltaLogDAdjustedDb = adjustedLogD - resultLogD;
 		}
 	}
 
@@ -129,16 +90,27 @@ public class HenrySearchResult implements IndexSearchResult {
 	}
 
 	@Override
+	public void setTargetIdentifier(String targetIdentifier) {
+
+	}
+
+	@Override
 	public Entry getEntry() {
 		return entry;
 	}
 
-	public Double getTargetRetentionTime() {
-		return targetRetentionTime;
+	@Override
+	public void setEntry(Entry entry) {
+		this.entry = entry;
 	}
 
-	public Double getResultLogD() {
-		return resultLogD;
+	public Double getRetentionTime() {
+		return retentionTime;
+	}
+
+	@Override
+	public void setRetentionTime(Double retentionTime) {
+		this.retentionTime = retentionTime;
 	}
 
 	public double getTargetMass() {
@@ -149,20 +121,34 @@ public class HenrySearchResult implements IndexSearchResult {
 		return deltaMass;
 	}
 
-	public Double getTargetLogD() {
-		return targetLogD;
+	@Override
+	public Double getRetentionTimeIndex() {
+		return retentionTimeIndex;
 	}
 
-	public Double getAdjustedLogD() {
-		return adjustedLogD;
+	@Override
+	public void setRetentionTimeIndex(Double retentionTimeIndex) {
+		this.retentionTimeIndex = retentionTimeIndex;
 	}
 
-	public Double getDeltaLogDRtiDb() {
-		return deltaLogDRtiDb;
+	@Override
+	public Double getRetentionTimeSignal() {
+		return retentionTimeSignal;
 	}
 
-	public Double getDeltaLogDAdjustedDb() {
-		return deltaLogDAdjustedDb;
+	@Override
+	public void setRetentionTimeSignal(Double retentionTimeSignal) {
+		this.retentionTimeSignal = retentionTimeSignal;
+	}
+
+	@Override
+	public Double getDeltaRetentionTimeSignal() {
+		return deltaRetentionTimeSignal;
+	}
+
+	@Override
+	public void setDeltaRetentionTimeSignal(Double deltaRetentionTimeSignal) {
+		this.deltaRetentionTimeSignal = deltaRetentionTimeSignal;
 	}
 
 	@Override
@@ -175,66 +161,11 @@ public class HenrySearchResult implements IndexSearchResult {
 		this.score = score;
 	}
 
-	/**
-	 * Gets the target ph.
-	 *
-	 * @return the target ph
-	 */
-	public double getTargetPh() {
-		return targetPh;
-	}
-
-	/**
-	 * Gets the rti.
-	 *
-	 * @return the rti
-	 */
-	public Double getRti() {
-		return rti;
-	}
-
-	/**
-	 * Gets the ionisation.
-	 *
-	 * @return the ionisation
-	 */
-	public double getIonisation() {
-		return ionisation;
-	}
-
-	/**
-	 * Gets the stationary phase.
-	 *
-	 * @return the stationary phase
-	 */
-	public String getStationaryPhase() {
-		return stationaryPhase;
-	}
-
-	/**
-	 * Gets the molecule ph dependency.
-	 *
-	 * @return the molecule ph dependency
-	 */
-	public MoleculePhDependency getMoleculePhDependency() {
-		return moleculePhDependency;
-	}
-
-	/**
-	 * Checks if is calculated target mass.
-	 *
-	 * @return true, if is calculated target mass
-	 */
 	@Override
-	public boolean isCalculatedTargetMass() {
-		return calculatedTargetMass;
+	public double getIonisation() {
+		return 0;
 	}
 
-	/**
-	 * Gets the ppm.
-	 *
-	 * @return the ppm
-	 */
 	@Override
 	public double getPpm() {
 		return ppm;
@@ -265,50 +196,5 @@ public class HenrySearchResult implements IndexSearchResult {
 		return available;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		HenrySearchResult that = (HenrySearchResult) o;
-		return Double.compare(that.targetMass, targetMass) == 0 &&
-				Double.compare(that.targetPh, targetPh) == 0 &&
-				calculatedTargetMass == that.calculatedTargetMass &&
-				Double.compare(that.deltaMass, deltaMass) == 0 &&
-				Double.compare(that.ppm, ppm) == 0 &&
-				Double.compare(that.ionisation, ionisation) == 0 &&
-				isFirst == that.isFirst &&
-				isLast == that.isLast &&
-				available == that.available &&
-				Objects.equals(score, that.score) &&
-				moleculePhDependency == that.moleculePhDependency &&
-				Objects.equals(targetIdentifier, that.targetIdentifier) &&
-				Objects.equals(targetRetentionTime, that.targetRetentionTime) &&
-				Objects.equals(targetLogD, that.targetLogD) &&
-				Objects.equals(rti, that.rti) &&
-				Objects.equals(resultLogD, that.resultLogD) &&
-				Objects.equals(deltaLogDRtiDb, that.deltaLogDRtiDb) &&
-				Objects.equals(adjustedLogD, that.adjustedLogD) &&
-				Objects.equals(deltaLogDAdjustedDb, that.deltaLogDAdjustedDb) &&
-				Objects.equals(entry, that.entry) &&
-				Objects.equals(stationaryPhase, that.stationaryPhase);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(score, moleculePhDependency, targetIdentifier, targetRetentionTime, targetMass, targetLogD, targetPh, calculatedTargetMass, rti, resultLogD, deltaMass, deltaLogDRtiDb, adjustedLogD, deltaLogDAdjustedDb, entry, ppm, ionisation, stationaryPhase, isFirst, isLast, available);
-	}
-
-	@Override
-	public String toString() {
-		return "RTISearchResult [targetIdentifier=" + targetIdentifier + ", entry=" + entry
-				+ ", targetRt=" + targetRetentionTime + ", targetMass=" + targetMass + ", targetLogD="
-				+ targetLogD + ", targetPh=" + targetPh + ", resultLogD=" + resultLogD
-				+ ", calculatedTargetMass=" + calculatedTargetMass + ", rti=" + rti + ", ppm=" + ppm
-				+ ", ionisation=" + ionisation + ", stationaryPhase=" + stationaryPhase
-				+ ", dependency=" + moleculePhDependency + ", score="
-				+ score + ", deltaMass=" + deltaMass + ", deltaLogDRtiDb=" + deltaLogDRtiDb
-				+ ", adjustedLogD=" + adjustedLogD + ", deltaLogDAdjustedDb=" + deltaLogDAdjustedDb
-				+ "]";
-	}
 
 }

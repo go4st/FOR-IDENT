@@ -79,10 +79,10 @@ public class DefaultRTICalculationService implements RTICalculationService {
 		int lowerIndex;
 		int upperIndex = 0;
 		for (int i = 0; i < calibration.size(); i++) {
-			double logPValue = calibration.get(i).getSignal();
+			double signal = calibration.get(i).getSignal();
 			double rtValue = calibration.get(i).getMeanRt();
-			if (Double.compare(logPValue, 0.0) == 0
-					|| Double.compare(logPValue, Double.MAX_VALUE) == 0
+			if (Double.compare(signal, 0.0) == 0
+					|| Double.compare(signal, Double.MAX_VALUE) == 0
 					|| Double.compare(rtValue, 0.0) == 0
 					|| Double.compare(rtValue, Double.MAX_VALUE) == 0) {
 				continue;
@@ -132,7 +132,7 @@ public class DefaultRTICalculationService implements RTICalculationService {
 			Double rti = interpolateRTIfromRT(target.getRetentionTime(), calibrations);
 			if (rti != null) {
 				target.setRetentionTimeIndex(rti);
-				target.setHenryConstant(deriveSignalFromRTI(rti, calibrations));
+				target.setRetentionTimeSignal(deriveSignalFromRTI(rti, calibrations));
 			}
 		}
 	}

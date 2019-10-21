@@ -21,7 +21,6 @@ import org.vaadin.spring.sidebar.annotation.VaadinFontIcon;
 		order = 100)
 @VaadinFontIcon(VaadinIcons.COG)
 @SpringView(name = ProcessingView.VIEW_NAME)
-//@Secured("ROLE_USER")
 public class ProcessingView extends AbstractLayoutView {
 
 	private static final long serialVersionUID = 1L;

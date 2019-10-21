@@ -9,7 +9,27 @@ public interface IndexSearchResult {
 
     Entry getEntry();
 
-    Double getTargetRetentionTime();
+    void setEntry(Entry entry);
+
+    String getTargetIdentifier();
+
+    void setTargetIdentifier(String targetIdentifier);
+
+    Double getRetentionTime();
+
+    void setRetentionTime(Double targetRetentionTime);
+
+    Double getRetentionTimeIndex();
+
+    void setRetentionTimeIndex(Double retentionTimeIndex);
+
+    Double getRetentionTimeSignal();
+
+    void setRetentionTimeSignal(Double retentionTimeSignal);
+
+    Double getDeltaRetentionTimeSignal();
+
+    void setDeltaRetentionTimeSignal(Double deltaRetentionTimeSignal);
 
     double getTargetMass();
 
@@ -20,10 +40,6 @@ public interface IndexSearchResult {
     void setScore(Score score);
 
     double getIonisation();
-
-    String getStationaryPhase();
-
-    boolean isCalculatedTargetMass();
 
     double getPpm();
 

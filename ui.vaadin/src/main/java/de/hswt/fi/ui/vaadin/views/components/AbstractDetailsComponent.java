@@ -352,12 +352,14 @@ public abstract class AbstractDetailsComponent<ENTRY> extends ContainerContentCo
 
 	private List<DetailsProperty> getLogPDetails() {
 		return currentEntry.getLogpValues().stream()
+				.filter(logP -> logP.getValue() != null)
 				.map(logPValue -> getProperties(logPValue, i18n.get(UIMessageKeys.FI_ENTRY_LOG_P)))
 				.collect(Collectors.toList());
 	}
 
 	private List<DetailsProperty> getLogDDetails() {
 		return currentEntry.getLogdValues().stream()
+				.filter(logD -> logD.getValue() != null)
 				.map(logDValue -> getProperties(logDValue, i18n.get(UIMessageKeys.FI_ENTRY_LOG_D)))
 				.collect(Collectors.toList());
 	}

@@ -6,7 +6,7 @@
         		<group id = "G1" requiredColumns = "all">
 		            <columns>
         	        	<column id ="de.hswt.fi.rti.excel.calibration.substancename" name="substance name" />
-            	    	<column id ="de.hswt.fi.rti.excel.calibration.signal" name="logD" />
+            	    	<column id ="de.hswt.fi.rti.excel.calibration.signal" name="henry constant" />
                 		<column id ="de.hswt.fi.rti.excel.calibration.rt" name="rt" multiple="true" />
 		            </columns>
 				</group>

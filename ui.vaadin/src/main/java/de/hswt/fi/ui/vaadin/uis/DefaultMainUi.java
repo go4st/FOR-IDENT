@@ -44,7 +44,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @SpringUI(path = "/")
-@Title("FOR-IDENT")
+@Title("DUFTSTOFF-IDENT")
 @Theme("fi-valo")
 @Push(transport = Transport.LONG_POLLING)
 @Widgetset(value = "de.hswt.fi.ui.vaadin.widgetset")

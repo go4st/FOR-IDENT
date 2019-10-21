@@ -179,7 +179,7 @@ public class ProcessingDataComponent extends ContainerContentComponent {
 				.setCaption(i18n.get(UIMessageKeys.RTI_DATA_TARGET_COLUMN_RTI))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(FOLLOWING_DIGITS_RTI));
 
-		featureGrid.addColumn(Feature::getLogD)
+		featureGrid.addColumn(Feature::getRetentionTimeSignal)
 				.setCaption(i18n.get(UIMessageKeys.RTI_DATA_TARGET_COLUMN_LOG_D))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2))
 				.setExpandRatio(FOLLOWING_DIGITS_LOGD);

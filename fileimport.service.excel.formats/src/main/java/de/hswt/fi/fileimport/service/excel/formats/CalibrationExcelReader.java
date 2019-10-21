@@ -45,7 +45,7 @@ public class CalibrationExcelReader extends AbstractCalibrationExcelReader {
 
 	@Override
 	protected URL getConfigUrl() {
-		return getClass().getResource("/config/rti_calibration_config.xml");
+		return getClass().getResource("/config/rti_calibration_config_henry.xml");
 	}
 
 	@Override

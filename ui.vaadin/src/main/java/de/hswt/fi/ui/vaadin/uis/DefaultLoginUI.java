@@ -16,7 +16,7 @@ import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.i18n.I18N;
 
 @SpringUI(path = "login")
-@Title("FOR-IDENT Login")
+@Title("DUFTSTOFF-IDENT Login")
 @Theme("fi-valo")
 @Widgetset(value = "de.hswt.fi.ui.vaadin.widgetset")
 public class DefaultLoginUI extends AbstractLoginUI {

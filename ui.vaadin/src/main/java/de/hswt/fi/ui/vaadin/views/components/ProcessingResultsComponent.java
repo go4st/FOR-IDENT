@@ -3,7 +3,6 @@ package de.hswt.fi.ui.vaadin.views.components;
 import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.Query;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.ExternalResource;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.ui.*;
@@ -12,14 +11,12 @@ import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.components.grid.SingleSelectionModel;
 import com.vaadin.ui.renderers.HtmlRenderer;
-import com.vaadin.ui.renderers.ImageRenderer;
 import com.vaadin.ui.renderers.ProgressBarRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 import de.hswt.fi.processing.service.model.ProcessCandidate;
 import de.hswt.fi.processing.service.model.ProcessingJob;
 import de.hswt.fi.processing.service.model.ProcessingResult;
 import de.hswt.fi.processing.service.model.ProcessingUnit;
-import de.hswt.fi.search.service.index.rti.model.RtiSearchResult;
 import de.hswt.fi.search.service.mass.search.model.Entry;
 import de.hswt.fi.search.service.mass.search.model.SourceList;
 import de.hswt.fi.ui.vaadin.CustomValoTheme;
@@ -321,78 +318,40 @@ public class ProcessingResultsComponent extends
 	}
 
 	private void initRtiScreeningColumns() {
-		Column moleculeDependencyColumn = grid.addColumn(processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getMoleculePhDependency())
-				.setWidth(LayoutConstants.COLUMN_WIDTH_TINY)
-				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_PH))
-				.setStyleGenerator(item -> CustomValoTheme.TEXT_CENTER)
-				.setRenderer(value -> {
-					if (value == null) {
-						return null;
-					}
-					switch (value) {
-						case NEUTRAL:
-							return new ExternalResource("./img/circle-green.png");
-						case NEUTRAL_UPPER:
-							return new ExternalResource("./img/circle-purple.png");
-						case NEUTRAL_LOWER:
-							return new ExternalResource("./img/circle-yellow.png");
-						case NEGATIVE_LOADABLE:
-							return new ExternalResource("./img/circle-blue.png");
-						case POSITIVE_LOADABLE:
-							return new ExternalResource("./img/circle-red.png");
-						default:
-							return null;
-					}
-				}, new ImageRenderer<ExternalResource>());
 
 		Column<ProcessCandidate, Double> rtiColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getRti())
+				processCandidate -> (processCandidate.getIndexSearchResult()).getRetentionTimeIndex())
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM).setCaption("RTI")
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(1));
 
-		Column<ProcessCandidate, Double> resultLogDColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getResultLogD())
+		Column<ProcessCandidate, Double> resultSignalColumn = grid.addFilterColumn(
+				processCandidate -> (processCandidate.getEntry().getHenryBond().getValue()))
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
-				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_RESULT_LOG_D))
+				.setCaption("Result Henry Konstante")
+//				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_RESULT_LOG_D))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2));
 
-		Column<ProcessCandidate, Double> targetLogDColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getTargetLogD())
+		Column<ProcessCandidate, Double> targetSignalColumn = grid.addFilterColumn(
+				processCandidate -> (processCandidate.getIndexSearchResult().getRetentionTimeSignal()))
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
-				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_TARGET_LOG_D))
+				.setCaption("Target Henry Konstante")
+//				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_TARGET_LOG_D))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2));
 
 		Column<ProcessCandidate, Double> deltaLogDRtiDbColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getDeltaLogDRtiDb())
+				processCandidate -> (processCandidate.getIndexSearchResult().getDeltaRetentionTimeSignal()))
 				.setFilterType(Double.class)
 				.setHidable(true).setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2))
-				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_DELTA_RTI_RESULT_LOG_D));
+				.setCaption("Delta Henry");
 
-		Column<ProcessCandidate, Double> adjustedLogDColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getAdjustedLogD())
-				.setFilterType(Double.class)
-				.setHidable(true)
-				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
-				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_RTI_ADJUSTED_RTI_LOGD))
-				.setRenderer(GridRendererProvider.getLocalizedRenderer(2));
-
-		Column<ProcessCandidate, Double> deltaLogDAdjustedDbColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getDeltaLogDAdjustedDb())
-				.setFilterType(Double.class)
-				.setHidable(true).setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
-				.setRenderer(GridRendererProvider.getLocalizedRenderer(2))
-				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_RTI_DELTA_ADJUSTED_RTI_RESULT_LOGD));
-
-		groupingRow.join(moleculeDependencyColumn, rtiColumn, resultLogDColumn, targetLogDColumn,
-				deltaLogDRtiDbColumn, adjustedLogDColumn, deltaLogDAdjustedDbColumn)
-				.setText("RTI Screening");
+		groupingRow.join(rtiColumn, resultSignalColumn, targetSignalColumn, deltaLogDRtiDbColumn).setText("RTI Screening");
 	}
 
 	private void initEntryColumns() {

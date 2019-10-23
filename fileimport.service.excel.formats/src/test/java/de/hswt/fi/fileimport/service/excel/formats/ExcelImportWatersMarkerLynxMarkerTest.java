@@ -18,7 +18,7 @@ public class ExcelImportWatersMarkerLynxMarkerTest extends AbstractImportTest {
 	public FileBasedFeatureContentImporter getFileImporter() {
 		return new ExcelFeatureContentImporter(
 				Collections.singletonList(new WatersMarkerLynxMarkerExcelReader()),
-				Collections.singletonList(new CalibrationExcelReader()));
+				Collections.singletonList(new CalibrationExcelReaderGC()));
 	}
 
 	@Override

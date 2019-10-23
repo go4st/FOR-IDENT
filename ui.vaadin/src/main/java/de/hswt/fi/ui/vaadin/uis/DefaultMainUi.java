@@ -7,10 +7,7 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
-import com.vaadin.server.DefaultErrorHandler;
-import com.vaadin.server.Page;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.server.*;
 import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -48,7 +45,7 @@ import java.util.Optional;
 @Theme("fi-valo")
 @Push(transport = Transport.LONG_POLLING)
 @Widgetset(value = "de.hswt.fi.ui.vaadin.widgetset")
-public class DefaultMainUi extends UI {
+public class DefaultMainUi extends UI implements ErrorHandler {
 
 	private static final long serialVersionUID = 1L;
 
@@ -185,6 +182,11 @@ public class DefaultMainUi extends UI {
 		navigator.setErrorView(new ErrorView());
 		navigator.addProvider(viewProvider);
 		setNavigator(navigator);
+	}
+
+	@Override
+	public void error(com.vaadin.server.ErrorEvent event) {
+		LOGGER.error(event.getThrowable().getMessage());
 	}
 
 	private class CustomNavigator extends Navigator {

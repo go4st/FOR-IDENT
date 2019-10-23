@@ -18,7 +18,7 @@ public class ExcelImportAgilentProfinderTest extends AbstractImportTest {
 	public FileBasedFeatureContentImporter getFileImporter() {
 		return new ExcelFeatureContentImporter(
 				Collections.singletonList(new AgilentProFinderExcelReader()),
-				Collections.singletonList(new CalibrationExcelReader()));
+				Collections.singletonList(new CalibrationExcelReaderGC()));
 	}
 
 	@Override

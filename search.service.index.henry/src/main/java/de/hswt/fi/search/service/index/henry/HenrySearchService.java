@@ -1,5 +1,6 @@
 package de.hswt.fi.search.service.index.henry;
 
+import de.hswt.fi.common.spring.Profiles;
 import de.hswt.fi.model.Feature;
 import de.hswt.fi.model.Score;
 import de.hswt.fi.search.service.henry.model.HenrySearchResult;
@@ -13,6 +14,7 @@ import de.hswt.fi.search.service.mass.search.model.properties.NumberSearchProper
 import de.hswt.fi.search.service.search.api.CompoundSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+@Profile({Profiles.GC, Profiles.DEVELOPMENT_GC})
 @Component
 @Scope("prototype")
 public class HenrySearchService implements IndexSearchService {

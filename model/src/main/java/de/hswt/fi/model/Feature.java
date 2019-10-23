@@ -35,6 +35,7 @@ public class Feature implements Serializable {
     @BeanColumn(i18nId = I18nKeys.FEATURE_RT, format = "%.2f", selector = true)
     private Double retentionTime;
 
+    @BeanColumn(i18nId = I18nKeys.FEATURE_RT_SIGNAL, format = "%.2f", selector = true)
     private Double retentionTimeSignal;
 
     @BeanColumn(i18nId = I18nKeys.FEATURE_FORMULA_DERIVED_MASS, format = "%.4f", selector = true)

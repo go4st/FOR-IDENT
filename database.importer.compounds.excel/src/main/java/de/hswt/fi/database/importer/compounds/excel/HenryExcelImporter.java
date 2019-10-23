@@ -124,6 +124,11 @@ public class HenryExcelImporter implements CompoundImporter {
 
         LOGGER.debug("Entries left after removing duplicate InchiKeys: {}", entries.size());
 
+
+        LOGGER.debug("Entries has Henry bond: {}", importedEntries.stream().filter(entry -> entry.getHenryBond() != null && entry.getHenryBond().getValue() != null).count());
+
+
+
         importedEntries.removeAll(entries);
         importedEntries.forEach(duplicate -> System.out.println(duplicate.getPublicID() + "\t" + duplicate.getInchiKey() + "\t" + duplicate.getName()));
 
@@ -322,10 +327,12 @@ public class HenryExcelImporter implements CompoundImporter {
         Double value = null;
 
         try {
-            value = Double.parseDouble(getStringValue(row, columnId));
+            String dotString = getStringValue(row, columnId).replace(",", ".");
+            value = Double.parseDouble(dotString);
         } catch (NumberFormatException e1) {
+            // Not showing parse errors
         } catch (IllegalStateException e) {
-            // Do not log/throw if optional cell chas wrong cell type
+            LOGGER.error(e.getMessage());
         }
 
         String source = getStringValue(row, columnId + 1);

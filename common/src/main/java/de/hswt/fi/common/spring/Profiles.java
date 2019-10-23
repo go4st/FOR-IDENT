@@ -18,9 +18,13 @@ public abstract class Profiles {
 
 	public static final String TEST = "test";
 	
-	public static final String DEVELOPMENT = "development";
-
-	public static final String PRODUCTION = "production";
-
 	public static final String INITIALIZATION = "initialization";
+
+	public static final String LC = "lc";
+
+	public static final String GC = "gc";
+
+	public static final String DEVELOPMENT_LC = "development-lc";
+
+	public static final String DEVELOPMENT_GC = "development-gc";
 }

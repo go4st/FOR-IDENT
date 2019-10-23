@@ -24,9 +24,7 @@ import java.util.Map;
 public class ProcessingReportHandler extends AbstractReportHandler {
 
 	private static final long serialVersionUID = 1L;
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessingReportHandler.class);
-
 	private ProcessingJob processJob;
 
 	@EventBusListenerMethod
@@ -62,7 +60,7 @@ public class ProcessingReportHandler extends AbstractReportHandler {
 		return model;
 	}
 
-	protected SearchHistoryReportTemplate<ProcessingJob> generateTemplate(String errorNumber) {
+	private SearchHistoryReportTemplate<ProcessingJob> generateTemplate(String errorNumber) {
 		ReportWindow reportWindow = (ReportWindow) getWindow();
 		SearchHistoryReportTemplate<ProcessingJob> reportTemplate = new SearchHistoryReportTemplate<>();
 		reportTemplate.setUsername(reportWindow.getUserName());
@@ -86,7 +84,6 @@ public class ProcessingReportHandler extends AbstractReportHandler {
 	private String parseSearchParameter(ProcessingJob processJob, String bugDescription) {
 
 		ProcessingSettings settings = processJob.getSettings();
-		bugDescription += "\n\tpH: " + settings.getPh();
 		bugDescription += "\n\tppm: " + settings.getPrecursorPpm();
 		bugDescription += "\n\tppm Fragments: " + settings.getPpmFragments();
 		bugDescription += "\n\tionisation: " + settings.getIonisation();
@@ -100,8 +97,6 @@ public class ProcessingReportHandler extends AbstractReportHandler {
 		bugDescription += parseProcessState("Mass screening", settings.getScoreSettings().getMassScreeningState());
 		bugDescription += parseProcessState("RTI screening", settings.getScoreSettings().getRtiScreeningState());
 		bugDescription += parseProcessState("MS/MS", settings.getScoreSettings().getMsmsState());
-		//TODO: Reenable if needed
-		/*bugDescription += parseProcessState("Chemspider", settings.getChemSpiderState());*/
 		bugDescription += parseProcessState("MassBank", settings.getScoreSettings().getMassBankSimpleState());
 
 		return bugDescription;

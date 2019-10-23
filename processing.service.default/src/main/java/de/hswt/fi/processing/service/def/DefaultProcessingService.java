@@ -105,7 +105,7 @@ public class DefaultProcessingService implements ProcessingService {
 			units.add(ProcessingUnit.MSMS);
 		}
 
-		if (isTpPossible(job)) {
+		if (isTpPossible()) {
 			units.add(ProcessingUnit.TP);
 		}
 
@@ -222,10 +222,6 @@ public class DefaultProcessingService implements ProcessingService {
 			candidates.addAll(result.getCandidates());
 		}
 
-//        TODO Maybe reenable if needed
-//        Map<String, Feature> targets = new HashMap<>(job.getFeatureSet().getFeatures());
-//        candidates.forEach(candidate -> targets.remove(c.getId()));
-
 		Map<String, ProcessCandidate> known = new HashMap<>();
 		for (ProcessCandidate candidate : candidates) {
 			String inChiKey = null;
@@ -264,8 +260,6 @@ public class DefaultProcessingService implements ProcessingService {
 		IndexSettings indexSettings = new IndexSettings();
 		indexSettings.setIonisation(job.getSettings().getIonisation());
 		indexSettings.setPpm(job.getSettings().getPrecursorPpm());
-		indexSettings.setPh(job.getSettings().getPh());
-		indexSettings.setStationaryPhase(job.getSettings().getStationaryPhase());
 
 		IndexJob indexJob = new IndexJob(indexSettings, job.getFeatureSet());
 
@@ -399,8 +393,6 @@ public class DefaultProcessingService implements ProcessingService {
 			summarizedScore += candidate.getIndexSearchResult().getScore().getWeightedValue();
 		}
 
-		// TODO add scoring for transformation product here
-
 		if (candidate.getMsMsCandidate() != null) {
 
 			if (candidate.getMsMsCandidate().getFeature() == null) {
@@ -413,8 +405,6 @@ public class DefaultProcessingService implements ProcessingService {
 			summarizedScore += candidate.getMsMsCandidate().getScore().getWeightedValue();
 		}
 
-		// TODO what to do with the massbank score? Should only be a score
-		// between 1 and 0, user requirement
 		if (candidate.getMassBankSimpleScore() != null) {
 			recalculateScore(candidate.getMassBankSimpleScore(),
 					settings.getScoreSettings().getMassBankSimpleState().getScoreWeight());
@@ -494,8 +484,7 @@ public class DefaultProcessingService implements ProcessingService {
 				.getRtiCalibrationData().isEmpty();
 	}
 
-	private boolean isTpPossible(ProcessingJob job) {
-		//TODO Check if service is available
+	private boolean isTpPossible() {
 		return true;
 	}
 
@@ -580,10 +569,9 @@ public class DefaultProcessingService implements ProcessingService {
 		this.tpService = tpService;
 	}
 
-	private class ProcessResultWrapper {
+	private static class ProcessResultWrapper {
 
 		private String id;
-
 		private List<ProcessCandidate> candidates;
 
 		ProcessResultWrapper(String id, List<ProcessCandidate> candidates) {

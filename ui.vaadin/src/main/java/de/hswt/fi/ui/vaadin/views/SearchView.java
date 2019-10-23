@@ -20,13 +20,9 @@ import java.util.Objects;
 public class SearchView extends AbstractSearchView {
 
 	private static final long serialVersionUID = 2707899413359225304L;
-
 	public static final String VIEW_NAME = "search";
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(SearchView.class);
-
 	private SearchFormComponent searchFormComponent;
-
 	private I18N i18n;
 
 	@Autowired

@@ -1,6 +1,8 @@
 package de.hswt.fi.fileimport.service.excel.formats;
 
+import de.hswt.fi.common.spring.Profiles;
 import de.hswt.fi.fileimport.service.excel.AbstractCalibrationExcelReader;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +21,10 @@ import java.net.URL;
  * 
  * @author Marco Luthardt
  */
+@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC})
 @Component
 @Scope("prototype")
-public class CalibrationExcelReader extends AbstractCalibrationExcelReader {
+public class CalibrationExcelReaderLC extends AbstractCalibrationExcelReader {
 
 	private static final String ID = "de.hswt.fi.rti.excel.calibration";
 
@@ -45,7 +48,7 @@ public class CalibrationExcelReader extends AbstractCalibrationExcelReader {
 
 	@Override
 	protected URL getConfigUrl() {
-		return getClass().getResource("/config/rti_calibration_config_henry.xml");
+		return getClass().getResource("/config/rti_calibration_config_logd.xml");
 	}
 
 	@Override

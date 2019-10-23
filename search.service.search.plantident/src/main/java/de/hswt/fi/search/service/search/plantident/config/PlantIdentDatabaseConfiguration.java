@@ -1,11 +1,13 @@
-package de.hswt.fi.search.service.search.compound.config;
+package de.hswt.fi.search.service.search.plantident.config;
 
+import de.hswt.fi.common.spring.Profiles;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -17,30 +19,26 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.sql.DataSource;
 
-import static de.hswt.fi.search.service.search.compound.config.CompoundDatabaseConfiguration.*;
-
+@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC})
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-		basePackages = BASE_PACKAGE,
-		entityManagerFactoryRef = ENTITY_MANAGER,
-		transactionManagerRef = TRANSACTION_MANAGER
+		basePackages = PlantIdentDatabaseConfiguration.BASE_PACKAGE,
+		entityManagerFactoryRef = PlantIdentDatabaseConfiguration.ENTITY_MANAGER,
+		transactionManagerRef = PlantIdentDatabaseConfiguration.TRANSACTION_MANAGER
 )
-public class CompoundDatabaseConfiguration {
+public class PlantIdentDatabaseConfiguration {
 
+	public static final String DATABASE_NAME = "PLANT-IDENT";
+	public static final String ENTITY_MANAGER = "plantidentEntityManager";
+	public static final String TRANSACTION_MANAGER = "plantidentTransactionManager";
+	static final String BASE_PACKAGE = "de.hswt.fi.search.service.search.plantident.repositories";
+	private static final String CONFIGURATION_PREFIX = "spring.datasource.plantident";
+	private static final String PERSISTENCE_UNIT = "plantidentPersistenceUnit";
 	public static final String ID_PREFIX = "CP";
-	public static final String DATABASE_NAME = "Compound";
-	public static final String ENTITY_MANAGER = "compoundEntityManager";
-	public static final String TRANSACTION_MANAGER = "compoundTransactionManager";
-	static final String BASE_PACKAGE = "de.hswt.fi.search.service.search.compound.repositories";
-    private static final String CONFIGURATION_PREFIX = "spring.datasource.compound";
-	private static final String PERSISTENCE_UNIT = "compoundPersistenceUnit";
-
 	private static final String ENTITY_PACKAGES = "de.hswt.fi.search.service.mass.search.model";
-
-	private static final String DATA_SOURCE = "compoundDataSource";
-
-	private static final String DATA_SOURCE_PROPERTIES = "compoundDataSourceProperties";
+	private static final String DATA_SOURCE = "plantidentDataSource";
+	private static final String DATA_SOURCE_PROPERTIES = "plantidentDataSourceProperties";
 
 	@Bean(name = DATA_SOURCE_PROPERTIES)
 	@ConfigurationProperties(CONFIGURATION_PREFIX)
@@ -49,15 +47,15 @@ public class CompoundDatabaseConfiguration {
 	}
 
 	@Bean(name = DATA_SOURCE)
-	public DataSource stoffidentDataSource() {
+	public DataSource plantidentDataSource() {
 		return dataSourceProperties().initializeDataSourceBuilder().build();
 	}
 
 	@Bean(name = ENTITY_MANAGER)
 	@PersistenceUnit(name = PERSISTENCE_UNIT)
-	public LocalContainerEntityManagerFactoryBean stoffidentEntityManager(@Qualifier(DATA_SOURCE) DataSource dataSource,
-																		  // Fix for generate-ddl property not picked up by spring with multiple data sources
-																		  @Value("${" + CONFIGURATION_PREFIX + ".generate-ddl:false}") boolean generateDdl) {
+	public LocalContainerEntityManagerFactoryBean plantidentEntityManager(@Qualifier(DATA_SOURCE) DataSource dataSource,
+																			  // Fix for generate-ddl property not picked up by spring with multiple data sources
+																			  @Value("${" + CONFIGURATION_PREFIX + ".generate-ddl:false}") boolean generateDdl) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource);
 		em.setPackagesToScan(ENTITY_PACKAGES);
@@ -72,7 +70,7 @@ public class CompoundDatabaseConfiguration {
 	}
 
 	@Bean(name = TRANSACTION_MANAGER)
-	public PlatformTransactionManager compoundTransactionManager(@Qualifier(ENTITY_MANAGER) EntityManagerFactory entityManagerFactory) {
+	public PlatformTransactionManager plantidentTransactionManager(@Qualifier(ENTITY_MANAGER) EntityManagerFactory entityManagerFactory) {
 		return new JpaTransactionManager(entityManagerFactory);
 	}
 }

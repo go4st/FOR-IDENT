@@ -1,4 +1,4 @@
-package de.hswt.fi.search.service.search.compound.repositories;
+package de.hswt.fi.search.service.search.plantident.repositories;
 
 import de.hswt.fi.search.service.search.api.repositories.EntryRepository;
 

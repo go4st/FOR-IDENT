@@ -175,8 +175,7 @@ public abstract class AbstractProcessingResultsComponent extends
             detailsButton.addStyleName(CustomValoTheme.PADDING_HALF_HORIZONTAL);
             detailsButton.addClickListener(event -> toggleDetails(processCandidate));
             return detailsButton;
-        })
-                .setWidth(LayoutConstants.COLUMN_WIDTH_TINY)
+        }).setWidth(LayoutConstants.COLUMN_WIDTH_TINY)
                 .setCaption(i18n.get(UIMessageKeys.PROCESSING_RESULT_COLUMN_DETAILS))
                 .setSortable(false);
     }

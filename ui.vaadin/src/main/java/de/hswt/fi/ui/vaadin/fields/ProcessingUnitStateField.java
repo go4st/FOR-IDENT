@@ -16,23 +16,14 @@ import java.util.function.Consumer;
 public class ProcessingUnitStateField extends CustomField<ProcessingUnitState> {
 
 	private static final long serialVersionUID = 1L;
-
 	private String unitCaption;
-
 	private ScoreValueLabel scoreLabel;
-
 	private BooleanValueLabel enabledLabel;
-
 	private BooleanValueLabel dataAvailableLabel;
-
 	private boolean canBeDisabled;
-
 	private Consumer<LayoutClickEvent> enabledClickListener;
-
 	private ProcessingUnitState value;
-
 	private Binder<ProcessingUnitState> binder;
-
 	private CssLayout enabledLayout;
 
 	public ProcessingUnitStateField(String unitCaption) {
@@ -96,7 +87,7 @@ public class ProcessingUnitStateField extends CustomField<ProcessingUnitState> {
 		if (this.enabledClickListener == null) {
 			this.enabledClickListener = enabledClickListener;
 			enabledLayout.addLayoutClickListener(layoutClickEvent -> {
-				if (canBeDisabled) {
+				if (canBeDisabled && value.isDataAvailable()) {
 					enabledLabel.setValue(!enabledLabel.getValue());
 					enabledClickListener.accept(layoutClickEvent);
 				}

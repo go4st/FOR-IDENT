@@ -68,12 +68,13 @@ public abstract class AbstractProcessingFormComponent extends ContainerContentCo
         addStyleName(CustomValoTheme.PADDING_HALF);
         addStyleName(CustomValoTheme.CSS_LAYOUT_SCROLLBAR);
 
+        binder = new Binder<>();
+
         initHeader();
         initFileRow();
         initScoreRow();
         addComponent(getParameterRow());
 
-        binder = new Binder<>();
 
         binder.bind(scoreSettingsComponent, ProcessingSettings::getScoreSettings, ProcessingSettings::setScoreSettings);
 

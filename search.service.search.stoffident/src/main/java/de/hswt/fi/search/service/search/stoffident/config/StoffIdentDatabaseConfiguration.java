@@ -1,4 +1,4 @@
-package de.hswt.fi.search.service.search.plantident.config;
+package de.hswt.fi.search.service.search.stoffident.config;
 
 import de.hswt.fi.common.spring.Profiles;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,28 +19,26 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.sql.DataSource;
 
-import static de.hswt.fi.search.service.search.plantident.config.DuftStoffIdentDatabaseConfiguration.*;
-
-@Profile({Profiles.GC, Profiles.DEVELOPMENT_GC})
+@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC})
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-		basePackages = BASE_PACKAGE,
-		entityManagerFactoryRef = ENTITY_MANAGER,
-		transactionManagerRef = TRANSACTION_MANAGER
+		basePackages = StoffIdentDatabaseConfiguration.BASE_PACKAGE,
+		entityManagerFactoryRef = StoffIdentDatabaseConfiguration.ENTITY_MANAGER,
+		transactionManagerRef = StoffIdentDatabaseConfiguration.TRANSACTION_MANAGER
 )
-public class DuftStoffIdentDatabaseConfiguration {
+public class StoffIdentDatabaseConfiguration {
 
-	public static final String ID_PREFIX = "CP";
-	public static final String DATABASE_NAME = "DUFTSTOFF-IDENT";
-	public static final String ENTITY_MANAGER = "duftStoffIdentEntityManager";
-	public static final String TRANSACTION_MANAGER = "duftStoffIdentTransactionManager";
-	static final String BASE_PACKAGE = "de.hswt.fi.search.service.search.duftstoffident.repositories";
-	private static final String CONFIGURATION_PREFIX = "spring.datasource.duftStoffIdent";
-	private static final String PERSISTENCE_UNIT = "duftStoffIdentPersistenceUnit";
+	public static final String ID_PREFIX = "SI";
+	public static final String DATABASE_NAME = "STOFF-IDENT";
+	public static final String ENTITY_MANAGER = "stoffidentEntityManager";
+	public static final String TRANSACTION_MANAGER = "stoffidentTransactionManager";
+	static final String BASE_PACKAGE = "de.hswt.fi.search.service.search.stoffident.repositories";
+	private static final String CONFIGURATION_PREFIX = "spring.datasource.stoffident";
+	private static final String PERSISTENCE_UNIT = "stoffidentPersistenceUnit";
 	private static final String ENTITY_PACKAGES = "de.hswt.fi.search.service.mass.search.model";
-	private static final String DATA_SOURCE = "duftStoffIdentDataSource";
-	private static final String DATA_SOURCE_PROPERTIES = "duftStoffIdentDataSourceProperties";
+	private static final String DATA_SOURCE = "stoffidentDataSource";
+	private static final String DATA_SOURCE_PROPERTIES = "stoffidentDataSourceProperties";
 
 	@Bean(name = DATA_SOURCE_PROPERTIES)
 	@ConfigurationProperties(CONFIGURATION_PREFIX)
@@ -49,13 +47,13 @@ public class DuftStoffIdentDatabaseConfiguration {
 	}
 
 	@Bean(name = DATA_SOURCE)
-	public DataSource duftStoffIdentDataSource() {
+	public DataSource stoffidentDataSource() {
 		return dataSourceProperties().initializeDataSourceBuilder().build();
 	}
 
 	@Bean(name = ENTITY_MANAGER)
 	@PersistenceUnit(name = PERSISTENCE_UNIT)
-	public LocalContainerEntityManagerFactoryBean duftStoffIdentEntityManager(@Qualifier(DATA_SOURCE) DataSource dataSource,
+	public LocalContainerEntityManagerFactoryBean stoffidentEntityManager(@Qualifier(DATA_SOURCE) DataSource dataSource,
 																			  // Fix for generate-ddl property not picked up by spring with multiple data sources
 																			  @Value("${" + CONFIGURATION_PREFIX + ".generate-ddl:false}") boolean generateDdl) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -72,7 +70,7 @@ public class DuftStoffIdentDatabaseConfiguration {
 	}
 
 	@Bean(name = TRANSACTION_MANAGER)
-	public PlatformTransactionManager duftStoffIdentTransactionManager(@Qualifier(ENTITY_MANAGER) EntityManagerFactory entityManagerFactory) {
+	public PlatformTransactionManager stoffidentTransactionManager(@Qualifier(ENTITY_MANAGER) EntityManagerFactory entityManagerFactory) {
 		return new JpaTransactionManager(entityManagerFactory);
 	}
 }

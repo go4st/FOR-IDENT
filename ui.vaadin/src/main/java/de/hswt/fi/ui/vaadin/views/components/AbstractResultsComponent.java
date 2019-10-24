@@ -32,37 +32,22 @@ public abstract class AbstractResultsComponent<SEARCHPARAMETER, RESULT, ENTRY, R
 		extends ContainerContentComponent {
 
 	private static final long serialVersionUID = 1L;
-
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractResultsComponent.class);
-
 	private static final int MIN_SCREEN_WIDTH_FOR_FROZEN_COLUMN = 1400;
-
 	protected final ViewEventBus eventBus;
-
 	protected final I18N i18n;
-
 	protected List<ENTRY> results;
-
 	protected Layout headerLayout;
-
 	private boolean sendSelectionChanged = true;
-
 	private RESULTCONTAINER resultContainer;
 
 	protected abstract Layout getHeaderLayout();
-
 	protected abstract void initComponents();
-
 	protected abstract void resultsContainerChanged();
-
 	protected abstract void select(ENTRY selection);
-
 	protected abstract void clearFilter();
-
 	protected abstract List<ENTRY> getSelectedResults();
-
 	protected abstract List<Column<ENTRY, ?>> getColumns();
-
 	protected abstract void setFrozenColumns(boolean frozen);
 
 	@Autowired

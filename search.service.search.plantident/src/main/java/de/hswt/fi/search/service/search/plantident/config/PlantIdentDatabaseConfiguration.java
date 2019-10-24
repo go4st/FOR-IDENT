@@ -29,16 +29,16 @@ import javax.sql.DataSource;
 )
 public class PlantIdentDatabaseConfiguration {
 
-	public static final String DATABASE_NAME = "PLANT-IDENT";
-	public static final String ENTITY_MANAGER = "plantidentEntityManager";
-	public static final String TRANSACTION_MANAGER = "plantidentTransactionManager";
-	static final String BASE_PACKAGE = "de.hswt.fi.search.service.search.plantident.repositories";
-	private static final String CONFIGURATION_PREFIX = "spring.datasource.plantident";
-	private static final String PERSISTENCE_UNIT = "plantidentPersistenceUnit";
-	public static final String ID_PREFIX = "CP";
-	private static final String ENTITY_PACKAGES = "de.hswt.fi.search.service.mass.search.model";
-	private static final String DATA_SOURCE = "plantidentDataSource";
-	private static final String DATA_SOURCE_PROPERTIES = "plantidentDataSourceProperties";
+    public static final String DATABASE_NAME = "PLANT-IDENT";
+    public static final String ENTITY_MANAGER = "plantidentEntityManager";
+    public static final String TRANSACTION_MANAGER = "plantidentTransactionManager";
+    public static final String ID_PREFIX = "PI";
+    static final String BASE_PACKAGE = "de.hswt.fi.search.service.search.plantident.repositories";
+    private static final String CONFIGURATION_PREFIX = "spring.datasource.plantident";
+    private static final String PERSISTENCE_UNIT = "plantidentPersistenceUnit";
+    private static final String ENTITY_PACKAGES = "de.hswt.fi.search.service.mass.search.model";
+    private static final String DATA_SOURCE = "plantidentDataSource";
+    private static final String DATA_SOURCE_PROPERTIES = "plantidentDataSourceProperties";
 
 	@Bean(name = DATA_SOURCE_PROPERTIES)
 	@ConfigurationProperties(CONFIGURATION_PREFIX)

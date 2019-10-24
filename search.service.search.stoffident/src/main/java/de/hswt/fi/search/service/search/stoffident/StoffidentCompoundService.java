@@ -1,10 +1,10 @@
-package de.hswt.fi.search.service.search.plantident;
+package de.hswt.fi.search.service.search.stoffident;
 
 import de.hswt.fi.common.spring.Profiles;
 import de.hswt.fi.search.service.search.api.AbstractCompoundService;
 import de.hswt.fi.search.service.search.api.repositories.EntryRepository;
-import de.hswt.fi.search.service.search.plantident.config.StoffIdentDatabaseConfiguration;
-import de.hswt.fi.search.service.search.plantident.repositories.StoffidentEntryRepository;
+import de.hswt.fi.search.service.search.stoffident.config.StoffIdentDatabaseConfiguration;
+import de.hswt.fi.search.service.search.stoffident.repositories.StoffidentEntryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -28,9 +28,9 @@ import java.util.stream.Collectors;
  */
 @Component
 @Scope("prototype")
-public class HenryExcelImporter implements CompoundImporter {
+public class ExcelCompoundImporter implements CompoundImporter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HenryExcelImporter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelCompoundImporter.class);
     private static final String TARGET_SHEET_NAME = "Gesamtliste";
     private static final String INDEX = "Index";
     private static final String NAME = "Name";
@@ -63,7 +63,7 @@ public class HenryExcelImporter implements CompoundImporter {
     private Date lastModified;
     private CompoundSearchService compoundSearchService;
 
-    public HenryExcelImporter() {
+    public ExcelCompoundImporter() {
         createMandatoryColumnList();
         createOptionalColumnList();
         formatter = new DataFormatter();
@@ -130,7 +130,7 @@ public class HenryExcelImporter implements CompoundImporter {
 
 
         importedEntries.removeAll(entries);
-        importedEntries.forEach(duplicate -> System.out.println(duplicate.getPublicID() + "\t" + duplicate.getInchiKey() + "\t" + duplicate.getName()));
+        importedEntries.forEach(duplicate -> LOGGER.debug(duplicate.getPublicID() + "\t" + duplicate.getInchiKey() + "\t" + duplicate.getName()));
 
         entries.forEach(entry -> entry.setDatasourceName(compoundSearchService.getDatasourceName()));
 

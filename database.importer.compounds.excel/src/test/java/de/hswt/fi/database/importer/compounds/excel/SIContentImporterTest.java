@@ -32,7 +32,7 @@ public class SIContentImporterTest {
 
 	@Before
 	public void setUp() {
-		importer = new HenryExcelImporter();
+		importer = new ExcelCompoundImporter();
 		referenceEntries = createReferenceData();
 	}
 

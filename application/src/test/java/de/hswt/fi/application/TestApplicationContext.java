@@ -6,7 +6,7 @@ package de.hswt.fi.application;
 
 import de.hswt.fi.database.importer.compounds.api.CompoundImporter;
 import de.hswt.fi.search.service.search.api.CompoundSearchService;
-import de.hswt.fi.search.service.search.plantident.config.DuftStoffIdentDatabaseConfiguration;
+import de.hswt.fi.search.service.search.duftstoffident.config.DuftStoffIdentDatabaseConfiguration;
 import de.hswt.fi.security.service.api.SecurityService;
 import de.hswt.fi.security.service.model.Group;
 import de.hswt.fi.security.service.model.Groups;

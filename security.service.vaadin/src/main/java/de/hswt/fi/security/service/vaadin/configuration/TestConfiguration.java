@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author August Gilg
  */
 
-@Profile(value = {Profiles.TEST})
+@Profile(value = {Profiles.TEST, Profiles.INITIALIZATION})
 @Configuration
 public class TestConfiguration extends WebSecurityConfigurerAdapter {
 

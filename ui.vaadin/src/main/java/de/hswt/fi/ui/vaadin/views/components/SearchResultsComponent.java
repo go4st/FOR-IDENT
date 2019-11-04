@@ -39,11 +39,8 @@ public class SearchResultsComponent
 		extends AbstractResultsComponent<SearchParameter, SearchResult, Entry, SearchResultContainer> {
 
 	private static final long serialVersionUID = 6326600623156331195L;
-
 	private final ComponentFactory componentFactory;
-
 	private FilterGrid<Entry> grid;
-
 	private Label resultsLabel;
 
 	@Autowired
@@ -115,7 +112,6 @@ public class SearchResultsComponent
 		});
 
 		grid.removeAllColumns();
-
 		addComponent(grid);
 	}
 

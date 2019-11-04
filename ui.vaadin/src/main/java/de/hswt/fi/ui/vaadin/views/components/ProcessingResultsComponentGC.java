@@ -7,6 +7,7 @@ import de.hswt.fi.common.spring.Profiles;
 import de.hswt.fi.processing.service.model.ProcessCandidate;
 import de.hswt.fi.ui.vaadin.GridRendererProvider;
 import de.hswt.fi.ui.vaadin.LayoutConstants;
+import de.hswt.fi.ui.vaadin.UIMessageKeys;
 import de.hswt.fi.ui.vaadin.factories.ComponentFactory;
 import de.hswt.fi.ui.vaadin.views.components.processing.ProcessingResultDetailsComponent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class ProcessingResultsComponentGC extends AbstractProcessingResultsCompo
 				processCandidate -> (processCandidate.getIndexSearchResult()).getRetentionTimeIndex())
 				.setFilterType(Double.class)
 				.setHidable(true)
-				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM).setCaption("RTI")
+				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM).setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_RTI))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(1));
 
 		Column<ProcessCandidate, Double> resultSignalColumn = grid.addFilterColumn(
@@ -44,8 +45,7 @@ public class ProcessingResultsComponentGC extends AbstractProcessingResultsCompo
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
-				.setCaption("Result Henry Konstante")
-//				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_RESULT_LOG_D))
+				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_RESULT_HENRY_CONSTANT))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2));
 
 		Column<ProcessCandidate, Double> targetSignalColumn = grid.addFilterColumn(
@@ -53,8 +53,7 @@ public class ProcessingResultsComponentGC extends AbstractProcessingResultsCompo
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
-				.setCaption("Target Henry Konstante")
-//				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_TARGET_LOG_D))
+				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_TARGET_HENRY_CONSTANT))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2));
 
 		Column<ProcessCandidate, Double> deltaLogDRtiDbColumn = grid.addFilterColumn(
@@ -62,8 +61,8 @@ public class ProcessingResultsComponentGC extends AbstractProcessingResultsCompo
 				.setFilterType(Double.class)
 				.setHidable(true).setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2))
-				.setCaption("Delta Henry");
+				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_TARGET_HENRY_CONSTANT));
 
-		groupingRow.join(rtiColumn, resultSignalColumn, targetSignalColumn, deltaLogDRtiDbColumn).setText("RTI Screening");
+		groupingRow.join(rtiColumn, resultSignalColumn, targetSignalColumn, deltaLogDRtiDbColumn).setText(i18n.get(UIMessageKeys.RTI_SCREENING_COMBINED_COLUMN));
 	}
 }

@@ -64,7 +64,7 @@ public class ProcessingResultsComponentLC extends AbstractProcessingResultsCompo
 				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getRti())
 				.setFilterType(Double.class)
 				.setHidable(true)
-				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM).setCaption("RTI")
+				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM).setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_RTI))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(1));
 
 		Column<ProcessCandidate, Double> resultLogDColumn = grid.addFilterColumn(
@@ -107,6 +107,6 @@ public class ProcessingResultsComponentLC extends AbstractProcessingResultsCompo
 
 		groupingRow.join(moleculeDependencyColumn, rtiColumn, resultLogDColumn, targetLogDColumn,
 				deltaLogDRtiDbColumn, adjustedLogDColumn, deltaLogDAdjustedDbColumn)
-				.setText("RTI Screening");
+				.setText(i18n.get(UIMessageKeys.RTI_SCREENING_COMBINED_COLUMN));
 	}
 }

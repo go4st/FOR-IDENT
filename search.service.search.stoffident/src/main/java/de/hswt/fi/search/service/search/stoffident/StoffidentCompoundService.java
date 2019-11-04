@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC})
+@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC, Profiles.TEST})
 @Primary
 @Service
 @Transactional(transactionManager = StoffIdentDatabaseConfiguration.TRANSACTION_MANAGER, readOnly = true)

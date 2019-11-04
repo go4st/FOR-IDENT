@@ -14,7 +14,7 @@ import org.vaadin.spring.i18n.I18N;
 import java.util.ArrayList;
 import java.util.List;
 
-@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC})
+@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC, Profiles.TEST})
 @SpringComponent
 @ViewScope
 public class ProcessingHistoryComponentLC extends AbstractProcessingSearchHistoryComponent {

@@ -84,6 +84,8 @@ public class SIContentImporterTest {
 		builder.withPublicID("SI00000001");
 		builder.withSourceList(new SourceList("STOFF-IDENT", "Database for the identification of previously unknown trace contaminants"));
 
+		builder.withHenryExper(new HenryConstantExperNumberProperty());
+
 		referenceEntries.add(builder.build());
 
 		// Second Reference Entry
@@ -235,8 +237,20 @@ public class SIContentImporterTest {
 		Assert.assertEquals(referenceEntries.size(), importedEntries.size());
 
 		for (int i = 0; i < referenceEntries.size(); i++) {
-			Assert.assertEquals(referenceEntries.get(i), importedEntries.get(i));
+			Assert.assertTrue(propertiesEqual(referenceEntries.get(i), importedEntries.get(i)));
 		}
+	}
+
+	private boolean propertiesEqual(Entry entry, Entry entry1) {
+
+		return entry.getName().equals(entry1.getName()) && entry.getInchi().equals(entry1.getInchi())
+				&& entry.getInchiKey().equals(entry1.getInchiKey()) && entry.getCas().equals(entry1.getCas())
+				&& entry.getSmiles().equals(entry1.getSmiles()) && entry.getEcNumber().equals(entry1.getEcNumber())
+				&& entry.getIupac().equals(entry1.getIupac()) && entry.getElementalFormula().equals(entry1.getElementalFormula())
+				&& entry.getAccurateMass().equals(entry1.getAccurateMass()) && entry.getTonnage().equals(entry1.getTonnage())
+				&& entry.getLogdValues().equals(entry.getLogdValues()) && entry.getLogpValues().equals(entry1.getLogpValues())
+				&& entry.getAdditionalNames().equals(entry1.getAdditionalNames()) && entry.getMassBankIds().equals(entry1.getMassBankIds())
+				&& entry.getPublicID().equals(entry1.getPublicID()) && entry.getSourceLists().equals(entry1.getSourceLists());
 	}
 
 	private Path getResourcePath() throws URISyntaxException {

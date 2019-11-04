@@ -38,10 +38,11 @@ public class HenryConstantExperNumberProperty extends AbstractNumberProperty {
 	@BeanColumn(i18nId = I18nKeys.SI_MODEL_LAST_DATE, format = "TT:MM:YYYY")
 	private Date lastModified;
 
-	/**
-	 * Instantiates a new mass number property.
-	 */
 	public HenryConstantExperNumberProperty() {
+		source = "";
+		editor = "";
+		additional = "";
+
 	}
 
 	@Override

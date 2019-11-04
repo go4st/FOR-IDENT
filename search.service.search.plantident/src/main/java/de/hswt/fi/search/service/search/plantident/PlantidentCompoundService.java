@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC})
+@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC, Profiles.TEST})
 @Service
 @Transactional(transactionManager = PlantIdentDatabaseConfiguration.TRANSACTION_MANAGER, readOnly = true)
 public class PlantidentCompoundService extends AbstractCompoundService {

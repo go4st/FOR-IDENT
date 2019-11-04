@@ -21,7 +21,7 @@ import java.net.URL;
  * 
  * @author Marco Luthardt
  */
-@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC})
+@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC, Profiles.TEST})
 @Component
 @Scope("prototype")
 public class CalibrationExcelReaderLC extends AbstractCalibrationExcelReader {

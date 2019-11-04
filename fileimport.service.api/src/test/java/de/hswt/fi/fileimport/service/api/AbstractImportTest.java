@@ -5,6 +5,8 @@ import de.hswt.fi.model.FeatureSet;
 import de.hswt.fi.model.Peak;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -15,6 +17,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringRunner.class)
 abstract public class AbstractImportTest {
 
 	public abstract FileBasedFeatureContentImporter getFileImporter();

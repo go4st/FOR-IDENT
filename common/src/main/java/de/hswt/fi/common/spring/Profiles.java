@@ -25,5 +25,4 @@ public abstract class Profiles {
 	public static final String GC = "gc";
 	public static final String DEVELOPMENT_GC = "development-gc";
 
-
 }

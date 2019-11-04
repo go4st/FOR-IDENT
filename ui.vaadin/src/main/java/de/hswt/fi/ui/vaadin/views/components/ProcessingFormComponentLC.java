@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Profile;
 import org.vaadin.spring.events.EventBus.ViewEventBus;
 import org.vaadin.spring.i18n.I18N;
 
-@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC})
+@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC, Profiles.TEST})
 @SpringComponent
 @ViewScope
 public class ProcessingFormComponentLC extends AbstractProcessingFormComponent {

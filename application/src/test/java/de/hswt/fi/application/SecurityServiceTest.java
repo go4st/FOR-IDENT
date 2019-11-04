@@ -15,7 +15,6 @@ public class SecurityServiceTest extends AbstractTest {
 	@Autowired
 	private SecurityService securityService;
 
-
 	@Test
 	@WithUserDetails("admin")
 	public void getCurrentUserWithUserDetails() {

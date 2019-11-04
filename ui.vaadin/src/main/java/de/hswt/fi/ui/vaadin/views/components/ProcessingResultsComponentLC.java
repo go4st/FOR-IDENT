@@ -21,7 +21,7 @@ import org.vaadin.spring.i18n.I18N;
 
 import javax.inject.Provider;
 
-@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC})
+@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC, Profiles.TEST})
 @SpringComponent
 @ViewScope
 public class ProcessingResultsComponentLC extends AbstractProcessingResultsComponent {

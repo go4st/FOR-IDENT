@@ -123,13 +123,18 @@ dependencies {
 // ext['spring-restdocs.version'] = '1.2.1.RELEASE'
 
 // defer resolution until execution time
+ext { snippetsDir = file('build/generated-snippets') }
+
+
 test.doFirst {
 	jvmArgs = ["-javaagent:${configurations.runtimeAgent.asPath}"]
 }
 
-ext { snippetsDir = file('build/generated-snippets') }
+test {
+	systemProperty 'spring.profiles.active', 'test'
+	outputs.dir snippetsDir
+}
 
-test { outputs.dir snippetsDir }
 
 asciidoctor {
 	attributes \

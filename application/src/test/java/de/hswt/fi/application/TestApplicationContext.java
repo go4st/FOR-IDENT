@@ -6,7 +6,7 @@ package de.hswt.fi.application;
 
 import de.hswt.fi.database.importer.compounds.api.CompoundImporter;
 import de.hswt.fi.search.service.search.api.CompoundSearchService;
-import de.hswt.fi.search.service.search.duftstoffident.config.DuftStoffIdentDatabaseConfiguration;
+import de.hswt.fi.search.service.search.stoffident.config.StoffIdentDatabaseConfiguration;
 import de.hswt.fi.security.service.api.SecurityService;
 import de.hswt.fi.security.service.model.Group;
 import de.hswt.fi.security.service.model.Groups;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +29,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+@ActiveProfiles("test")
 @SpringBootApplication(scanBasePackages = "de.hswt.fi")
 public class TestApplicationContext implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestApplicationContext.class);
-
     private static final String SI_TEST_COMPOUND_DATA = "SI_Content_Test_25.xlsx";
 
     @Autowired
@@ -53,7 +54,7 @@ public class TestApplicationContext implements CommandLineRunner {
     public void run(String... args) {
         initGroups();
         initAdminAccount();
-        initTestData(DuftStoffIdentDatabaseConfiguration.DATABASE_NAME, SI_TEST_COMPOUND_DATA);
+        initTestData(StoffIdentDatabaseConfiguration.DATABASE_NAME, SI_TEST_COMPOUND_DATA);
     }
 
 
@@ -77,6 +78,8 @@ public class TestApplicationContext implements CommandLineRunner {
 
     @Transactional
     public void initAdminAccount() {
+
+        securityService.findAllUsers().forEach(securityService::deleteUser);
 
         RegisteredUser adminUser = new RegisteredUser();
         adminUser.setUsername("admin");

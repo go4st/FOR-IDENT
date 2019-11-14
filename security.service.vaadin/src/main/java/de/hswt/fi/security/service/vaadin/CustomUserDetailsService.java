@@ -1,5 +1,6 @@
 package de.hswt.fi.security.service.vaadin;
 
+import de.hswt.fi.common.spring.Profiles;
 import de.hswt.fi.security.service.api.SpringUserWrapper;
 import de.hswt.fi.security.service.api.repositories.RegisteredUserRepository;
 import de.hswt.fi.security.service.model.Group;
@@ -8,6 +9,7 @@ import de.hswt.fi.userproperties.service.api.UserPropertiesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Profile(Profiles.NOT_TEST)
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 

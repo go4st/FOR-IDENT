@@ -32,7 +32,7 @@ import static de.hswt.fi.search.service.search.duftstoffident.config.DuftStoffId
 public class DuftStoffIdentDatabaseConfiguration {
 
 	public static final String ID_PREFIX = "DI";
-	public static final String DATABASE_NAME = "DUFTSTOFF-IDENT";
+	public static final String DATABASE_NAME = "DuftSTOFF-IDENT";
 	public static final String ENTITY_MANAGER = "duftstoffidentEntityManager";
 	public static final String TRANSACTION_MANAGER = "duftstoffidentTransactionManager";
 	static final String BASE_PACKAGE = "de.hswt.fi.search.service.search.duftstoffident.repositories";

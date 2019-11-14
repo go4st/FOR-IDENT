@@ -254,7 +254,7 @@ public class AdminUserWindow extends AbstractWindow {
 
 		Set<Database> selectDatabases = securityDatabaseOptionGroup.getSelectedItems();
 		registeredUser.removeAllAccessibleDatabases();
-		selectDatabases.forEach(db -> registeredUser.addAccessbileDatabase(db));
+		selectDatabases.forEach(registeredUser::addAccessbileDatabase);
 
 		if (passwordComponentLayout.isVisible()) {
 			registeredUser.setPassword(passwordField.getValue());

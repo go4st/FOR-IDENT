@@ -31,7 +31,7 @@ public class RegisteredUser {
 
 	private boolean enabled = false;
 
-	@ManyToMany()
+	@ManyToMany
 	@BatchFetch(BatchFetchType.JOIN)
 	private Collection<Group> groups = new ArrayList<>();
 

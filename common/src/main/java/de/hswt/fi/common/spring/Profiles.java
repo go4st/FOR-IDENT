@@ -17,7 +17,8 @@ public abstract class Profiles {
 	public static final String NOT_TEST = "!test";
 	public static final String TEST = "test";
 
-	public static final String INITIALIZATION = "initialization";
+	public static final String INITIALIZATION_LC = "initialization-lc";
+	public static final String INITIALIZATION_GC = "initialization-gc";
 
 	public static final String LC = "lc";
 	public static final String DEVELOPMENT_LC = "development-lc";

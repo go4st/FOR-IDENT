@@ -52,11 +52,11 @@ public class TestApplicationContext implements CommandLineRunner {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void run(String... args) {
+        initTestData(StoffIdentDatabaseConfiguration.DATABASE_NAME, SI_TEST_COMPOUND_DATA);
+        clearDatabase();
         initGroups();
         initAdminAccount();
-        initTestData(StoffIdentDatabaseConfiguration.DATABASE_NAME, SI_TEST_COMPOUND_DATA);
     }
-
 
     private void initGroups() {
         Group groupAdmin = new Group();
@@ -76,10 +76,13 @@ public class TestApplicationContext implements CommandLineRunner {
         securityService.createGroup(groupScientist);
     }
 
+
+    private void clearDatabase() {
+        securityService.findAllUsers().forEach(securityService::deleteUser);
+    }
+
     @Transactional
     public void initAdminAccount() {
-
-        securityService.findAllUsers().forEach(securityService::deleteUser);
 
         RegisteredUser adminUser = new RegisteredUser();
         adminUser.setUsername("admin");

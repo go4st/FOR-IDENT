@@ -3,13 +3,8 @@ package de.hswt.fi.application;
 import de.hswt.fi.search.service.mass.search.model.Entry;
 import de.hswt.fi.search.service.mass.search.model.SearchParameter;
 import de.hswt.fi.search.service.search.api.CompoundSearchService;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,18 +13,10 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestApplicationContext.class)
-@Profile("test")
-public class SearchServiceTest {
+public class SearchServiceTest extends AbstractTest {
 
 	@Autowired
 	private CompoundSearchService searchService;
-
-	@Before
-	public void setUp() {
-
-	}
 
 	@Test
 	public void autowired() {
@@ -85,4 +72,14 @@ public class SearchServiceTest {
 		assertEquals(firstId, results.get(0).getPublicID());
 		assertEquals(lastId, results.get(results.size() - 1).getPublicID());
 	}
+
+    @Override
+    public void setup() {
+
+    }
+
+    @Override
+    public void cleanup() {
+
+    }
 }

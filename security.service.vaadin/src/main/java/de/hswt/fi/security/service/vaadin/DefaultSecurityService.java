@@ -298,15 +298,18 @@ public class DefaultSecurityService implements SecurityService {
 
 		hashPassword(user);
 		addUserToGroup(user, Groups.GROUP_USER);
+
 		entityManager.persist(user);
+        RegisteredUser newUser = entityManager.find(RegisteredUser.class, user.getId());
+        entityManager.close();
 
-		RegisteredUser newUser = entityManager.find(RegisteredUser.class, user.getId());
+        if (newUser == null) {
+            LOGGER.debug("create user {} in method createUserInternal failed", user.getUsername());
+        } else {
+            findAllDatabases().stream().filter(Database::isPublicAccessible).forEach(newUser::addAccessbileDatabase);
+            updateUser(newUser);
+        }
 
-		if (newUser == null) {
-			LOGGER.debug("create user {} in method createUserInternal failed", user.getUsername());
-		}
-
-		entityManager.close();
 		return newUser;
 	}
 
@@ -316,6 +319,7 @@ public class DefaultSecurityService implements SecurityService {
 	        LOGGER.error("Group: {} already exists",group.getName());
         }
 	    entityManager.persist(group);
+		LOGGER.error("Created Group: {}",group.getName());
 	    return group;
     }
 

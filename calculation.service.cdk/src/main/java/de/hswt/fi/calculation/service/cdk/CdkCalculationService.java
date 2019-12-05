@@ -99,7 +99,7 @@ public class CdkCalculationService implements CalculationService {
 		try {
 			substance = smilesParser.parseSmiles(smiles);
 		} catch (InvalidSmilesException e) {
-			LOGGER.error("An error occured inside getSmilesAsImage", e);
+			LOGGER.error("An error occured inside getSmilesAsImage : {}", e.getMessage());
 			return new byte[0];
 		}
 		StructureDiagramGenerator sdg = new StructureDiagramGenerator();

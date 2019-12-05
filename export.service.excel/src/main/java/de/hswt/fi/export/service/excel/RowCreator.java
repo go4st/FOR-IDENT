@@ -10,28 +10,19 @@ import java.util.*;
 
 class RowCreator {
 
+	public static final int IMAGE_WIDTH = 220;
+	public static final int IMAGE_HEIGHT = 220;
 	private static final String STRUCTURE_POSTFIX = "structure";
-
 	private Object bean;
-
 	private CalculationService calculationService;
-
 	private BeanComponentMapper mapper;
-
 	private int columnCount;
-
 	private Map<BeanColumnDefinition, Integer> columnCounts;
-
 	private Map<String, BeanColumnDefinition> columns;
-
 	private int rowIndex;
-
 	private int nextRowIndex;
-
 	private NumberFormat format;
-
 	private Collection<String> postfixFilter;
-
 	private List<List<CellValue>> rows;
 
 	RowCreator(Object bean, BeanComponentMapper mapper,
@@ -225,7 +216,7 @@ class RowCreator {
 			return null;
 		}
 
-		return calculationService.getSmilesAsImage(smiles, 220, 220);
+		return calculationService.getSmilesAsImage(smiles, IMAGE_WIDTH, IMAGE_HEIGHT);
 	}
 
 	public static class CellValue {

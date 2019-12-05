@@ -332,18 +332,18 @@ public class WorkbookCreator {
 		Drawing drawing = sheet.createDrawingPatriarch();
 
 		Row row = sheet.getRow(rowIndex);
-		row.setHeightInPoints(200);
+		row.setHeightInPoints(RowCreator.IMAGE_HEIGHT);
+
+        sheet.setColumnWidth(structureColumnIndex,  PixelUtil.pixel2WidthUnits(RowCreator.IMAGE_WIDTH));
 
 		int pictureIdx = workbook.addPicture(imageData, Workbook.PICTURE_TYPE_PNG);
 
 		ClientAnchor anchor = workbook.getCreationHelper().createClientAnchor();
 		anchor.setCol1(structureColumnIndex);
 		anchor.setRow1(rowIndex);
-		anchor.setAnchorType(ClientAnchor.MOVE_AND_RESIZE);
 
 		Picture pict = drawing.createPicture(anchor, pictureIdx);
-
-		pict.resize(1.0, 1.0);
+		pict.resize(1,1);
 	}
 
 	private void resizeColumns() {
@@ -363,12 +363,7 @@ public class WorkbookCreator {
 	private void resizeColumn(int columnIndex) {
 		int maxNumCharacters = 0;
 
-		if (columnIndex == structureColumnIndex) {
-			synchronized (sheet) {
-				sheet.setColumnWidth(structureColumnIndex, 37 * 256);
-			}
-			return;
-		}
+		if (columnIndex == structureColumnIndex) return;
 
 		for (int row = 0; row <= sheet.getLastRowNum(); row++) {
 			DataFormatter formatter = new DataFormatter();
@@ -383,6 +378,34 @@ public class WorkbookCreator {
 				* 256);
 		synchronized (sheet) {
 			sheet.setColumnWidth(columnIndex, width);
+		}
+	}
+
+	static public class PixelUtil {
+
+		public static final short EXCEL_COLUMN_WIDTH_FACTOR = 256;
+		public static final short EXCEL_ROW_HEIGHT_FACTOR = 20;
+		public static final int UNIT_OFFSET_LENGTH = 7;
+		public static final int[] UNIT_OFFSET_MAP = new int[] { 0, 36, 73, 109, 146, 182, 219 };
+
+		public static short pixel2WidthUnits(int pxs) {
+			short widthUnits = (short) (EXCEL_COLUMN_WIDTH_FACTOR * (pxs / UNIT_OFFSET_LENGTH));
+			widthUnits += UNIT_OFFSET_MAP[(pxs % UNIT_OFFSET_LENGTH)];
+			return widthUnits;
+		}
+
+		public static int widthUnits2Pixel(short widthUnits) {
+			int pixels = (widthUnits / EXCEL_COLUMN_WIDTH_FACTOR) * UNIT_OFFSET_LENGTH;
+			int offsetWidthUnits = widthUnits % EXCEL_COLUMN_WIDTH_FACTOR;
+			pixels += Math.floor((float) offsetWidthUnits / ((float) EXCEL_COLUMN_WIDTH_FACTOR / UNIT_OFFSET_LENGTH));
+			return pixels;
+		}
+
+		public static int heightUnits2Pixel(short heightUnits) {
+			int pixels = (heightUnits / EXCEL_ROW_HEIGHT_FACTOR);
+			int offsetWidthUnits = heightUnits % EXCEL_ROW_HEIGHT_FACTOR;
+			pixels += Math.floor((float) offsetWidthUnits / ((float) EXCEL_ROW_HEIGHT_FACTOR / UNIT_OFFSET_LENGTH));
+			return pixels;
 		}
 	}
 

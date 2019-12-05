@@ -153,19 +153,19 @@ public class SearchResultsComponent
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
 				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_MASS));
 
-		grid.addFilterColumn(entry -> entry.getHenryBond().getValue())
+		grid.addFilterColumn(entry -> entry.getHenryBond() != null ? entry.getHenryBond().getValue() : null)
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
 				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_BOND));
 
-		grid.addFilterColumn(entry -> entry.getHenryGroup().getValue())
+		grid.addFilterColumn(entry -> entry.getHenryGroup() != null ? entry.getHenryGroup().getValue() : null)
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
 				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_GROUP));
 
-		grid.addFilterColumn(entry -> entry.getHenryExper().getValue())
+		grid.addFilterColumn(entry -> entry.getHenryExper() != null ? entry.getHenryExper().getValue() : null)
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)

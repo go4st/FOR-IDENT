@@ -36,7 +36,7 @@ import java.util.Optional;
 public abstract class AbstractProcessingFormComponent extends ContainerContentComponent {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessingFormComponentGC.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractProcessingFormComponent.class);
     protected final ComponentFactory componentFactory;
     protected final I18N i18n;
     private final EventBus.ViewEventBus viewEventBus;
@@ -51,6 +51,8 @@ public abstract class AbstractProcessingFormComponent extends ContainerContentCo
         this.viewEventBus = viewEventBus;
         this.componentFactory = componentFactory;
         this.i18n = i18n;
+
+        binder = new Binder<>();
     }
 
     protected abstract Component getParameterRow();
@@ -67,8 +69,6 @@ public abstract class AbstractProcessingFormComponent extends ContainerContentCo
         setSizeFull();
         addStyleName(CustomValoTheme.PADDING_HALF);
         addStyleName(CustomValoTheme.CSS_LAYOUT_SCROLLBAR);
-
-        binder = new Binder<>();
 
         initHeader();
         initFileRow();

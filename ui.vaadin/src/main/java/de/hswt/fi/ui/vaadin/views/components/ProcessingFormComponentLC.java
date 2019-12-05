@@ -1,5 +1,6 @@
 package de.hswt.fi.ui.vaadin.views.components;
 
+import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
@@ -88,6 +89,15 @@ public class ProcessingFormComponentLC extends AbstractProcessingFormComponent {
 		parameterLayout.addStyleName(CustomValoTheme.MARGIN_HALF_RIGHT);
 		parameterLayout.addStyleName(CustomValoTheme.PADDING_HALF_TOP);
 		parameterLayout.setWidth("100%");
+
+		binder.bind(phComboBox, ProcessingSettings::getPh, ProcessingSettings::setPh);
+		binder.bind(ppmComboBox, ProcessingSettings::getRequestedPrecursorPpm, ProcessingSettings::setRequestedPrecursorPpm);
+		binder.bind(ppmFragmentsComboBox, ProcessingSettings::getPpmFragments, ProcessingSettings::setPpmFragments);
+		binder.bind(ionisationComboBox, ProcessingSettings::getIonisation, ProcessingSettings::setIonisation);
+		binder.forField(intensityTresholdField)
+				.withConverter(new StringToDoubleConverter("No valid number input"))
+				.bind(ProcessingSettings::getIntensityThreshold, ProcessingSettings::setIntensityThreshold);
+		binder.bind(stationaryPhaseComboBox, ProcessingSettings::getStationaryPhase, ProcessingSettings::setStationaryPhase);
 
 		return parameterLayout;
 	}

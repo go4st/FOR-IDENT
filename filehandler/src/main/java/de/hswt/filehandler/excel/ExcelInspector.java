@@ -34,7 +34,7 @@ public class ExcelInspector implements Inspector<Workbook> {
 				}
 			}
 		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
-			LOGGER.error("File can not read into workbook, so invalid inspector", e);
+			LOGGER.error("File can not read into workbook, so invalid inspector, error: {}", e.getMessage());
 			return capableReaders;
 		}
 

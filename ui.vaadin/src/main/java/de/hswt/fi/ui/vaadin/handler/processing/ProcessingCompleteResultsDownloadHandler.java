@@ -26,18 +26,12 @@ import java.util.List;
 
 @SpringComponent
 @ViewScope
-public class ProcessingCompleteResultsDownloadHandler
-		extends AbstractDownloadHandler<ProcessCandidate> {
+public class ProcessingCompleteResultsDownloadHandler extends AbstractDownloadHandler<ProcessCandidate> {
 
 	private static final long serialVersionUID = -3563563261353371277L;
-
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(ProcessingCompleteResultsDownloadHandler.class);
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessingCompleteResultsDownloadHandler.class);
 	private final ProcessingViewState viewState;
-
 	private final BeanComponentMapper mapper;
-
 	private final I18N i18n;
 
 	@Autowired
@@ -59,9 +53,7 @@ public class ProcessingCompleteResultsDownloadHandler
 
 		List<ProcessCandidate> results = currentSearch.getResultsContainer();
 
-		if (results.isEmpty()) {
-			return;
-		}
+		if (results.isEmpty()) return;
 
 		List<ProcessCandidate> resultsContainer = currentSearch.getResultsContainer();
 
@@ -70,9 +62,7 @@ public class ProcessingCompleteResultsDownloadHandler
 				currentJob.getFeatureSet().getFeatures());
 		allTargetIdentifier.removeAll(resultTargetIdentifier);
 
-		List<Feature> nonResults = new ArrayList<>(
-				currentJob.getFeatureSet().getFeatures());
-
+		List<Feature> nonResults = new ArrayList<>(currentJob.getFeatureSet().getFeatures());
 		List<Feature> nonResultEntries = new ArrayList<>();
 
 		for (Feature targetData : nonResults) {

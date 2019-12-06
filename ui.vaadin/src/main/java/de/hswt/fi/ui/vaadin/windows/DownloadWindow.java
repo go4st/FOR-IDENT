@@ -136,21 +136,12 @@ public class DownloadWindow<T> extends AbstractWindow {
 	private DownloadButton.ContentWriter getExcel() {
 
 		return stream -> {
-
-			try (Workbook workbook =
-						 exportCreator.createWorkbook(createExcelFileDefinition(sourceFilePath, addSourceFile))) {
+			try (Workbook workbook = exportCreator.createWorkbook(createExcelFileDefinition(sourceFilePath, addSourceFile))) {
 				workbook.write(stream);
-				stream.close();
-				close();
 			} catch (IOException e) {
 				LOGGER.error(e.getMessage());
-			} finally {
-				try {
-					stream.close();
-				} catch (IOException e) {
-					LOGGER.error(e.getMessage());
-				}
 			}
+			close();
 		};
 	}
 
@@ -207,8 +198,7 @@ public class DownloadWindow<T> extends AbstractWindow {
 	}
 
 	private ExcelSheetDefinition<T> createNewExcelSheetDefinition() {
-		return new ExcelSheetDefinition<>(i18n
-				.get(UIMessageKeys.RESULTS_DOWNLOAD_HANDLER_EXCEL_SPREADSHEET_DEFINITION_RESULTS));
+		return new ExcelSheetDefinition<>(i18n.get(UIMessageKeys.RESULTS_DOWNLOAD_HANDLER_EXCEL_SPREADSHEET_DEFINITION_RESULTS));
 	}
 
 	public void setEntries(List<T> entries) {

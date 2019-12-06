@@ -212,19 +212,14 @@ class RowCreator {
 	}
 
 	private byte[] getImage(String smiles) {
-		if (calculationService == null || !calculationService.isAvailable()) {
-			return null;
-		}
-
+		if (calculationService == null || !calculationService.isAvailable()) return new byte[0];
 		return calculationService.getSmilesAsImage(smiles, IMAGE_WIDTH, IMAGE_HEIGHT);
 	}
 
 	public static class CellValue {
 
 		private Object value;
-
 		private String format;
-
 		private Class<?> type;
 
 		public Optional<Object> getValue() {

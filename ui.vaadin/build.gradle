@@ -19,7 +19,7 @@ dependencies {
 	compile project(":processing.service.api")
 	compile project(":search.service.mass.search.api")
 	compile project(":search.service.search.api")
-	compile project(":search.service.rti.api")
+	compile project(":search.service.index.api")
 	compile project(":mail.service")
 	compile project(":application.properties")
 	compile project(":userproperties.service.api")
@@ -50,6 +50,7 @@ dependencies {
 
 	compile name: "de.hswt.vaadin-pathway-0.0.1-SNAPSHOT"
 	compile "com.google.code.gson:gson"
+	compile "com.google.gwt:gwt-user:2.8.2"
 
 	compile name: "de.hswt.vaadin-score-renderer-0.0.1-SNAPSHOT"
 }

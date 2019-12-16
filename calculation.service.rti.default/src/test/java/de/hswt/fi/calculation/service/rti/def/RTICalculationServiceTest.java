@@ -6,11 +6,13 @@ import de.hswt.fi.model.RTICalibrationData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@ActiveProfiles("test")
 public class RTICalculationServiceTest {
 
 	private static final double EPSILON = 0.00001;
@@ -73,6 +75,7 @@ public class RTICalculationServiceTest {
 		}
 	}
 
+	//TODO Replace with Henry Constant test
 	@Test
 	public void calculateLogDTest() {
 		List<RTICalibrationData> calibrationData = createCalibrationTestData();
@@ -84,14 +87,14 @@ public class RTICalculationServiceTest {
 		targetFeatures.add(new Feature.Builder("Chloridazon", 222.0427).withRetentionTime(6.47153).build());
 
 		rtiCalculationService.calculateRetentionTimeIndex(calibrationData);
-		rtiCalculationService.calculateLogD(calibrationData, targetFeatures);
+		rtiCalculationService.calculateSignal(calibrationData, targetFeatures);
 
 		List<Double> referenceRTIs = Arrays.asList(74.00579, 73.39161, 96.21493, 82.81418);
 		List<Double> referenceLogDs = Arrays.asList(0.5683596, 0.5302798, 1.945326, 1.11448);
 
 		for (int i = 0; i < targetFeatures.size(); i++) {
 			Assert.assertTrue(equals(referenceRTIs.get(i), targetFeatures.get(i).getRetentionTimeIndex()));
-			Assert.assertTrue(equals(referenceLogDs.get(i), targetFeatures.get(i).getLogD()));
+			Assert.assertTrue(equals(referenceLogDs.get(i), targetFeatures.get(i).getRetentionTimeSignal()));
 		}
 	}
 }

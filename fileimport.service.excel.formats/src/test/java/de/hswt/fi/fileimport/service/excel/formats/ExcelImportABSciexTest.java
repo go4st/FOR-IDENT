@@ -18,7 +18,7 @@ public class ExcelImportABSciexTest extends AbstractImportTest {
 	public FileBasedFeatureContentImporter getFileImporter() {
 		return new ExcelFeatureContentImporter(
 				Collections.singletonList(new ABSciexExcelReader()),
-				Collections.singletonList(new CalibrationExcelReader()));
+				Collections.singletonList(new CalibrationExcelReaderGC()));
 	}
 
 	@Override

@@ -18,7 +18,6 @@ public class Feature implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
     private static final Double DEFAULT_RELATIVE_FACTOR = 0.0;
 
     @BeanColumn(i18nId = I18nKeys.FEATURE_IDENTIFIER, selector = true)
@@ -36,7 +35,8 @@ public class Feature implements Serializable {
     @BeanColumn(i18nId = I18nKeys.FEATURE_RT, format = "%.2f", selector = true)
     private Double retentionTime;
 
-    private Double logD;
+    @BeanColumn(i18nId = I18nKeys.FEATURE_RT_SIGNAL, format = "%.2f", selector = true)
+    private Double retentionTimeSignal;
 
     @BeanColumn(i18nId = I18nKeys.FEATURE_FORMULA_DERIVED_MASS, format = "%.4f", selector = true)
     private Double formulaDerivedMass;
@@ -57,7 +57,6 @@ public class Feature implements Serializable {
         this.neutralMass = builder.neutralMass;
         this.retentionTime = builder.retentionTime;
         this.retentionTimeIndex = builder.retentionTimeIndex;
-        this.logD = builder.logD;
         this.formulaDerivedMass = builder.formulaDerivedMass;
         this.neutralFormula = builder.neutralFormula;
         this.massCalculated = builder.massCalculated;
@@ -85,8 +84,12 @@ public class Feature implements Serializable {
         this.retentionTime = retentionTime;
     }
 
-    public Double getLogD() {
-        return logD;
+    public Double getRetentionTimeSignal() {
+        return retentionTimeSignal;
+    }
+
+    public void setRetentionTimeSignal(Double retentionTimeSignal) {
+        this.retentionTimeSignal = retentionTimeSignal;
     }
 
     public String getNeutralFormula() {
@@ -95,10 +98,6 @@ public class Feature implements Serializable {
 
     public void setNeutralFormula(String neutralFormula) {
         this.neutralFormula = neutralFormula;
-    }
-
-    public void setLogD(Double logD) {
-        this.logD = logD;
     }
 
     public boolean isMassCalculated() {
@@ -158,7 +157,7 @@ public class Feature implements Serializable {
                 Objects.equals(neutralFormula, feature.neutralFormula) &&
                 Objects.equals(retentionTimeIndex, feature.retentionTimeIndex) &&
                 Objects.equals(retentionTime, feature.retentionTime) &&
-                Objects.equals(logD, feature.logD) &&
+                Objects.equals(retentionTimeSignal, feature.retentionTimeSignal) &&
                 Objects.equals(formulaDerivedMass, feature.formulaDerivedMass) &&
                 Objects.equals(neutralMass, feature.neutralMass) &&
                 Objects.equals(peaks, feature.peaks) &&
@@ -167,7 +166,7 @@ public class Feature implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, precursorMass, neutralFormula, retentionTimeIndex, retentionTime, logD,
+        return Objects.hash(identifier, precursorMass, neutralFormula, retentionTimeIndex, retentionTime, retentionTimeSignal,
                 formulaDerivedMass, neutralMass, massCalculated, peaks, relativeFactor);
     }
 
@@ -185,7 +184,7 @@ public class Feature implements Serializable {
         builder.append(", retentionTime=");
         builder.append(retentionTime);
         builder.append(", logD=");
-        builder.append(logD);
+        builder.append(retentionTimeSignal);
         builder.append(", precursorMass=");
         builder.append(precursorMass);
         builder.append(", neutralMass=");
@@ -215,8 +214,6 @@ public class Feature implements Serializable {
         private Double retentionTimeIndex;
 
         private Double retentionTime;
-
-        private Double logD;
 
         private Double formulaDerivedMass;
 
@@ -256,11 +253,6 @@ public class Feature implements Serializable {
 
         public Builder withRetentionTime(Double retentionTime) {
             this.retentionTime = retentionTime;
-            return this;
-        }
-
-        public Builder withLogD(Double logD) {
-            this.logD = logD;
             return this;
         }
 

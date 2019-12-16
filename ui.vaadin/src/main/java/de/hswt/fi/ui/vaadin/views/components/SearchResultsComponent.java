@@ -39,11 +39,8 @@ public class SearchResultsComponent
 		extends AbstractResultsComponent<SearchParameter, SearchResult, Entry, SearchResultContainer> {
 
 	private static final long serialVersionUID = 6326600623156331195L;
-
 	private final ComponentFactory componentFactory;
-
 	private FilterGrid<Entry> grid;
-
 	private Label resultsLabel;
 
 	@Autowired
@@ -115,7 +112,6 @@ public class SearchResultsComponent
 		});
 
 		grid.removeAllColumns();
-
 		addComponent(grid);
 	}
 
@@ -156,6 +152,24 @@ public class SearchResultsComponent
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
 				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_MASS));
+
+		grid.addFilterColumn(entry -> entry.getHenryBond() != null ? entry.getHenryBond().getValue() : null)
+				.setFilterType(Double.class)
+				.setHidable(true)
+				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
+				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_BOND));
+
+		grid.addFilterColumn(entry -> entry.getHenryGroup() != null ? entry.getHenryGroup().getValue() : null)
+				.setFilterType(Double.class)
+				.setHidable(true)
+				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
+				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_GROUP));
+
+		grid.addFilterColumn(entry -> entry.getHenryExper() != null ? entry.getHenryExper().getValue() : null)
+				.setFilterType(Double.class)
+				.setHidable(true)
+				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
+				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_EXPER));
 
 		grid.addFilterColumn(entry -> entry.getTonnage().getValue())
 				.setFilterType(String.class)

@@ -28,7 +28,7 @@ public class SpringProfileUtil {
 	}
 
 	public boolean isDevelopmentProfile() {
-		return activeProfiles.contains(Profiles.DEVELOPMENT);
+		return activeProfiles.contains(Profiles.DEVELOPMENT_GC) || activeProfiles.contains(Profiles.DEVELOPMENT_LC);
 	}
 
 	public List<String> getActiveProfiles() {

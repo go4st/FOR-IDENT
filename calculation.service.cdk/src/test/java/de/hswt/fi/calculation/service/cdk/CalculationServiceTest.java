@@ -3,10 +3,12 @@ package de.hswt.fi.calculation.service.cdk;
 import de.hswt.fi.calculation.service.api.CalculationService;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+@ActiveProfiles("test")
 public class CalculationServiceTest {
 
 	private static final double EPSILON = 0.00001;

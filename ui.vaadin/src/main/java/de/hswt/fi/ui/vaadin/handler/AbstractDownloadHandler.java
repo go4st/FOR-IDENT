@@ -29,17 +29,14 @@ import java.util.stream.Collectors;
 public abstract class AbstractDownloadHandler<T> extends AbstractWindowHandler<ViewEventBus> {
 
     private static final long serialVersionUID = 1L;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDownloadHandler.class);
-
     private DownloadWindow<T> downloadWindow;
-
     private BeanComponentMapper mapper;
-
     private I18N i18n;
 
     protected void downloadRecords(List<T> entries, List<String> selectedColumnIds, List<String> possibleColumnIds,
                                    String fileName) {
+        downloadWindow.clear();
 		downloadWindow.setEntries(entries);
         downloadWindow.setPossibleExportColumns(
                 mapper.getPropertyCaptions(entries.iterator().next(), possibleColumnIds));

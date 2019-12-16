@@ -40,8 +40,8 @@ public class ScoringDetailsComponent extends CssLayout {
             scores.put(i18n.get(UIMessageKeys.SCORING_DETAILS_COMPONENT_SCORES_SEARCH), candidate.getMassSearchResult().getScore());
         }
 
-        if (candidate.getRtiSearchResult() != null) {
-            scores.put(i18n.get(UIMessageKeys.SCORING_DETAILS_COMPONENT_SCORES_RTI), candidate.getRtiSearchResult().getScore());
+        if (candidate.getIndexSearchResult() != null) {
+            scores.put(i18n.get(UIMessageKeys.SCORING_DETAILS_COMPONENT_SCORES_RTI), candidate.getIndexSearchResult().getScore());
         }
 
         if (candidate.getMsMsCandidate() != null && candidate.getMsMsCandidate().getScore() != null) {

@@ -12,7 +12,6 @@ import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.components.grid.SingleSelectionModel;
 import com.vaadin.ui.renderers.HtmlRenderer;
-import de.hswt.fi.database.importer.tp.api.TransformationProductImportService;
 import de.hswt.fi.security.service.api.SecurityService;
 import de.hswt.fi.security.service.model.RegisteredUser;
 import de.hswt.fi.ui.vaadin.CustomValoTheme;
@@ -60,8 +59,7 @@ public class UserAdministrationComponent extends ContainerContentComponent {
 
 	@Autowired
 	public UserAdministrationComponent(ViewEventBus eventBus, ComponentFactory componentFactory,
-									   SecurityService securityService, TransformationProductImportService tpImportService,
-									   I18N i18n) {
+									   SecurityService securityService, I18N i18n) {
 		this.eventBus = eventBus;
 		this.componentFactory = componentFactory;
 		this.securityService = securityService;
@@ -168,10 +166,10 @@ public class UserAdministrationComponent extends ContainerContentComponent {
 		refreshTransformationPathwayButton.addClickListener(e -> refreshTPData());
 		containerHeaderLayout.addComponent(refreshTransformationPathwayButton);
 
-//		Button uploadCompoundDataButton = componentFactory.createButton(VaadinIcons.DATABASE,
-//				i18n.get(UIMessageKeys.ADMIN_UPLOAD_COMPOUND_DATA_BUTTON_CAPTION));
-//		uploadCompoundDataButton.addClickListener(e -> uploadCompoundData());
-//		containerHeaderLayout.addComponent(uploadCompoundDataButton);
+		Button uploadCompoundDataButton = componentFactory.createButton(VaadinIcons.DATABASE,
+				i18n.get(UIMessageKeys.ADMIN_UPLOAD_COMPOUND_DATA_BUTTON_CAPTION));
+		uploadCompoundDataButton.addClickListener(e -> uploadCompoundData());
+		containerHeaderLayout.addComponent(uploadCompoundDataButton);
 
 		return containerHeaderLayout;
 	}

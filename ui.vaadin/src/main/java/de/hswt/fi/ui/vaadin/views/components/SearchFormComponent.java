@@ -18,21 +18,13 @@ import java.util.Optional;
 public class SearchFormComponent extends AbstractSearchFormComponent {
 
     private static final long serialVersionUID = 1L;
-
     private final SessionSharedObjects sessionSharedObjects;
-
     private TextField publicIdTextField;
-
     private TextField inchiKeyTextField;
-
     private TextField casTextField;
-
     private TextField nameTextField;
-
     private TextField elementalFormulaTextField;
-
     private TextField iupacTextField;
-
     private TextField smilesTextField;
 
     @Autowired

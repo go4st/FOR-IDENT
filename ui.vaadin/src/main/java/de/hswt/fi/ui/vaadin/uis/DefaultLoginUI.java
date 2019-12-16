@@ -1,7 +1,6 @@
 package de.hswt.fi.ui.vaadin.uis;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.spring.annotation.SpringUI;
@@ -12,11 +11,11 @@ import de.hswt.fi.ui.vaadin.CustomValoTheme;
 import de.hswt.fi.ui.vaadin.LayoutConstants;
 import de.hswt.fi.ui.vaadin.handler.UIScopeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.i18n.I18N;
 
 @SpringUI(path = "login")
-@Title("FOR-IDENT Login")
 @Theme("fi-valo")
 @Widgetset(value = "de.hswt.fi.ui.vaadin.widgetset")
 public class DefaultLoginUI extends AbstractLoginUI {
@@ -25,8 +24,9 @@ public class DefaultLoginUI extends AbstractLoginUI {
 
 	@Autowired
     public DefaultLoginUI(SpringProfileUtil springProfileUtil, I18N i18n, EventBus.UIEventBus uiEventBus,
-                          UIScopeHandler uiscopeHandler) {
+                          UIScopeHandler uiscopeHandler, @Value("${de.hswt.fi.ui.header.caption}") String title) {
         super(springProfileUtil, i18n, uiEventBus, uiscopeHandler);
+		getPage().setTitle(title + " Login");
 	}
 
 	@Override

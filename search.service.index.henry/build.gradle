@@ -1,0 +1,7 @@
+dependencies {
+    compile project(":common")
+    compile project(":search.service.index.api")
+    compile project(":search.service.index.henry.model")
+    compile project(":search.service.mass.search.api")
+    compile project(":search.service.search.api")
+}

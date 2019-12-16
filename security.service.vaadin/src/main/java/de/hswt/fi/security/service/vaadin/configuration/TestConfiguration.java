@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author August Gilg
  */
 
-@Profile(value = {Profiles.TEST})
+@Profile(Profiles.TEST)
 @Configuration
 public class TestConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -40,7 +40,6 @@ public class TestConfiguration extends WebSecurityConfigurerAdapter {
                 .password(encoder.encode("123456"))
                 .roles("ADMIN", "USER");
     }
-
 }
 
 

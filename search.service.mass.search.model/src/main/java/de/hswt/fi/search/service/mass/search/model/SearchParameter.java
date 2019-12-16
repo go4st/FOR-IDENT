@@ -11,47 +11,26 @@ import java.util.Set;
 public class SearchParameter implements Serializable {
 
 	private static final long serialVersionUID = 4413546777204026611L;
-
 	private String cas;
-
 	private String name;
-
 	private String elementalFormula;
-
 	private String iupac;
-
 	private String smiles;
-
 	private Double accurateMass;
-
 	private Double accurateMassRangeMin;
-
 	private Double accurateMassRangeMax;
-
 	private Double ppm;
-
 	private Ionisation ionisation;
-
 	private Double logP;
-
 	private Double logPDelta;
-
 	private Double logPRangeMin;
-
 	private Double logPRangeMax;
-
 	private Double logD;
-
 	private Double logDDelta;
-
 	private Set<String> halogens;
-
 	private char indexChar;
-
 	private String publicID;
-
 	private String inchiKey;
-
 	private List<String> datasourceNames;
 
 	public SearchParameter() {

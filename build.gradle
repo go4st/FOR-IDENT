@@ -69,15 +69,6 @@ subprojects {
         }
     }
 
-    // Coverage report of sub projects with combining task
-    apply plugin: 'jacoco'
-
-    task combinedTest(type: Test) {
-        jacoco {
-            destinationFile = file(combinedTestCoverageFile)
-        }
-    }
-
     sonarqube {
         properties {
             property "sonar.jacoco.reportPaths", combinedTestCoverageFile
@@ -167,6 +158,7 @@ subprojects {
     }
 
     dependencies {
+        testCompile 'junit:junit:4.12'
         testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     }
 
@@ -176,6 +168,15 @@ subprojects {
         runtime.exclude group: "org.eclipse.jetty", module: "jetty-server"
         runtime.exclude group: "org.eclipse.jetty", module: "jetty-webapp"
     }
+
+    // Coverage report of sub projects with combining task
+//    apply plugin: 'jacoco'
+//
+//    task combinedTest(type: Test) {
+//        jacoco {
+//            destinationFile = file(combinedTestCoverageFile)
+//        }
+//    }
 
     // Quickfix for eclipse
     eclipse {

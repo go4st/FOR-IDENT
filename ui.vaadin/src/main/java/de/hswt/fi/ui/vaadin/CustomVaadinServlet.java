@@ -51,7 +51,7 @@ public class CustomVaadinServlet extends SpringVaadinServlet
 			public void modifyBootstrapPage(BootstrapPageResponse response) {
 				response.getDocument().head().prependElement("meta")
 						.attr("name", "description")
-						.attr("content", "FOR-IDENT: improvement in the identification of " +
+						.attr("content", "DuftSTOFF-IDENT: improvement in the identification of " +
 								"organic trace substances: merging of resources and standardization of " +
 								"suspected- and non-target analysis");
 			}}

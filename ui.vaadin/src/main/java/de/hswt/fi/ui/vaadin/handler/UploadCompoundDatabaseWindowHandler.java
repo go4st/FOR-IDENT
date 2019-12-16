@@ -39,9 +39,8 @@ public class UploadCompoundDatabaseWindowHandler extends AbstractWindowHandler<V
 		LOGGER.debug(
 				"entering event bus listener handleShowUploadCompoundDatabaseWindow with dummy payload and topic {}",
 				EventBusTopics.TARGET_HANDLER_SHOW_UPLOAD_COMPOUND_DATABASE_WINDOW);
-		return;
-//		UI.getCurrent().addWindow(uploadCompoundDatabaseWindow);
-//		uploadCompoundDatabaseWindow.clear();
+		UI.getCurrent().addWindow(uploadCompoundDatabaseWindow);
+		uploadCompoundDatabaseWindow.clear();
 	}
 
 	@Override

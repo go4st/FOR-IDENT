@@ -29,7 +29,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         Environment environment = contextRefreshedEvent.getApplicationContext().getEnvironment();
-        if (environment.acceptsProfiles(org.springframework.core.env.Profiles.of(Profiles.INITIALIZATION))) {
+        if (environment.acceptsProfiles(org.springframework.core.env.Profiles.of(Profiles.INITIALIZATION_LC, Profiles.INITIALIZATION_GC))) {
             LOGGER.debug("Running application in initialization mode!");
             initAdminAccount(securityService);
         }

@@ -5,7 +5,7 @@ import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
-import de.hswt.fi.database.importer.compounds.api.StoffIdentImporter;
+import de.hswt.fi.database.importer.compounds.api.CompoundImporter;
 import de.hswt.fi.search.service.search.api.CompoundSearchService;
 import de.hswt.fi.ui.vaadin.LayoutConstants;
 import de.hswt.fi.ui.vaadin.UIMessageKeys;
@@ -36,7 +36,7 @@ public class ConfirmDeleteAndUploadCompoundDatabaseHandler extends AbstractWindo
 
 	private final ConfirmationDialog confirmationDialog;
 
-	private final StoffIdentImporter stoffIdentImporter;
+	private final CompoundImporter compoundImporter;
 
 	private Path path;
 
@@ -45,10 +45,10 @@ public class ConfirmDeleteAndUploadCompoundDatabaseHandler extends AbstractWindo
 	private CompoundSearchService compoundSearchService;
 
 	@Autowired
-	public ConfirmDeleteAndUploadCompoundDatabaseHandler(I18N i18n, ConfirmationDialog confirmationDialog, StoffIdentImporter stoffIdentImporter) {
+	public ConfirmDeleteAndUploadCompoundDatabaseHandler(I18N i18n, ConfirmationDialog confirmationDialog, CompoundImporter compoundImporter) {
 		this.i18n = i18n;
 		this.confirmationDialog = confirmationDialog;
-		this.stoffIdentImporter = stoffIdentImporter;
+		this.compoundImporter = compoundImporter;
 	}
 
 	@SuppressWarnings("unused")
@@ -78,7 +78,7 @@ public class ConfirmDeleteAndUploadCompoundDatabaseHandler extends AbstractWindo
 	public void windowClose(CloseEvent e) {
 		if (AbstractWindow.CloseType.OK.equals(confirmationDialog.getCloseType())) {
 			LOGGER.debug("Starting database update procedure on [{}]... this will take a while", compoundSearchService.getDatasourceName());
-			stoffIdentImporter.importStoffIdentDataSet(path, date, compoundSearchService);
+			compoundImporter.importCompoundDataSet(path, date, compoundSearchService);
 			LOGGER.debug("Deleting data file {} successful: {}", path.getFileName(), path.toFile().delete());
 		}
 	}

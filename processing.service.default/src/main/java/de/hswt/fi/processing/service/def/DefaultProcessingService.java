@@ -11,16 +11,16 @@ import de.hswt.fi.msms.service.model.MsMsSettings;
 import de.hswt.fi.processing.service.api.ProcessingService;
 import de.hswt.fi.processing.service.model.*;
 import de.hswt.fi.processing.service.model.ProcessingUnitState.UnitState;
+import de.hswt.fi.search.service.index.api.IndexSearchService;
+import de.hswt.fi.search.service.index.model.IndexJob;
+import de.hswt.fi.search.service.index.model.IndexSearchResult;
+import de.hswt.fi.search.service.index.model.IndexSearchResults;
+import de.hswt.fi.search.service.index.model.IndexSettings;
 import de.hswt.fi.search.service.mass.search.api.MassSearchService;
 import de.hswt.fi.search.service.mass.search.model.FileSearchSettings;
 import de.hswt.fi.search.service.mass.search.model.MassSearchJob;
 import de.hswt.fi.search.service.mass.search.model.MassSearchResult;
 import de.hswt.fi.search.service.mass.search.model.MassSearchResults;
-import de.hswt.fi.search.service.rti.api.RTISearchService;
-import de.hswt.fi.search.service.rti.model.RTIJob;
-import de.hswt.fi.search.service.rti.model.RTISearchResults;
-import de.hswt.fi.search.service.rti.model.RTISettings;
-import de.hswt.fi.search.service.rti.model.RtiSearchResult;
 import de.hswt.fi.search.service.tp.api.TransformationProductSearchService;
 import de.hswt.fi.search.service.tp.model.PathwayCandidate;
 import de.hswt.fi.search.service.tp.model.TransformationProductJob;
@@ -42,23 +42,14 @@ import java.util.stream.Collectors;
 public class DefaultProcessingService implements ProcessingService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultProcessingService.class);
-
 	private PreProcessingService preProcessService;
-
 	private MassSearchService massSearchService;
-
-	private RTISearchService rtiSearchService;
-
+	private IndexSearchService indexSearchService;
 	private MsMsService msmsService;
-
 	private TransformationProductSearchService tpService;
-
 	private double scoreSumMax = 0.0;
-
 	private Consumer<ProcessingUnitState> stateUpdateCallback;
-
 	private ProcessResultSummary resultSummary;
-
 	private ProcessingSettings settings;
 
 	@Override
@@ -114,7 +105,7 @@ public class DefaultProcessingService implements ProcessingService {
 			units.add(ProcessingUnit.MSMS);
 		}
 
-		if (isTpPossible(job)) {
+		if (isTpPossible()) {
 			units.add(ProcessingUnit.TP);
 		}
 
@@ -231,10 +222,6 @@ public class DefaultProcessingService implements ProcessingService {
 			candidates.addAll(result.getCandidates());
 		}
 
-//        TODO Maybe reenable if needed
-//        Map<String, Feature> targets = new HashMap<>(job.getFeatureSet().getFeatures());
-//        candidates.forEach(candidate -> targets.remove(c.getId()));
-
 		Map<String, ProcessCandidate> known = new HashMap<>();
 		for (ProcessCandidate candidate : candidates) {
 			String inChiKey = null;
@@ -258,9 +245,6 @@ public class DefaultProcessingService implements ProcessingService {
 			known.get(pathwayCandidate.getInChiKey()).setPathwayCandidate(pathwayCandidate);
 		}
 
-		// Do not add pathway summary anymore because it is not very helpful
-		// resultSummary.addResultSummary(result.getResultSummary());
-
 		updateState(job.getSettings().getScoreSettings().getTpState(), UnitState.FINISHED);
 
 		return results;
@@ -273,16 +257,14 @@ public class DefaultProcessingService implements ProcessingService {
 
 		scoreSumMax += job.getSettings().getScoreSettings().getRtiScreeningState().getScoreWeight();
 
-		RTISettings rtiSettings = new RTISettings();
-		rtiSettings.setIonisation(job.getSettings().getIonisation());
-		rtiSettings.setPpm(job.getSettings().getPrecursorPpm());
-		rtiSettings.setPh(job.getSettings().getPh());
-		rtiSettings.setStationaryPhase(job.getSettings().getStationaryPhase());
+		IndexSettings indexSettings = new IndexSettings();
+		indexSettings.setIonisation(job.getSettings().getIonisation());
+		indexSettings.setPpm(job.getSettings().getPrecursorPpm());
 
-		RTIJob rtiJob = new RTIJob(rtiSettings, job.getFeatureSet());
+		IndexJob indexJob = new IndexJob(indexSettings, job.getFeatureSet());
 
-		RTISearchResults jobResult = rtiSearchService.executeJob(rtiJob, job.getSelectedSearchServices());
-		List<RtiSearchResult> rtiResults = jobResult.getResults();
+		IndexSearchResults jobResult = indexSearchService.executeJob(indexJob, job.getSelectedSearchServices());
+		List<IndexSearchResult> rtiResults = jobResult.getResults();
 
 		for (ProcessResultWrapper result : results) {
 			parseRtiResult(result, rtiResults);
@@ -405,13 +387,11 @@ public class DefaultProcessingService implements ProcessingService {
 			summarizedScore += candidate.getMassSearchResult().getScore().getWeightedValue();
 		}
 
-		if (candidate.getRtiSearchResult() != null) {
-			recalculateScore(candidate.getRtiSearchResult().getScore(),
+		if (candidate.getIndexSearchResult() != null) {
+			recalculateScore(candidate.getIndexSearchResult().getScore(),
 					settings.getScoreSettings().getRtiScreeningState().getScoreWeight());
-			summarizedScore += candidate.getRtiSearchResult().getScore().getWeightedValue();
+			summarizedScore += candidate.getIndexSearchResult().getScore().getWeightedValue();
 		}
-
-		// TODO add scoring for transformation product here
 
 		if (candidate.getMsMsCandidate() != null) {
 
@@ -425,8 +405,6 @@ public class DefaultProcessingService implements ProcessingService {
 			summarizedScore += candidate.getMsMsCandidate().getScore().getWeightedValue();
 		}
 
-		// TODO what to do with the massbank score? Should only be a score
-		// between 1 and 0, user requirement
 		if (candidate.getMassBankSimpleScore() != null) {
 			recalculateScore(candidate.getMassBankSimpleScore(),
 					settings.getScoreSettings().getMassBankSimpleState().getScoreWeight());
@@ -454,23 +432,24 @@ public class DefaultProcessingService implements ProcessingService {
 		return smiles;
 	}
 
-	private void parseRtiResult(ProcessResultWrapper processResult, List<RtiSearchResult> rtiResults) {
+	private void parseRtiResult(ProcessResultWrapper processResult, List<IndexSearchResult> indexSearchResults) {
 
-		for (RtiSearchResult rtiResult : rtiResults) {
+		for (IndexSearchResult indexSearchResult : indexSearchResults) {
 			for (ProcessCandidate processCandidate : processResult.getCandidates()) {
-				if (processCandidate.getId().equals(rtiResult.getID())) {
-					processCandidate.setRtiProcessingResult(rtiResult);
+				if (processCandidate.getId().equals(indexSearchResult.getID())) {
+					processCandidate.setIndexSearchResult(indexSearchResult);
 				}
 			}
 		}
 
 		// For process candidates with no msmsCandidate found, an null msmsCandidate is created to display scoring
 		for (ProcessCandidate processCandidate : processResult.getCandidates()) {
-			if (processCandidate.getRtiSearchResult() == null) {
-				RtiSearchResult dummyResult = new RtiSearchResult(processCandidate.getMassSearchResult().getTargetIdentifier(), processCandidate.getMassSearchResult().getEntry(),
-						Double.NaN, Double.NaN, Double.NaN, Double.NaN, false, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, null, null);
+			if (processCandidate.getIndexSearchResult() == null) {
+				IndexSearchResult dummyResult = indexSearchService.getDummyResult();
+				dummyResult.setTargetIdentifier(processCandidate.getMassSearchResult().getTargetIdentifier());
+				dummyResult.setEntry(processCandidate.getMassSearchResult().getEntry());
 				dummyResult.setScore(new Score(Double.NaN, 1.0d, Double.NaN));
-				processCandidate.setRtiProcessingResult(dummyResult);
+				processCandidate.setIndexSearchResult(dummyResult);
 			}
 		}
 	}
@@ -505,8 +484,7 @@ public class DefaultProcessingService implements ProcessingService {
 				.getRtiCalibrationData().isEmpty();
 	}
 
-	private boolean isTpPossible(ProcessingJob job) {
-		//TODO Check if service is available
+	private boolean isTpPossible() {
 		return true;
 	}
 
@@ -577,8 +555,8 @@ public class DefaultProcessingService implements ProcessingService {
 	}
 
 	@Autowired
-	public void setRtiSearchService(RTISearchService rtiSearchService) {
-		this.rtiSearchService = rtiSearchService;
+	public void setIndexSearchService(IndexSearchService indexSearchService) {
+		this.indexSearchService = indexSearchService;
 	}
 
 	@Autowired
@@ -591,10 +569,9 @@ public class DefaultProcessingService implements ProcessingService {
 		this.tpService = tpService;
 	}
 
-	private class ProcessResultWrapper {
+	private static class ProcessResultWrapper {
 
 		private String id;
-
 		private List<ProcessCandidate> candidates;
 
 		ProcessResultWrapper(String id, List<ProcessCandidate> candidates) {

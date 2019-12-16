@@ -29,12 +29,16 @@ task pathingJar(type: Jar) {
 		}
 	}
 }
+
+def profiles = 'development'
+
 bootRun {
 	dependsOn pathingJar
 	doFirst {
 		classpath = files(sourceSets.main.output.files, pathingJar.archivePath)
 	}
-	jvmArgs = ["-javaagent:${configurations.runtimeAgent.asPath}", "-Dspring.profiles.active=development"]
+	jvmArgs = ["-javaagent:${configurations.runtimeAgent.asPath}"]
+	args = ["--spring.profiles.active=" + profiles]
 }
 
 bootJar {
@@ -85,12 +89,16 @@ dependencies {
 	compile project(":search.service.mass.search.api")
 	compile project(":search.service.mass.search.default")
 	compile project(":search.service.mass.search.model")
-	compile project(":search.service.rti.api")
-	compile project(":search.service.rti.default")
-	compile project(":search.service.rti.model")
+	compile project(":search.service.index.api")
+	compile project(":search.service.index.model")
+	compile project(":search.service.index.henry")
+	compile project(":search.service.index.henry.model")
+	compile project(":search.service.index.rti")
+	compile project(":search.service.index.rti.model")
 	compile project(":search.service.search.api")
 	compile project(":search.service.search.stoffident")
 	compile project(":search.service.search.plantident")
+	compile project(":search.service.search.duftstoffident")
 	compile project(":search.service.tp.api")
 	compile project(":search.service.tp.default")
 	compile project(":search.service.tp.model")
@@ -115,13 +123,18 @@ dependencies {
 // ext['spring-restdocs.version'] = '1.2.1.RELEASE'
 
 // defer resolution until execution time
+ext { snippetsDir = file('build/generated-snippets') }
+
+
 test.doFirst {
 	jvmArgs = ["-javaagent:${configurations.runtimeAgent.asPath}"]
 }
 
-ext { snippetsDir = file('build/generated-snippets') }
+test {
+	systemProperty 'spring.profiles.active', 'test'
+	outputs.dir snippetsDir
+}
 
-test { outputs.dir snippetsDir }
 
 asciidoctor {
 	attributes \

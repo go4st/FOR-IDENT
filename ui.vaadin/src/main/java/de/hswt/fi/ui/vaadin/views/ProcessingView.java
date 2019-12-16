@@ -21,43 +21,30 @@ import org.vaadin.spring.sidebar.annotation.VaadinFontIcon;
 		order = 100)
 @VaadinFontIcon(VaadinIcons.COG)
 @SpringView(name = ProcessingView.VIEW_NAME)
-//@Secured("ROLE_USER")
 public class ProcessingView extends AbstractLayoutView {
 
 	private static final long serialVersionUID = 1L;
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessingView.class);
-	
 	public static final String VIEW_NAME = "processing";
-
 	// Do not remove. In order to be created by Spring, this bean needs to wired
 	// here.
 	@SuppressWarnings("unused")
 	private final ProcessingViewHandler processingViewHandler;
-
 	private final I18N i18n;
-
-	private final ProcessingFormComponent processingFormComponent;
-
+	private final AbstractProcessingFormComponent processingFormComponent;
 	private final DatabaseSourceComponent databaseSourceComponent;
-
-	private final ProcessingHistoryComponent processingHistoryComponent;
-
-	private final ProcessingResultsComponent processingResultsComponent;
-
+	private final AbstractProcessingSearchHistoryComponent processingHistoryComponent;
+	private final AbstractProcessingResultsComponent processingResultsComponent;
 	private final ProcessingDataComponent processingDataComponent;
-
 	private final ProcessingHelpComponent processingHelpComponent;
-
 	private final ProcessingDetailsComponent processingDetailsComponent;
-
 	private final MsDetailsComponent msmsDetailsComponent;
 
 	@Autowired
 	public ProcessingView(ProcessingViewHandler processingViewHandler, I18N i18n,
-						  ProcessingFormComponent processingFormComponent, DatabaseSourceComponent databaseSourceComponent,
-						  ProcessingHistoryComponent processingHistoryComponent,
-						  ProcessingResultsComponent processingResultsComponent,
+						  AbstractProcessingFormComponent processingFormComponent, DatabaseSourceComponent databaseSourceComponent,
+						  AbstractProcessingSearchHistoryComponent processingHistoryComponent,
+						  AbstractProcessingResultsComponent processingResultsComponent,
 						  ProcessingDataComponent processingDataComponent,
 						  ProcessingHelpComponent processingHelpComponent,
 						  ProcessingDetailsComponent processingDetailsComponent,

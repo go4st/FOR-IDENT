@@ -12,54 +12,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.concurrent.*;
 
 public class WorkbookCreator {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(WorkbookCreator.class);
-
 	private CalculationService calculationService;
-
 	private BeanComponentMapper mapper;
-
 	private boolean includeSource;
-
 	private Workbook workbook;
-
 	private Sheet sheet;
-
 	private int nextRowIndex;
-
 	private int resultIndex;
-
 	private int columnCount;
-
 	private int structureColumnIndex;
-
 	private Set<String> postfixFilter;
-
 	private Map<String, CellStyle> numberCellFormats;
-
 	private Map<BeanColumnDefinition, Integer> columnCounts;
-
-	private ExecutorService executor;
-
 	private ExcelSheetDefinition currentSheetDefinition;
-
 	private int columnOffset;
 
 	WorkbookCreator(BeanComponentMapper mapper, CalculationService calculationService) {
-		if (mapper == null || calculationService == null) {
-			throw new NullPointerException("Parameter must not be null.");
-		}
+		if (mapper == null || calculationService == null) throw new NullPointerException("Parameter must not be null.");
 		this.mapper = mapper;
 		this.calculationService = calculationService;
 	}
 
 	Workbook createWorkbook(ExcelFileDefinition definition) {
-		if (definition == null) {
-			throw new NullPointerException("Parameter definition is null.");
-		}
+		if (definition == null) throw new NullPointerException("Parameter definition is null.");
 
 		initialize();
 
@@ -77,16 +56,11 @@ public class WorkbookCreator {
 	}
 
 	private void createSheet() {
-		if (currentSheetDefinition.getData() == null
-				|| currentSheetDefinition.getData().isEmpty()) {
-			return;
-		}
 
-		if (!currentSheetDefinition.isIncludeSource()) {
-			postfixFilter.add("source");
-		} else {
-			postfixFilter.remove("source");
-		}
+		if (currentSheetDefinition.getData() == null || currentSheetDefinition.getData().isEmpty()) return;
+
+		if (!currentSheetDefinition.isIncludeSource()) postfixFilter.add("source");
+		else postfixFilter.remove("source");
 
 		sheet = workbook.createSheet(checkSheetName(currentSheetDefinition.getName()));
 
@@ -124,17 +98,15 @@ public class WorkbookCreator {
 		columnCount = columnOffset + captions.size();
 		resultIndex = 1;
 
-		if (currentSheetDefinition.getColumnDirection().equals(ColumnDirection.VERTICAL)) {
-			createTitleRow(captions.values());
-		} else {
-			createTitleColumn(captions.values());
-		}
+		if (currentSheetDefinition.getColumnDirection().equals(ColumnDirection.VERTICAL)) createTitleRow(captions.values());
+		else createTitleColumn(captions.values());
 
 		columnDefinitions.values().forEach(d -> columnCounts.put(d, getColumnCount(d)));
 
 		executeSheetCreation(columnDefinitions);
 
-		resizeColumns();
+		for (int index = columnOffset; index < columnCount; index++) resizeColumn(index);
+
 	}
 
 	private String checkSheetName(String sheetName) {
@@ -153,31 +125,12 @@ public class WorkbookCreator {
 	}
 
 	private void executeSheetCreation(Map<String, BeanColumnDefinition> columnDefinitions) {
-		List<FutureTask<List<List<CellValue>>>> tasks = new ArrayList<>();
-
-		executor = Executors.newCachedThreadPool();
 
 		for (Object bean : currentSheetDefinition.getData()) {
-			FutureTask<List<List<CellValue>>> task = new FutureTask<>(() -> {
 				RowCreator rowCreator = new RowCreator(bean, mapper, calculationService,
 						columnCounts, columnDefinitions, postfixFilter, columnCount - columnOffset);
-				return rowCreator.getCells();
-			});
-			tasks.add(task);
-			executor.execute(task);
-		}
+			List<List<CellValue>> rows = rowCreator.getCells();
 
-		do {
-			FutureTask<List<List<CellValue>>> task = tasks.get(0);
-			List<List<CellValue>> rows = null;
-			try {
-				rows = task.get();
-			} catch (InterruptedException e) {
-				LOGGER.error(e.getMessage());
-				Thread.currentThread().interrupt();
-			} catch (ExecutionException e) {
-				LOGGER.error(e.getMessage());
-			}
 			if (rows != null && !rows.isEmpty()) {
 				if (currentSheetDefinition.getColumnDirection().equals(ColumnDirection.VERTICAL)) {
 					insertRows(rows);
@@ -185,9 +138,7 @@ public class WorkbookCreator {
 					insertColumns(rows);
 				}
 			}
-			tasks.remove(0);
-			resultIndex++;
-		} while (!tasks.isEmpty());
+		}
 	}
 
 	private void initialize() {
@@ -281,7 +232,10 @@ public class WorkbookCreator {
 					continue;
 				}
 				if (columnIndex == structureColumnIndex) {
-					writeStructure((byte[]) cellValue.getValue().get(), rowIndex++);
+						byte[] value = (byte[]) cellValue.getValue().get();
+						if (value.length > 0) {
+							writeStructure(value, rowIndex++);
+					}
 				} else {
 					Cell cell = sheet.getRow(rowIndex++).createCell(columnIndex);
 					writeCell(cell, cellValue);
@@ -332,43 +286,24 @@ public class WorkbookCreator {
 		Drawing drawing = sheet.createDrawingPatriarch();
 
 		Row row = sheet.getRow(rowIndex);
-		row.setHeightInPoints(200);
+		row.setHeightInPoints(RowCreator.IMAGE_HEIGHT);
+
+        sheet.setColumnWidth(structureColumnIndex,  PixelUtil.pixel2WidthUnits(RowCreator.IMAGE_WIDTH));
 
 		int pictureIdx = workbook.addPicture(imageData, Workbook.PICTURE_TYPE_PNG);
 
 		ClientAnchor anchor = workbook.getCreationHelper().createClientAnchor();
 		anchor.setCol1(structureColumnIndex);
 		anchor.setRow1(rowIndex);
-		anchor.setAnchorType(ClientAnchor.MOVE_AND_RESIZE);
 
 		Picture pict = drawing.createPicture(anchor, pictureIdx);
-
-		pict.resize(1.0, 1.0);
-	}
-
-	private void resizeColumns() {
-		for (int i = columnOffset; i < columnCount; i++) {
-			final int index = i;
-			executor.execute(() -> resizeColumn(index));
-		}
-		executor.shutdown();
-		try {
-			executor.awaitTermination(10, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			LOGGER.error(e.getMessage());
-			Thread.currentThread().interrupt();
-		}
+		pict.resize(1,1);
 	}
 
 	private void resizeColumn(int columnIndex) {
 		int maxNumCharacters = 0;
 
-		if (columnIndex == structureColumnIndex) {
-			synchronized (sheet) {
-				sheet.setColumnWidth(structureColumnIndex, 37 * 256);
-			}
-			return;
-		}
+		if (columnIndex == structureColumnIndex) return;
 
 		for (int row = 0; row <= sheet.getLastRowNum(); row++) {
 			DataFormatter formatter = new DataFormatter();
@@ -383,6 +318,34 @@ public class WorkbookCreator {
 				* 256);
 		synchronized (sheet) {
 			sheet.setColumnWidth(columnIndex, width);
+		}
+	}
+
+	static public class PixelUtil {
+
+		public static final short EXCEL_COLUMN_WIDTH_FACTOR = 256;
+		public static final short EXCEL_ROW_HEIGHT_FACTOR = 20;
+		public static final int UNIT_OFFSET_LENGTH = 7;
+		public static final int[] UNIT_OFFSET_MAP = new int[] { 0, 36, 73, 109, 146, 182, 219 };
+
+		public static short pixel2WidthUnits(int pxs) {
+			short widthUnits = (short) (EXCEL_COLUMN_WIDTH_FACTOR * (pxs / UNIT_OFFSET_LENGTH));
+			widthUnits += UNIT_OFFSET_MAP[(pxs % UNIT_OFFSET_LENGTH)];
+			return widthUnits;
+		}
+
+		public static int widthUnits2Pixel(short widthUnits) {
+			int pixels = (widthUnits / EXCEL_COLUMN_WIDTH_FACTOR) * UNIT_OFFSET_LENGTH;
+			int offsetWidthUnits = widthUnits % EXCEL_COLUMN_WIDTH_FACTOR;
+			pixels += Math.floor((float) offsetWidthUnits / ((float) EXCEL_COLUMN_WIDTH_FACTOR / UNIT_OFFSET_LENGTH));
+			return pixels;
+		}
+
+		public static int heightUnits2Pixel(short heightUnits) {
+			int pixels = (heightUnits / EXCEL_ROW_HEIGHT_FACTOR);
+			int offsetWidthUnits = heightUnits % EXCEL_ROW_HEIGHT_FACTOR;
+			pixels += Math.floor((float) offsetWidthUnits / ((float) EXCEL_ROW_HEIGHT_FACTOR / UNIT_OFFSET_LENGTH));
+			return pixels;
 		}
 	}
 

@@ -24,6 +24,8 @@ public class I18nKeys {
 
 	public static final String FEATURE_RTI = "FEATURE_RTI";
 
+	public static final String FEATURE_RT_SIGNAL = "FEATURE_RT_SIGNAL";
+
 	public static final String FEATURE_FORMULA_DERIVED_MASS = "FEATURE_FORMULA_DERIVED_MASS";
 
 	public static final String FEATURE_NEUTRAL_MASS = "FEATURE_NEUTRAL_MASS";

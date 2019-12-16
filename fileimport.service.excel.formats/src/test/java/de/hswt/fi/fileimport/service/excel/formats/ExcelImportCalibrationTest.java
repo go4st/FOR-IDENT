@@ -30,7 +30,7 @@ public class ExcelImportCalibrationTest {
 	@Before
 	public void setupReferenceData() {
 
-		calibrationReader = new CalibrationExcelReader();
+		calibrationReader = new CalibrationExcelReaderLC();
 
 		data = new ArrayList<>();
 		

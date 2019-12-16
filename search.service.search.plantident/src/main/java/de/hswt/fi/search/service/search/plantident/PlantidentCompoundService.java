@@ -1,27 +1,29 @@
 package de.hswt.fi.search.service.search.plantident;
 
+import de.hswt.fi.common.spring.Profiles;
 import de.hswt.fi.search.service.search.api.AbstractCompoundService;
 import de.hswt.fi.search.service.search.api.repositories.EntryRepository;
-import de.hswt.fi.search.service.search.plantident.config.PlantidentDatabaseConfiguration;
+import de.hswt.fi.search.service.search.plantident.config.PlantIdentDatabaseConfiguration;
 import de.hswt.fi.search.service.search.plantident.repositories.PlantidentEntryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+@Profile({Profiles.LC, Profiles.DEVELOPMENT_LC, Profiles.TEST})
 @Service
-@Transactional(transactionManager = PlantidentDatabaseConfiguration.TRANSACTION_MANAGER, readOnly = true)
+@Transactional(transactionManager = PlantIdentDatabaseConfiguration.TRANSACTION_MANAGER, readOnly = true)
 public class PlantidentCompoundService extends AbstractCompoundService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PlantidentCompoundService.class);
-
 	private final PlantidentEntryRepository entryRepository;
 
-	@PersistenceContext(unitName = PlantidentDatabaseConfiguration.ENTITY_MANAGER)
+	@PersistenceContext(unitName = PlantIdentDatabaseConfiguration.ENTITY_MANAGER)
 	private EntityManager entityManager;
 
 	@Autowired
@@ -41,12 +43,12 @@ public class PlantidentCompoundService extends AbstractCompoundService {
 
 	@Override
 	public String getIdPrefix() {
-		return PlantidentDatabaseConfiguration.ID_PREFIX;
+		return PlantIdentDatabaseConfiguration.ID_PREFIX;
 	}
 
 	@Override
 	public String getDatasourceName() {
-		return PlantidentDatabaseConfiguration.DATABASE_NAME;
+		return PlantIdentDatabaseConfiguration.DATABASE_NAME;
 	}
 
 	@Override
@@ -56,6 +58,6 @@ public class PlantidentCompoundService extends AbstractCompoundService {
 
 	@Override
 	public int getIndex() {
-		return 1;
+		return 0;
 	}
 }

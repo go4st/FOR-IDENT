@@ -18,7 +18,7 @@ public class ExcelImportThermoCompoundDiscovererTest extends AbstractImportTest 
 	public FileBasedFeatureContentImporter getFileImporter() {
 		return new ExcelFeatureContentImporter(
 				Collections.singletonList(new ThermoCompoundDiscovererExcelReader()),
-				Collections.singletonList(new CalibrationExcelReader()));
+				Collections.singletonList(new CalibrationExcelReaderGC()));
 	}
 
 	@Override

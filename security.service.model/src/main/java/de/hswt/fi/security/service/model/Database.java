@@ -16,11 +16,14 @@ public class Database {
 
 	private String name;
 
+	private boolean publicAccessible;
+
 	public Database() {
 	}
 
-	public Database(String name) {
+	public Database(String name, boolean publicAccessible) {
 		this.name = name;
+		this.publicAccessible = publicAccessible;
 	}
 
 	public Long getId() {
@@ -37,6 +40,14 @@ public class Database {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isPublicAccessible() {
+		return publicAccessible;
+	}
+
+	public void setPublicAccessible(boolean publicAccessible) {
+		this.publicAccessible = publicAccessible;
 	}
 
 	@Override

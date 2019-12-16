@@ -1738,7 +1738,7 @@ div.v-layout.v-horizontal.v-widget {
 	text-align: center;
 	left: 0;
 	right: 0;
-	content: "FOR-IDENT";
+	content: "DuftSTOFF-IDENT";
 }
 
 .fi-valo .v-loading-indicator {
@@ -28840,19 +28840,6 @@ div.v-layout.v-horizontal.v-widget {
 .fi-valo .v-custom-switch.on .v-switch-slider:after {
 	content: "\f111";
 	left: 40px;
-}
-
-.fi-valo .cookie-consent {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	height: 3rem;
-	margin: auto;
-	padding: 0.75rem;
-	text-align: center;
-	background-color: #0058BC;
-	color: #F3F7F8;
-	z-index: 1000;
 }
 
 .fi-valo .v-tabsheet-tabcontainer-content-component {

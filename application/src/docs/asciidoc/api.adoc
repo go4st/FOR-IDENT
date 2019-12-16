@@ -5,7 +5,7 @@
 :sectnumlevels: 3
 
 == Overview
-The following describes the resources that make up the official FOR-IDENT API.
+The following describes the resources that make up the official DuftSTOFF-IDENT API.
 If you have any suggestions or problems, feel free to link:mailto:gilg@hswt.de?subject=API[contact us].
 
 == General

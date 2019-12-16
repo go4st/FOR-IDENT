@@ -2,14 +2,11 @@ package de.hswt.fi.ui.vaadin.uis;
 
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
-import com.vaadin.server.Page;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.server.*;
 import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -33,6 +30,7 @@ import de.hswt.fi.userproperties.service.api.UserPropertyKeys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.i18n.I18N;
@@ -43,42 +41,33 @@ import java.util.Objects;
 import java.util.Optional;
 
 @SpringUI(path = "/")
-@Title("FOR-IDENT")
 @Theme("fi-valo")
 @Push(transport = Transport.LONG_POLLING)
 @Widgetset(value = "de.hswt.fi.ui.vaadin.widgetset")
-public class DefaultMainUi extends UI {
+public class DefaultMainUi extends UI implements ErrorHandler {
 
 	private static final long serialVersionUID = 1L;
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMainUi.class);
-
 	@SuppressWarnings("unused")
 	private final SessionScopeHandler sessionHandler;
-
 	@SuppressWarnings("unused")
 	private final UIScopeHandler uiHandler;
-
 	private final I18N i18n;
-
 	private final SecurityService securityService;
-
 	private final SpringViewProvider viewProvider;
-
 	private final SideBar sideBar;
-
 	private final SessionSharedObjects sessionObjects;
-
 	private final UserPropertiesService userPropertiesService;
-
 	private final EventBus.SessionEventBus sessionEventBus;
-
+	@Value("${de.hswt.fi.ui.header.caption}")
+	private String title;
 	private CssLayout viewLayout;
 
 	@Autowired
 	public DefaultMainUi(I18N i18n, SecurityService securityService, SpringViewProvider viewProvider,
 						 SideBar sideBar, SessionSharedObjects sessionObjects, SessionScopeHandler sessionHandler,
-						 UIScopeHandler uiHandler, UserPropertiesService userPropertiesService, EventBus.SessionEventBus sessionEventBus) {
+						 UIScopeHandler uiHandler, UserPropertiesService userPropertiesService, EventBus.SessionEventBus sessionEventBus,
+			@Value("${de.hswt.fi.ui.header.caption}") String title) {
 		this.sessionHandler = sessionHandler;
 		this.uiHandler = uiHandler;
 		this.i18n = i18n;
@@ -91,6 +80,14 @@ public class DefaultMainUi extends UI {
 
 		setLocale(VaadinSession.getCurrent().getLocale());
 		LocaleContextHolder.setLocale(getLocale());
+        setErrorHandler(new DefaultErrorHandler() {
+            @Override
+            public void error(com.vaadin.server.ErrorEvent event) {
+                new CustomNotification.Builder("", i18n.get(UIMessageKeys.DEFAULT_ERROR_MESSAGE), Notification.Type.ERROR_MESSAGE);
+            }
+        });
+
+		getPage().setTitle(title);
 	}
 
 	@Override
@@ -178,6 +175,11 @@ public class DefaultMainUi extends UI {
 		navigator.setErrorView(new ErrorView());
 		navigator.addProvider(viewProvider);
 		setNavigator(navigator);
+	}
+
+	@Override
+	public void error(com.vaadin.server.ErrorEvent event) {
+		LOGGER.error(event.getThrowable().getMessage());
 	}
 
 	private class CustomNavigator extends Navigator {

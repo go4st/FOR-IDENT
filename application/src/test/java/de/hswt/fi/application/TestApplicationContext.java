@@ -4,10 +4,9 @@ package de.hswt.fi.application;
  * Created by August Gilg on 31.10.2016.
  */
 
-import de.hswt.fi.database.importer.compounds.api.StoffIdentImporter;
+import de.hswt.fi.database.importer.compounds.api.CompoundImporter;
 import de.hswt.fi.search.service.search.api.CompoundSearchService;
-import de.hswt.fi.search.service.search.plantident.config.PlantidentDatabaseConfiguration;
-import de.hswt.fi.search.service.search.stoffident.config.StoffidentDatabaseConfiguration;
+import de.hswt.fi.search.service.search.stoffident.config.StoffIdentDatabaseConfiguration;
 import de.hswt.fi.security.service.api.SecurityService;
 import de.hswt.fi.security.service.model.Group;
 import de.hswt.fi.security.service.model.Groups;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,14 +29,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+@ActiveProfiles("test")
 @SpringBootApplication(scanBasePackages = "de.hswt.fi")
 public class TestApplicationContext implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestApplicationContext.class);
-
     private static final String SI_TEST_COMPOUND_DATA = "SI_Content_Test_25.xlsx";
-
-    private static final String PI_TEST_COMPOUND_DATA = "PI_Content_Test_25.xlsx";
 
     @Autowired
     private SecurityService securityService;
@@ -45,7 +43,7 @@ public class TestApplicationContext implements CommandLineRunner {
     private List<CompoundSearchService> compoundSearchServices;
 
     @Autowired
-    private StoffIdentImporter stoffIdentImporter;
+    private CompoundImporter compoundImporter;
 
     public static void main(String[] args) {
         SpringApplication.run(TestApplicationContext.class, args);
@@ -54,12 +52,11 @@ public class TestApplicationContext implements CommandLineRunner {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void run(String... args) {
+        initTestData(StoffIdentDatabaseConfiguration.DATABASE_NAME, SI_TEST_COMPOUND_DATA);
+        clearDatabase();
         initGroups();
         initAdminAccount();
-        initTestData(StoffidentDatabaseConfiguration.DATABASE_NAME, SI_TEST_COMPOUND_DATA);
-        initTestData(PlantidentDatabaseConfiguration.DATABASE_NAME, PI_TEST_COMPOUND_DATA);
     }
-
 
     private void initGroups() {
         Group groupAdmin = new Group();
@@ -77,6 +74,11 @@ public class TestApplicationContext implements CommandLineRunner {
         securityService.createGroup(groupAdmin);
         securityService.createGroup(groupUser);
         securityService.createGroup(groupScientist);
+    }
+
+
+    private void clearDatabase() {
+        securityService.findAllUsers().forEach(securityService::deleteUser);
     }
 
     @Transactional
@@ -100,7 +102,7 @@ public class TestApplicationContext implements CommandLineRunner {
         compoundSearchServices.stream()
                 .filter(compoundSearchService -> compoundSearchService.getDatasourceName().equals(databaseName))
                 .findFirst()
-                .ifPresent(sicss -> stoffIdentImporter.importStoffIdentDataSet(getResourcePath(testDataPathName), LocalDate.now(), sicss));
+                .ifPresent(sicss -> compoundImporter.importCompoundDataSet(getResourcePath(testDataPathName), LocalDate.now(), sicss));
     }
 
     private Path getResourcePath(String pathName) {

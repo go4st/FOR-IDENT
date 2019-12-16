@@ -29,44 +29,28 @@ import java.util.stream.Collectors;
 public class DownloadWindow<T> extends AbstractWindow {
 
 	private static final long serialVersionUID = 1L;
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(DownloadWindow.class);
-
 	private static final String DOWNLOAD_FILE_SUFFIX = "_results";
-	
 	private static final String FILE_TYPE_SUFFIX = ".xlsx";
-
 	private static final String DEFAULT_EXPORT_FILE_NAME = "results.xlsx";
-
 	private final ExcelCreator exportCreator;
-
 	private CssLayout contentLayout;
-
 	private TextField fileNameTextField;
-
 	private CheckBox includeSourceCheckBox;
-
 	private CheckBoxGroup<String> columnOptionGroup;
-
 	private Map<String, String> possibleExportColumns;
-
 	protected List<T> entries;
-
 	private List<ExcelSheetDefinition> optionalSheets;
-
 	private DownloadButton downloadButton;
-
 	protected Binder<ExcelSheetDefinition<T>> binder;
-
 	private Path sourceFilePath;
-
 	private boolean addSourceFile = false;
+	private CheckBox selectAllCheckbox;
 
 	@Autowired
 	protected DownloadWindow(ComponentFactory componentFactory, I18N i18n, ExcelCreator exportCreator) {
 		super(componentFactory, i18n, false);
 		this.exportCreator = exportCreator;
-
 		setWidth(LayoutConstants.WINDOW_WIDTH_MEDIUM);
 	}
 
@@ -121,7 +105,7 @@ public class DownloadWindow<T> extends AbstractWindow {
 		layout.addStyleName(CustomValoTheme.PADDING);
 		layout.setSizeFull();
 
-		CheckBox selectAllCheckbox = new CheckBox(i18n.get(UIMessageKeys.SELECT_CHECKBOX_CAPTION));
+		selectAllCheckbox = new CheckBox(i18n.get(UIMessageKeys.SELECT_CHECKBOX_CAPTION));
 		selectAllCheckbox.addValueChangeListener(event -> selectAll(event.getValue()));
 		layout.addComponent(selectAllCheckbox);
 
@@ -145,30 +129,19 @@ public class DownloadWindow<T> extends AbstractWindow {
 	}
 
 	private void selectAll(boolean select) {
-		if(select) {
-			possibleExportColumns.values().forEach(exportColumn -> columnOptionGroup.select(exportColumn));
-		} else {
-			possibleExportColumns.values().forEach(exportColumn -> columnOptionGroup.deselect(exportColumn));
-		}
+		if(select) possibleExportColumns.values().forEach(exportColumn -> columnOptionGroup.select(exportColumn));
+		else possibleExportColumns.values().forEach(exportColumn -> columnOptionGroup.deselect(exportColumn));
 	}
 
 	private DownloadButton.ContentWriter getExcel() {
 
 		return stream -> {
-
-			try (Workbook workbook =
-						 exportCreator.createWorkbook(createExcelFileDefinition(sourceFilePath, addSourceFile))) {
+			try (Workbook workbook = exportCreator.createWorkbook(createExcelFileDefinition(sourceFilePath, addSourceFile))) {
 				workbook.write(stream);
-				stream.close();
 			} catch (IOException e) {
 				LOGGER.error(e.getMessage());
-			} finally {
-				try {
-					stream.close();
-				} catch (IOException e) {
-					LOGGER.error(e.getMessage());
-				}
 			}
+			close();
 		};
 	}
 
@@ -184,9 +157,7 @@ public class DownloadWindow<T> extends AbstractWindow {
 					@Override
 					public Result<List<String>> convertToModel(Set<String> value, ValueContext context) {
 
-						if (value == null || possibleExportColumns == null) {
-							return Result.error("");
-						}
+						if (value == null || possibleExportColumns == null) return Result.error("");
 
 						List<String> model = possibleExportColumns.keySet().stream()
 								.filter(property -> value.contains(possibleExportColumns.get(property)))
@@ -196,16 +167,13 @@ public class DownloadWindow<T> extends AbstractWindow {
 
 					@Override
 					public Set<String> convertToPresentation(List<String> value, ValueContext context) {
-						if (value == null || possibleExportColumns == null) {
-							return Collections.emptySet();
-						}
+						if (value == null || possibleExportColumns == null) return Collections.emptySet();
 						return value.stream().map(property -> possibleExportColumns.get(property)).collect(Collectors.toSet());
 					}
 				}).bind(ExcelSheetDefinition::getColumnPropertyIds, ExcelSheetDefinition::setColumnPropertyIds);
 
 
 		binder.setBean(createNewExcelSheetDefinition());
-
 		binder.addValueChangeListener(listener -> updateCanFinish());
 	}
 
@@ -230,8 +198,7 @@ public class DownloadWindow<T> extends AbstractWindow {
 	}
 
 	private ExcelSheetDefinition<T> createNewExcelSheetDefinition() {
-		return new ExcelSheetDefinition<>(i18n
-				.get(UIMessageKeys.RESULTS_DOWNLOAD_HANDLER_EXCEL_SPREADSHEET_DEFINITION_RESULTS));
+		return new ExcelSheetDefinition<>(i18n.get(UIMessageKeys.RESULTS_DOWNLOAD_HANDLER_EXCEL_SPREADSHEET_DEFINITION_RESULTS));
 	}
 
 	public void setEntries(List<T> entries) {
@@ -239,10 +206,12 @@ public class DownloadWindow<T> extends AbstractWindow {
 		this.entries = entries;
 	}
 
-	private void clear() {
+	public void clear() {
 		includeSourceCheckBox.setEnabled(true);
 		includeSourceCheckBox.clear();
+		selectAllCheckbox.clear();
 		columnOptionGroup.clear();
+		initDownloadButton();
 	}
 
 	public void setIncludeSourcesEnabled(boolean enabled) {
@@ -259,13 +228,13 @@ public class DownloadWindow<T> extends AbstractWindow {
 	}
 
 	public void setExportColumnIds(List<String> exportColumnIds) {
-
 		resetFieldGroup();
 
 		if (entries.size() == 1) {
 			binder.getBean().setColumnPropertyIds(exportColumnIds);
 			return;
 		}
+
 		binder.getBean().setColumnPropertyIds(exportColumnIds);
 	}
 

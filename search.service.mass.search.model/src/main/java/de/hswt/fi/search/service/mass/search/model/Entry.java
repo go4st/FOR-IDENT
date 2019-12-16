@@ -62,6 +62,18 @@ public class Entry {
 	@BeanColumn(selector = true, i18nId = I18nKeys.SI_MODEL_TONNAGE)
 	private TonnageStringProperty tonnage;
 
+	@Embedded
+	@BeanColumn(selector = true, i18nId = I18nKeys.SI_MODEL_HENRY_BOND)
+	private HenryConstantBondNumberProperty henryBond;
+
+	@Embedded
+	@BeanColumn(selector = true, i18nId = I18nKeys.SI_MODEL_HENRY_GROUP)
+	private HenryConstantGroupNumberProperty henryGroup;
+
+	@Embedded
+	@BeanColumn(selector = true, i18nId = I18nKeys.SI_MODEL_HENRY_EXPER)
+	private HenryConstantExperNumberProperty henryExper;
+
 	@Column
 	@Temporal(value = TemporalType.DATE)
 	private Date lastModified;
@@ -140,6 +152,18 @@ public class Entry {
 		return tonnage;
 	}
 
+	public HenryConstantBondNumberProperty getHenryBond() {
+		return henryBond;
+	}
+
+	public HenryConstantGroupNumberProperty getHenryGroup() {
+		return henryGroup;
+	}
+
+	public HenryConstantExperNumberProperty getHenryExper() {
+		return henryExper;
+	}
+
 	public Set<NumberValueProperty> getLogpValues() {
 		return Collections.unmodifiableSet(logpValues);
 	}
@@ -207,6 +231,40 @@ public class Entry {
 				+ massBankIds + ", categories=" + categories + ", sourceLists=" + sourceLists + "]";
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Entry entry = (Entry) o;
+		return Objects.equals(publicID, entry.publicID) &&
+				Objects.equals(name, entry.name) &&
+				Objects.equals(inchi, entry.inchi) &&
+				Objects.equals(inchiKey, entry.inchiKey) &&
+				Objects.equals(cas, entry.cas) &&
+				Objects.equals(ecNumber, entry.ecNumber) &&
+				Objects.equals(smiles, entry.smiles) &&
+				Objects.equals(elementalFormula, entry.elementalFormula) &&
+				Objects.equals(iupac, entry.iupac) &&
+				Objects.equals(accurateMass, entry.accurateMass) &&
+				Objects.equals(tonnage, entry.tonnage) &&
+				Objects.equals(henryBond, entry.henryBond) &&
+				Objects.equals(henryGroup, entry.henryGroup) &&
+				Objects.equals(henryExper, entry.henryExper) &&
+				Objects.equals(lastModified, entry.lastModified) &&
+				Objects.equals(logpValues, entry.logpValues) &&
+				Objects.equals(logdValues, entry.logdValues) &&
+				Objects.equals(additionalNames, entry.additionalNames) &&
+				Objects.equals(massBankIds, entry.massBankIds) &&
+				Objects.equals(categories, entry.categories) &&
+				Objects.equals(sourceLists, entry.sourceLists) &&
+				Objects.equals(datasourceName, entry.datasourceName) &&
+				Objects.equals(dtxsid, entry.dtxsid);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(publicID, name, inchi, inchiKey, cas, ecNumber, smiles, elementalFormula, iupac, accurateMass, tonnage, henryBond, henryGroup, henryExper, lastModified, logpValues, logdValues, additionalNames, massBankIds, categories, sourceLists, datasourceName, dtxsid);
+	}
 
 	@SuppressWarnings("UnusedReturnValue")
 	public static final class EntryBuilder {
@@ -221,6 +279,9 @@ public class Entry {
 		private IUPACStringProperty iupac;
 		private MassNumberProperty accurateMass;
 		private TonnageStringProperty tonnage;
+		private HenryConstantBondNumberProperty henryBond;
+		private HenryConstantGroupNumberProperty henryGroup;
+		private HenryConstantExperNumberProperty henryExper;
 		private Date lastModified;
 		private Set<LogPNumberProperty> logpValues;
 		private Set<LogDNumberProperty> logdValues;
@@ -298,6 +359,21 @@ public class Entry {
 			return this;
 		}
 
+		public EntryBuilder withHenryBond(HenryConstantBondNumberProperty henryBond) {
+			this.henryBond = henryBond;
+			return this;
+		}
+
+		public EntryBuilder withHenryGroup(HenryConstantGroupNumberProperty henryGroup) {
+			this.henryGroup = henryGroup;
+			return this;
+		}
+
+		public EntryBuilder withHenryExper(HenryConstantExperNumberProperty henryExper) {
+			this.henryExper = henryExper;
+			return this;
+		}
+
 		public EntryBuilder withLastModified(Date lastModified) {
 			this.lastModified = lastModified;
 			return this;
@@ -368,6 +444,9 @@ public class Entry {
 			entry.accurateMass = this.accurateMass;
 			entry.lastModified = this.lastModified;
 			entry.tonnage = this.tonnage;
+			entry.henryBond = this.henryBond;
+			entry.henryGroup = this.henryGroup;
+			entry.henryExper = this.henryExper;
 			entry.smiles = this.smiles;
 			entry.iupac = this.iupac;
 			entry.ecNumber = this.ecNumber;
@@ -377,36 +456,5 @@ public class Entry {
 			entry.dtxsid = this.dtxsid;
 			return entry;
 		}
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Entry)) return false;
-		Entry entry = (Entry) o;
-		return Objects.equals(publicID, entry.publicID) &&
-				Objects.equals(name, entry.name) &&
-				Objects.equals(inchi, entry.inchi) &&
-				Objects.equals(inchiKey, entry.inchiKey) &&
-				Objects.equals(cas, entry.cas) &&
-				Objects.equals(ecNumber, entry.ecNumber) &&
-				Objects.equals(smiles, entry.smiles) &&
-				Objects.equals(elementalFormula, entry.elementalFormula) &&
-				Objects.equals(iupac, entry.iupac) &&
-				Objects.equals(accurateMass, entry.accurateMass) &&
-				Objects.equals(tonnage, entry.tonnage) &&
-				Objects.equals(lastModified, entry.lastModified) &&
-				Objects.equals(logpValues, entry.logpValues) &&
-				Objects.equals(logdValues, entry.logdValues) &&
-				Objects.equals(additionalNames, entry.additionalNames) &&
-				Objects.equals(massBankIds, entry.massBankIds) &&
-				Objects.equals(categories, entry.categories) &&
-				Objects.equals(sourceLists, entry.sourceLists) &&
-				Objects.equals(dtxsid, entry.dtxsid);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(publicID, name, inchi, inchiKey, cas, ecNumber, smiles, elementalFormula, iupac, accurateMass, tonnage, lastModified, logpValues, logdValues, additionalNames, massBankIds, categories, sourceLists, dtxsid);
 	}
 }

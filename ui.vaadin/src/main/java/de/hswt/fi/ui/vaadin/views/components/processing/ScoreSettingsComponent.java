@@ -12,8 +12,6 @@ import de.hswt.fi.processing.service.model.ScoreSettings;
 import de.hswt.fi.ui.vaadin.CustomValoTheme;
 import de.hswt.fi.ui.vaadin.UIMessageKeys;
 import de.hswt.fi.ui.vaadin.fields.ProcessingUnitStateField;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.vaadin.spring.annotation.PrototypeScope;
 import org.vaadin.spring.i18n.I18N;
 
@@ -31,24 +29,14 @@ import java.util.stream.Stream;
 @PrototypeScope
 public class ScoreSettingsComponent extends CustomField<ScoreSettings> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ScoreSettings.class);
-
 	private final I18N i18n;
-
 	private CssLayout layout;
-
 	private ProcessingUnitStateField massScreeningStateField;
-
 	private ProcessingUnitStateField rtiScreeningStateField;
-
 	private ProcessingUnitStateField msmsStateField;
-
 	private ProcessingUnitStateField tpStateField;
-
 	private ProcessingUnitStateField massBankStateField;
-
 	private List<ProcessingUnitStateField> stateFields;
-
 	private Binder<ScoreSettings> binder;
 
 	public ScoreSettingsComponent(I18N i18n) {

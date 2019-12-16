@@ -27,17 +27,17 @@ public interface RTICalculationService {
 	 Double interpolateRTIfromRT(Double rt, List<RTICalibrationData> calibration);
 
 	/**
-	 * Interpolate a logD value from rt (retention time) derived from the given
+	 * Interpolate a signal value from rt (retention time) derived from the given
 	 * calibration data.
 	 *
 	 * @param rt
 	 *            the retention time
 	 * @param calibration
-	 *            the calibration data used to interpolate a logD value
-	 * @return the logD based on the rt and the calibration data, or null if the
+	 *            the calibration data used to interpolate a signal value
+	 * @return the signal based on the rt and the calibration data, or null if the
 	 *         interpolation could not be performed
 	 */
-	 Double interpolateLogD(Double rt, List<RTICalibrationData> calibration);
+	 Double interpolateSignal(Double rt, List<RTICalibrationData> calibration);
 
 	/**
 	 * Interpolate a value for yt, x1/y1 and x2/y2 define two points in a 2D
@@ -60,28 +60,28 @@ public interface RTICalculationService {
 	 Double interpolate(double x1, double x2, double xt, double y1, double y2);
 
 	/**
-	 * Calculates (predicts) logD value in the targets, based on the
+	 * Calculates (predicts) signal value in the targets, based on the
 	 * calibrations list. Therefore the RTI for each target is computed. From
-	 * this RTI value the logD value of each target is predicted.
+	 * this RTI value the signal value of each target is predicted.
 	 *
 	 * @param calibrations
 	 *            the calibrations on which the calculations are based
 	 * @param targets
-	 *            the targets to calculate the RTI and logD
+	 *            the targets to calculate the RTI and signal
 	 */
-	 void calculateLogD(List<RTICalibrationData> calibrations, List<Feature> targets);
+	 void calculateSignal(List<RTICalibrationData> calibrations, List<Feature> targets);
 
 	/**
-	 * Derive (calculates) a logD value based on a RTI value and the calibration
+	 * Derive (calculates) a signal value based on a RTI value and the calibration
 	 * data.
 	 *
 	 * @param rti
 	 *            the RTI value
 	 * @param calibrations
 	 *            the calibrations on which the calculations are based
-	 * @return the derived logD value
+	 * @return the derived signal value
 	 */
-	 Double deriveLogDFromRTI(Double rti, List<RTICalibrationData> calibrations);
+	 Double deriveSignalFromRTI(Double rti, List<RTICalibrationData> calibrations);
 
 	/**
 	 * Calculates the RTI (Retention Time index) of the calibrations data. For
@@ -98,7 +98,7 @@ public interface RTICalculationService {
 	/**
 	 * Invalidates the retention time values for the set of calibration substances
 	 * where the retention time of a substance is lower than the retention time of
-	 * a substance with lower logD value.
+	 * a substance with lower signal value.
 	 *
 	 * @param calibrations
 	 * 				the calibrations data to be filtered by invalid retention times

@@ -18,7 +18,7 @@ public class ExcelImportWatersUnifiTest extends AbstractImportTest {
 	public FileBasedFeatureContentImporter getFileImporter() {
 		return new ExcelFeatureContentImporter(
 				Collections.singletonList(new WatersUnifiExcelReader()),
-				Collections.singletonList(new CalibrationExcelReader()));
+				Collections.singletonList(new CalibrationExcelReaderGC()));
 	}
 
 	@Override

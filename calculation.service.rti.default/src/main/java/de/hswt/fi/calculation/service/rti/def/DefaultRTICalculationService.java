@@ -68,15 +68,8 @@ public class DefaultRTICalculationService implements RTICalculationService {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hswt.riskident.rti.algo.api.RTICalculationService#interpolateLogD(
-	 * double, java.util.List)
-	 */
 	@Override
-	public Double interpolateLogD(Double rt, List<RTICalibrationData> calibration) {
+	public Double interpolateSignal(Double rt, List<RTICalibrationData> calibration) {
 		
 		if(rt == null) {
 			return null;
@@ -86,10 +79,10 @@ public class DefaultRTICalculationService implements RTICalculationService {
 		int lowerIndex;
 		int upperIndex = 0;
 		for (int i = 0; i < calibration.size(); i++) {
-			double logPValue = calibration.get(i).getLogD();
+			double signal = calibration.get(i).getSignal();
 			double rtValue = calibration.get(i).getMeanRt();
-			if (Double.compare(logPValue, 0.0) == 0
-					|| Double.compare(logPValue, Double.MAX_VALUE) == 0
+			if (Double.compare(signal, 0.0) == 0
+					|| Double.compare(signal, Double.MAX_VALUE) == 0
 					|| Double.compare(rtValue, 0.0) == 0
 					|| Double.compare(rtValue, Double.MAX_VALUE) == 0) {
 				continue;
@@ -104,8 +97,8 @@ public class DefaultRTICalculationService implements RTICalculationService {
 					&& rt <= calibration.get(upperIndex).getMeanRt()) {
 				return interpolate(calibration.get(lowerIndex).getMeanRt(),
 						calibration.get(upperIndex).getMeanRt(), rt,
-						calibration.get(lowerIndex).getLogD(),
-						calibration.get(upperIndex).getLogD());
+						calibration.get(lowerIndex).getSignal(),
+						calibration.get(upperIndex).getSignal());
 			}
 		}
 
@@ -133,33 +126,19 @@ public class DefaultRTICalculationService implements RTICalculationService {
 		return r * ydiff + y1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hswt.riskident.rti.algo.api.RTICalculationService#calculateLogD(java.
-	 * util.List, java.util.List)
-	 */
 	@Override
-	public void calculateLogD(List<RTICalibrationData> calibrations, List<Feature> targets) {
+	public void calculateSignal(List<RTICalibrationData> calibrations, List<Feature> targets) {
 		for (Feature target : targets) {
 			Double rti = interpolateRTIfromRT(target.getRetentionTime(), calibrations);
 			if (rti != null) {
 				target.setRetentionTimeIndex(rti);
-				target.setLogD(deriveLogDFromRTI(rti, calibrations));
+				target.setRetentionTimeSignal(deriveSignalFromRTI(rti, calibrations));
 			}
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hswt.riskident.rti.algo.api.RTICalculationService#deriveLogDFromRTI(
-	 * double, java.util.List)
-	 */
 	@Override
-	public Double deriveLogDFromRTI(Double rti, List<RTICalibrationData> calibrations) {
+	public Double deriveSignalFromRTI(Double rti, List<RTICalibrationData> calibrations) {
 		
 		if(rti == null) {
 			return null;
@@ -167,7 +146,7 @@ public class DefaultRTICalculationService implements RTICalculationService {
 		
 		ArrayList<Double> logPs = new ArrayList<>();
 		for (RTICalibrationData calibration : calibrations) {
-			logPs.add(calibration.getLogD());
+			logPs.add(calibration.getSignal());
 		}
 		double min = Collections.min(logPs);
 		double max = Collections.max(logPs);
@@ -175,23 +154,16 @@ public class DefaultRTICalculationService implements RTICalculationService {
 		return min + (rti - MIN_INDEX) / (MAX_INDEX - MIN_INDEX) * (max - min);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.hswt.riskident.rti.algo.api.RTICalculationService#calculateRetentionTimeIndex(java.
-	 * util.List)
-	 */
 	@Override
 	public void calculateRetentionTimeIndex(List<RTICalibrationData> calibrations) {
 		if (calibrations.isEmpty()) {
 			return;
 		}
 
-		double min = calibrations.get(0).getLogD();
+		double min = calibrations.get(0).getSignal();
 		double max = min;
 		for (int i = 1; i < calibrations.size(); i++) {
-			double logD = calibrations.get(i).getLogD();
+			double logD = calibrations.get(i).getSignal();
 			if (logD < min) {
 				min = logD;
 			} else if (logD > max) {
@@ -200,29 +172,22 @@ public class DefaultRTICalculationService implements RTICalculationService {
 		}
 
 		for (RTICalibrationData data : calibrations) {
-			if (Double.compare(data.getLogD(), min) == 0) {
+			if (Double.compare(data.getSignal(), min) == 0) {
 				data.setRti(MIN_INDEX);
 				continue;
-			} else if (Double.compare(data.getLogD(), max) == 0) {
+			} else if (Double.compare(data.getSignal(), max) == 0) {
 				data.setRti(MAX_INDEX);
 				continue;
 			}
-			data.setRti(MIN_INDEX + (data.getLogD() - min) / (max - min) * (MAX_INDEX - MIN_INDEX));
+			data.setRti(MIN_INDEX + (data.getSignal() - min) / (max - min) * (MAX_INDEX - MIN_INDEX));
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * de.hswt.riskident.rti.algo.api.RTICalculationService#filterInvalidRTs(java.
-	 * util.List)
-	 */
 	@Override
 	public void filterInvalidRTs(List<RTICalibrationData> calibrations) {
 
 		List<RTICalibrationData> sortedByLogD = calibrations.stream()
-				.sorted(Comparator.comparingDouble(RTICalibrationData::getLogD))
+				.sorted(Comparator.comparingDouble(RTICalibrationData::getSignal))
 				.collect(Collectors.toList());
 
 		// Each retention time greater than the previous one will be discarded (invalidated)

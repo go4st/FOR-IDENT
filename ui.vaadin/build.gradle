@@ -50,6 +50,7 @@ dependencies {
 
 	compile name: "de.hswt.vaadin-pathway-0.0.1-SNAPSHOT"
 	compile "com.google.code.gson:gson"
+	compile "com.google.gwt:gwt-user:2.8.2"
 
 	compile name: "de.hswt.vaadin-score-renderer-0.0.1-SNAPSHOT"
 }

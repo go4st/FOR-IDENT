@@ -48,6 +48,7 @@ include "search.service.search.api"
 include "search.service.search.stoffident"
 include "search.service.search.plantident"
 include "search.service.search.duftstoffident"
+include "search.service.search.pfcident"
 include "search.service.tp.api"
 include "search.service.tp.default"
 include "search.service.tp.model"
@@ -59,4 +60,6 @@ include "userproperties.service.api"
 include "userproperties.service.default"
 include "userproperties.service.model"
 include "web.service.default"
+include 'search.service.search.pfcident'
+include 'search.service.search.pfcident'
 

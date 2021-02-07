@@ -55,13 +55,13 @@ subprojects {
     repositories() {
         mavenCentral()
         maven { url = "https://maven.vaadin.com/vaadin-prereleases" }
-        maven { url = "http://maven.vaadin.com/vaadin-addons" }
+        maven { url = "https://maven.vaadin.com/vaadin-addons" }
         maven { url = "https://oss.sonatype.org/content/repositories/snapshots" }
-        maven { url = "http://repo.spring.io/repo/" }
-        maven { url = "http://www.ebi.ac.uk/~maven/m2repo" }
+        maven { url = "https://repo.spring.io/repo/" }
+        maven { url = "https://www.ebi.ac.uk/~maven/m2repo" }
 
         // Needed for jmzml related dependency
-        maven { url = "http://repo.spring.io/plugins-release/" }
+        maven { url = "https://repo.spring.io/plugins-release/" }
         flatDir {
             dirs "$rootProject.projectDir/libraries/metfrag"
             dirs "$rootProject.projectDir/libraries/chemspider"

@@ -1,4 +1,4 @@
-package de.hswt.fi.search.service.index.rti.model;
+package de.hswt.fi.search.service.index.model;
 
 public enum MoleculePhDependency {
 

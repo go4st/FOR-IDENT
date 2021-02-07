@@ -3,7 +3,6 @@ package de.hswt.fi.search.service.index.henry;
 import de.hswt.fi.common.spring.Profiles;
 import de.hswt.fi.model.Feature;
 import de.hswt.fi.model.Score;
-import de.hswt.fi.search.service.henry.model.HenrySearchResult;
 import de.hswt.fi.search.service.index.api.IndexSearchService;
 import de.hswt.fi.search.service.index.model.IndexJob;
 import de.hswt.fi.search.service.index.model.IndexSearchResult;
@@ -33,7 +32,7 @@ public class HenrySearchService implements IndexSearchService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HenrySearchService.class);
 
-	private List<HenrySearchResult> candidates;
+	private List<IndexSearchResult> candidates;
 
 	@Override
 	public IndexSearchResults executeJob(IndexJob job, List<CompoundSearchService> searchServices) {
@@ -67,8 +66,8 @@ public class HenrySearchService implements IndexSearchService {
 			LOGGER.debug("No search service available, RTI search not performed");
 		}
 
-		Comparator<HenrySearchResult> byTarget = Comparator.comparing(HenrySearchResult::getTargetIdentifier);
-		Comparator<HenrySearchResult> byScore = Comparator.comparing(t -> t.getScore().getScoreValue());
+		Comparator<IndexSearchResult> byTarget = Comparator.comparing(IndexSearchResult::getTargetIdentifier);
+		Comparator<IndexSearchResult> byScore = Comparator.comparing(t -> t.getScore().getScoreValue());
 
 		candidates = candidates.stream().sorted(byTarget.thenComparing(byScore.reversed()))
 				.collect(Collectors.toList());
@@ -83,7 +82,7 @@ public class HenrySearchService implements IndexSearchService {
 
 	@Override
 	public IndexSearchResult getDummyResult() {
-		return new HenrySearchResult("", null, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN);
+		return new IndexSearchResult("", null, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN);
 	}
 
 	/**
@@ -120,14 +119,14 @@ public class HenrySearchService implements IndexSearchService {
 		public void run() {
 			double searchValue = feature.getNeutralMass();
 
-			ArrayList<HenrySearchResult> tempEntries = new ArrayList<>();
+			ArrayList<IndexSearchResult> tempEntries = new ArrayList<>();
 			List<Entry> searchResult = searchServices.stream()
 					.map(searchService -> searchService.searchByAccurateMass(new NumberSearchProperty(searchValue, ppm)))
 					.flatMap(List::stream)
 					.collect(Collectors.toList());
 
 			for (Entry entry : searchResult) {
-				tempEntries.add(new HenrySearchResult(feature.getIdentifier(), entry,
+				tempEntries.add(new IndexSearchResult(feature.getIdentifier(), entry,
 						feature.getRetentionTime(), searchValue, ppm, feature.getRetentionTimeIndex(), feature.getRetentionTimeSignal()));
 			}
 
@@ -139,12 +138,12 @@ public class HenrySearchService implements IndexSearchService {
 			}
 		}
 
-		private void calculateScore(ArrayList<HenrySearchResult> entries) {
+		private void calculateScore(ArrayList<IndexSearchResult> entries) {
 			if (entries == null || entries.isEmpty()) {
 				return;
 			}
 
-			for (HenrySearchResult entry : entries) {
+			for (IndexSearchResult entry : entries) {
 				Score scoreSummery;
 				if (entry.isAvailable()) {
 					double henry = entry.getEntry().getHenryBond().getValue();
@@ -159,22 +158,22 @@ public class HenrySearchService implements IndexSearchService {
 			}
 		}
 
-		private void findBestMatch(ArrayList<HenrySearchResult> entries) {
+		private void findBestMatch(ArrayList<IndexSearchResult> entries) {
 
 			if (entries == null || entries.isEmpty()) {
 				return;
 			}
 
-			Optional<HenrySearchResult> optional = entries.stream()
+			Optional<IndexSearchResult> optional = entries.stream()
 					.max(Comparator.comparingDouble(entry -> entry.getScore().getScoreValue()));
 
-			HenrySearchResult rtiSearchResult = optional.get();
+			IndexSearchResult rtiSearchResult = optional.get();
 			rtiSearchResult.setFirst(true);
 
 			optional = entries.stream().min(Comparator.comparingDouble(e -> e.getScore().getScoreValue()));
 
 			if (optional.isPresent()) {
-                HenrySearchResult r = optional.get();
+                IndexSearchResult r = optional.get();
 				r.setLast(true);
 			}
 		}

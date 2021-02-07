@@ -177,6 +177,7 @@ public abstract class AbstractResultsComponent<SEARCHPARAMETER, RESULT, ENTRY, R
 		this.resultContainer = resultContainer;
 
 		if (!resultContainer.getResultsContainer().equals(results)) {
+			LOG.debug("not equal");
 			results = resultContainer.getResultsContainer();
 			resultsContainerChangedInternal();
 		}

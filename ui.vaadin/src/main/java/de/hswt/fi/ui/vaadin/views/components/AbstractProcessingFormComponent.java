@@ -57,8 +57,6 @@ public abstract class AbstractProcessingFormComponent extends ContainerContentCo
 
     protected abstract void reuseSettings(ProcessingJob job);
 
-    protected abstract TextField getIntensityTresholdField();
-
     @PostConstruct
     private void postConstruct() {
 
@@ -216,11 +214,6 @@ public abstract class AbstractProcessingFormComponent extends ContainerContentCo
         } catch (ValidationException e) {
             LOGGER.error(e.getMessage());
             return;
-        }
-
-        String intensityThreshold = getIntensityTresholdField().getValue();
-        if (intensityThreshold != null && !intensityThreshold.isEmpty()) {
-            settings.setIntensityThreshold(Double.parseDouble(intensityThreshold));
         }
 
         ProcessingJob job = new ProcessingJob(settings, listItem.getItemData().getFeatureSet());

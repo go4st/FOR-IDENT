@@ -24,7 +24,6 @@ import org.vaadin.spring.i18n.I18N;
 public class ProcessingFormComponentGC extends AbstractProcessingFormComponent {
 
 	private static final long serialVersionUID = 1L;
-	private TextField intensityTresholdField;
 
 	@Autowired
 	public ProcessingFormComponentGC(ViewEventBus viewEventBus, ComponentFactory componentFactory, I18N i18n) {
@@ -51,7 +50,7 @@ public class ProcessingFormComponentGC extends AbstractProcessingFormComponent {
 		ppmFragmentsComboBox.addStyleName(CustomValoTheme.MARGIN_HALF_BOTTOM);
 		fieldsLayout.addComponent(ppmFragmentsComboBox);
 
-		intensityTresholdField = componentFactory.createTextField("Intensity threshold");
+		TextField intensityTresholdField = componentFactory.createTextField("Intensity threshold");
 		fieldsLayout.addComponent(intensityTresholdField);
 
 		ComboBox<Ionisation> ionisationComboBox = componentFactory.createIonisationComboBox();
@@ -93,10 +92,5 @@ public class ProcessingFormComponentGC extends AbstractProcessingFormComponent {
 		job.getSettings().setPrecursorPpm(lastUsedSettings.getPrecursorPpm());
 		job.getSettings().setPpmFragments(lastUsedSettings.getPpmFragments());
 		job.getSettings().setIntensityThreshold(lastUsedSettings.getIntensityThreshold());
-	}
-
-	@Override
-	protected TextField getIntensityTresholdField() {
-		return intensityTresholdField;
 	}
 }

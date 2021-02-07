@@ -7,7 +7,6 @@ import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.renderers.ImageRenderer;
 import de.hswt.fi.common.spring.Profiles;
 import de.hswt.fi.processing.service.model.ProcessCandidate;
-import de.hswt.fi.search.service.index.rti.model.RtiSearchResult;
 import de.hswt.fi.ui.vaadin.CustomValoTheme;
 import de.hswt.fi.ui.vaadin.GridRendererProvider;
 import de.hswt.fi.ui.vaadin.LayoutConstants;
@@ -36,7 +35,7 @@ public class ProcessingResultsComponentLC extends AbstractProcessingResultsCompo
 
 	@Override
 	protected void initRtiScreeningColumns() {
-		Column moleculeDependencyColumn = grid.addColumn(processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getMoleculePhDependency())
+		Column moleculeDependencyColumn = grid.addColumn(processCandidate -> processCandidate.getIndexSearchResult().getMoleculePhDependency())
 				.setWidth(LayoutConstants.COLUMN_WIDTH_TINY)
 				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_PH))
 				.setStyleGenerator(item -> CustomValoTheme.TEXT_CENTER)
@@ -61,14 +60,14 @@ public class ProcessingResultsComponentLC extends AbstractProcessingResultsCompo
 				}, new ImageRenderer<ExternalResource>());
 
 		Column<ProcessCandidate, Double> rtiColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getRti())
+				processCandidate -> processCandidate.getIndexSearchResult().getRetentionTimeIndex())
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM).setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_RTI))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(1));
 
 		Column<ProcessCandidate, Double> resultLogDColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getResultLogD())
+				processCandidate -> processCandidate.getIndexSearchResult().getResultLogD())
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
@@ -76,7 +75,7 @@ public class ProcessingResultsComponentLC extends AbstractProcessingResultsCompo
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2));
 
 		Column<ProcessCandidate, Double> targetLogDColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getTargetLogD())
+				processCandidate -> processCandidate.getIndexSearchResult().getTargetLogD())
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
@@ -84,14 +83,14 @@ public class ProcessingResultsComponentLC extends AbstractProcessingResultsCompo
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2));
 
 		Column<ProcessCandidate, Double> deltaLogDRtiDbColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getDeltaLogDRtiDb())
+				processCandidate -> processCandidate.getIndexSearchResult().getDeltaLogDRtiDb())
 				.setFilterType(Double.class)
 				.setHidable(true).setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2))
 				.setCaption(i18n.get(UIMessageKeys.RTI_RESULT_COLUMN_DELTA_RTI_RESULT_LOG_D));
 
 		Column<ProcessCandidate, Double> adjustedLogDColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getAdjustedLogD())
+				processCandidate -> processCandidate.getIndexSearchResult().getAdjustedLogD())
 				.setFilterType(Double.class)
 				.setHidable(true)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
@@ -99,7 +98,7 @@ public class ProcessingResultsComponentLC extends AbstractProcessingResultsCompo
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2));
 
 		Column<ProcessCandidate, Double> deltaLogDAdjustedDbColumn = grid.addFilterColumn(
-				processCandidate -> ((RtiSearchResult) processCandidate.getIndexSearchResult()).getDeltaLogDAdjustedDb())
+				processCandidate -> processCandidate.getIndexSearchResult().getDeltaLogDAdjustedDb())
 				.setFilterType(Double.class)
 				.setHidable(true).setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(2))

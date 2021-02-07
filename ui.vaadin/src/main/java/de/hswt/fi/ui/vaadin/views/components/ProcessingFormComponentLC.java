@@ -1,5 +1,6 @@
 package de.hswt.fi.ui.vaadin.views.components;
 
+import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
@@ -24,14 +25,13 @@ import org.vaadin.spring.i18n.I18N;
 public class ProcessingFormComponentLC extends AbstractProcessingFormComponent {
 
 	private static final long serialVersionUID = 1L;
-	private TextField intensityTresholdField;
 
 	@Autowired
 	public ProcessingFormComponentLC(ViewEventBus viewEventBus, ComponentFactory componentFactory, I18N i18n) {
 		super(viewEventBus, componentFactory, i18n);
 	}
 
-	@Autowired
+	@Override
 	protected Component getParameterRow() {
 
 		CssLayout container = new CssLayout();
@@ -45,30 +45,40 @@ public class ProcessingFormComponentLC extends AbstractProcessingFormComponent {
 		ComboBox<Double> phComboBox = componentFactory.createPhComboBox();
 		phComboBox.addStyleName(CustomValoTheme.MARGIN_HALF_BOTTOM);
 		fieldsLayout.addComponent(phComboBox);
+		binder.forField(phComboBox)
+				.bind(ProcessingSettings::getPh, ProcessingSettings::setPh);
 
 		// PPM row
 		ComboBox<Double> ppmComboBox = componentFactory.createPpmComboBox();
 		ppmComboBox.setCaption(i18n.get(UIMessageKeys.PROCESSING_FORM_PRECURSOR_PPM));
 		ppmComboBox.addStyleName(CustomValoTheme.MARGIN_HALF_BOTTOM);
 		fieldsLayout.addComponent(ppmComboBox);
+		binder.forField(ppmComboBox)
+				.bind(ProcessingSettings::getRequestedPrecursorPpm, ProcessingSettings::setRequestedPrecursorPpm);
 
 		ComboBox<Double> ppmFragmentsComboBox = componentFactory.createPpmComboBox();
 		ppmFragmentsComboBox.setCaption(i18n.get(UIMessageKeys.PROCESSING_FORM_FRAGMENTS_PPM));
 		ppmFragmentsComboBox.addStyleName(CustomValoTheme.MARGIN_HALF_BOTTOM);
 		fieldsLayout.addComponent(ppmFragmentsComboBox);
+		binder.forField(ppmFragmentsComboBox)
+				.bind(ProcessingSettings::getPpmFragments, ProcessingSettings::setPpmFragments);
 
-		intensityTresholdField = componentFactory.createTextField("Intensity threshold");
+		TextField intensityTresholdField = componentFactory.createTextField("Intensity threshold");
 		fieldsLayout.addComponent(intensityTresholdField);
 
 		// Ionisation row
 		ComboBox<Ionisation> ionisationComboBox = componentFactory.createIonisationComboBox();
 		ionisationComboBox.addStyleName(CustomValoTheme.MARGIN_HALF_BOTTOM);
 		fieldsLayout.addComponent(ionisationComboBox);
+		binder.forField(ionisationComboBox)
+				.bind(ProcessingSettings::getIonisation, ProcessingSettings::setIonisation);
 
 		// Stationary Phase row
 		ComboBox<StationaryPhase> stationaryPhaseComboBox = componentFactory.createStationaryPhaseComboBox();
 		stationaryPhaseComboBox.addStyleName(CustomValoTheme.MARGIN_HALF_BOTTOM);
 		fieldsLayout.addComponent(stationaryPhaseComboBox);
+		binder.forField(stationaryPhaseComboBox)
+				.bind(ProcessingSettings::getStationaryPhase, ProcessingSettings::setStationaryPhase);
 
 		// Container to archive top margin
 		container.addComponent(fieldsLayout);
@@ -89,6 +99,11 @@ public class ProcessingFormComponentLC extends AbstractProcessingFormComponent {
 		parameterLayout.addStyleName(CustomValoTheme.PADDING_HALF_TOP);
 		parameterLayout.setWidth("100%");
 
+		binder.forField(intensityTresholdField)
+				.withConverter(new StringToDoubleConverter("No valid number input"))
+				.bind(ProcessingSettings::getIntensityThreshold, ProcessingSettings::setIntensityThreshold);
+
+
 		return parameterLayout;
 	}
 
@@ -99,10 +114,5 @@ public class ProcessingFormComponentLC extends AbstractProcessingFormComponent {
 		job.getSettings().setPrecursorPpm(lastUsedSettings.getPrecursorPpm());
 		job.getSettings().setPpmFragments(lastUsedSettings.getPpmFragments());
 		job.getSettings().setIntensityThreshold(lastUsedSettings.getIntensityThreshold());
-	}
-
-	@Override
-	public TextField getIntensityTresholdField() {
-		return intensityTresholdField;
 	}
 }

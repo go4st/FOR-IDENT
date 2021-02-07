@@ -1,6 +1,7 @@
 package de.hswt.fi.ui.vaadin.views.components;
 
 import com.vaadin.data.provider.DataProvider;
+import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.data.provider.Query;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.grid.HeightMode;
@@ -24,6 +25,8 @@ import de.hswt.fi.ui.vaadin.UIMessageKeys;
 import de.hswt.fi.ui.vaadin.container.SearchResultContainer;
 import de.hswt.fi.ui.vaadin.factories.ComponentFactory;
 import de.hswt.fi.ui.vaadin.grid.FilterGrid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.i18n.I18N;
@@ -38,6 +41,7 @@ import java.util.stream.Collectors;
 public class SearchResultsComponent
 		extends AbstractResultsComponent<SearchParameter, SearchResult, Entry, SearchResultContainer> {
 
+	private static final Logger LOG = LoggerFactory.getLogger(SearchResultsComponent.class);
 	private static final long serialVersionUID = 6326600623156331195L;
 	private final ComponentFactory componentFactory;
 	private FilterGrid<Entry> grid;
@@ -153,29 +157,29 @@ public class SearchResultsComponent
 				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
 				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_MASS));
 
-		grid.addFilterColumn(entry -> entry.getHenryBond().getValue())
-				.setFilterType(Double.class)
-				.setHidable(true)
-				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
-				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_BOND));
-
-		grid.addFilterColumn(entry -> entry.getHenryGroup().getValue())
-				.setFilterType(Double.class)
-				.setHidable(true)
-				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
-				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_GROUP));
-
-		grid.addFilterColumn(entry -> entry.getHenryExper().getValue())
-				.setFilterType(Double.class)
-				.setHidable(true)
-				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
-				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_EXPER));
-
-		grid.addFilterColumn(entry -> entry.getTonnage().getValue())
-				.setFilterType(String.class)
-				.setHidable(true)
-				.setWidth(LayoutConstants.COLUMN_WIDTH_LARGE)
-				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_TONNAGE));
+//		grid.addFilterColumn(entry -> entry.getHenryBond().getValue())
+//				.setFilterType(Double.class)
+//				.setHidable(true)
+//				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
+//				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_BOND));
+//
+//		grid.addFilterColumn(entry -> entry.getHenryGroup().getValue())
+//				.setFilterType(Double.class)
+//				.setHidable(true)
+//				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
+//				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_GROUP));
+//
+//		grid.addFilterColumn(entry -> entry.getHenryExper().getValue())
+//				.setFilterType(Double.class)
+//				.setHidable(true)
+//				.setWidth(LayoutConstants.COLUMN_WIDTH_MEDIUM)
+//				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_HENRY_EXPER));
+//
+//		grid.addFilterColumn(entry -> entry.getTonnage().getValue())
+//				.setFilterType(String.class)
+//				.setHidable(true)
+//				.setWidth(LayoutConstants.COLUMN_WIDTH_LARGE)
+//				.setCaption(i18n.get(UIMessageKeys.SEARCH_RESULT_GRID_COLUMN_TONNAGE));
 
 		grid.addFilterColumn(entry -> {
 			String datasourceName = entry.getDatasourceName();
@@ -197,16 +201,19 @@ public class SearchResultsComponent
 
 		clearFilter();
 
-		grid.setListDataProvider(DataProvider.ofCollection(results));
+		ListDataProvider<Entry> dataProvider = DataProvider.ofCollection(results);
+
+		grid.setListDataProvider(dataProvider);
 		grid.getDataProvider().addDataProviderListener(event -> updateResultsCountLabel());
 		grid.recalculateColumnWidths();
-
 		updateResultsCountLabel();
+
+		dataProvider.refreshAll();
 	}
 
 	private void updateResultsCountLabel() {
 		resultsLabel.setValue(i18n.get(UIMessageKeys.RESULTS_COUNT_PARAMETERIZED,
-				results.size(), grid.getDataProvider().size(new Query<>())));
+				results.size(), results.size()));
 	}
 
 	@Override

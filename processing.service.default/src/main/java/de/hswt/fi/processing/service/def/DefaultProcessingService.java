@@ -260,6 +260,8 @@ public class DefaultProcessingService implements ProcessingService {
 		IndexSettings indexSettings = new IndexSettings();
 		indexSettings.setIonisation(job.getSettings().getIonisation());
 		indexSettings.setPpm(job.getSettings().getPrecursorPpm());
+		indexSettings.setPh(job.getSettings().getPh());
+		indexSettings.setStationaryPhase(job.getSettings().getStationaryPhase());
 
 		IndexJob indexJob = new IndexJob(indexSettings, job.getFeatureSet());
 

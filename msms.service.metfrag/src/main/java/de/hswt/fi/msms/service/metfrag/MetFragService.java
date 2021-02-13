@@ -153,7 +153,7 @@ public class MetFragService implements MsMsService {
 				(String) candidate.getProperty("InChIKey1"),
 				(double) candidate.getProperty("FragmenterScore"),
 				(String) candidate.getProperty("FragmenterScore_Values"),
-				data.getPeaks(),
+				data.getUsedPeaks(),
 				candidateFragments);
 	}
 
@@ -163,7 +163,7 @@ public class MetFragService implements MsMsService {
 
 		SortedTandemMassPeakList peakList = new SortedTandemMassPeakList(feature.getNeutralMass());
 
-		for (Peak peak : feature.getPeaks()) {
+		for (Peak peak : feature.getUsedPeaks()) {
 			peakList.addElement(new TandemMassPeak(peak.getMz(), peak.getIntensity(),
 					peak.getRelativeIntensity()));
 		}

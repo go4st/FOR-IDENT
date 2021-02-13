@@ -48,6 +48,8 @@ public class Feature implements Serializable {
 
     private List<Peak> peaks;
 
+    private List<Peak> usedPeaks;
+
     private Double relativeFactor;
 
     private Feature(Builder builder) {
@@ -61,6 +63,7 @@ public class Feature implements Serializable {
         this.neutralFormula = builder.neutralFormula;
         this.massCalculated = builder.massCalculated;
         this.peaks = builder.peaks;
+        this.usedPeaks = builder.peaks;
         this.relativeFactor = builder.relativeFactor;
     }
 
@@ -138,6 +141,14 @@ public class Feature implements Serializable {
         this.peaks = peaks;
     }
 
+    public List<Peak> getUsedPeaks() {
+        return usedPeaks;
+    }
+
+    public void setUsedPeaks(List<Peak> usedPeaks) {
+        this.usedPeaks = usedPeaks;
+    }
+
     public Double getRelativeFactor() {
         return relativeFactor;
     }
@@ -161,13 +172,14 @@ public class Feature implements Serializable {
                 Objects.equals(formulaDerivedMass, feature.formulaDerivedMass) &&
                 Objects.equals(neutralMass, feature.neutralMass) &&
                 Objects.equals(peaks, feature.peaks) &&
+                Objects.equals(usedPeaks, feature.usedPeaks) &&
                 Objects.equals(relativeFactor, feature.relativeFactor);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(identifier, precursorMass, neutralFormula, retentionTimeIndex, retentionTime, retentionTimeSignal,
-                formulaDerivedMass, neutralMass, massCalculated, peaks, relativeFactor);
+                formulaDerivedMass, neutralMass, massCalculated, peaks, usedPeaks, relativeFactor);
     }
 
     @Override
@@ -193,6 +205,8 @@ public class Feature implements Serializable {
         builder.append(massCalculated);
         builder.append(", peaks=");
         builder.append(peaks);
+        builder.append(", usedPeaks=");
+        builder.append(usedPeaks);
         builder.append(", relativeFactor=");
         builder.append(relativeFactor);
         builder.append("]");
@@ -225,7 +239,6 @@ public class Feature implements Serializable {
         private List<Peak> peaks;
 
         private Double relativeFactor;
-
 
         @JsonCreator
         public Builder(@JsonProperty("identifier") String identifier,

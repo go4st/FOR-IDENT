@@ -133,12 +133,13 @@ public class DownloadWindow<T> extends AbstractWindow {
 		columnOptionGroup.setWidth("100%");
 		columnOptionGroup.setHeight(LayoutConstants.LARGE);
 		columnOptionGroup.addStyleName(CustomValoTheme.SCROLL_OVERFLOW);
+		columnOptionGroup.addValueChangeListener(event -> initDownloadButton());
 		layout.addComponent(columnOptionGroup);
 
 		contentLayout.addComponent(componentFactory.createRowLayout(layout));
 	}
 
-	private void initDownloadButton() {
+	public void initDownloadButton() {
 		downloadButton = new DownloadButton(getExcel());
 		downloadButton.setCaption(i18n.get(UIMessageKeys.EXPORT_WINDOW_DOWNLOAD_BUTTON_CAPTION));
 		replaceOkButton(downloadButton);
@@ -155,19 +156,13 @@ public class DownloadWindow<T> extends AbstractWindow {
 	private DownloadButton.ContentWriter getExcel() {
 
 		return stream -> {
-
-			try (Workbook workbook =
+			try (
+					Workbook workbook =
 						 exportCreator.createWorkbook(createExcelFileDefinition(sourceFilePath, addSourceFile))) {
 				workbook.write(stream);
 				stream.close();
 			} catch (IOException e) {
 				LOGGER.error(e.getMessage());
-			} finally {
-				try {
-					stream.close();
-				} catch (IOException e) {
-					LOGGER.error(e.getMessage());
-				}
 			}
 		};
 	}
@@ -239,7 +234,7 @@ public class DownloadWindow<T> extends AbstractWindow {
 		this.entries = entries;
 	}
 
-	private void clear() {
+	public void clear() {
 		includeSourceCheckBox.setEnabled(true);
 		includeSourceCheckBox.clear();
 		columnOptionGroup.clear();

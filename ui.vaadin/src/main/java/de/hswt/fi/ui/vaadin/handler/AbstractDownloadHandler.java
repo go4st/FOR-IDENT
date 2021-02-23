@@ -47,12 +47,14 @@ public abstract class AbstractDownloadHandler<T> extends AbstractWindowHandler<V
         downloadWindow.setFileName(fileName);
         downloadWindow.setSheetName(
         		i18n.get(UIMessageKeys.RESULTS_DOWNLOAD_HANDLER_EXCEL_SPREADSHEET_DEFINITION_RESULTS));
+        downloadWindow.initDownloadButton();
         UI.getCurrent().addWindow(downloadWindow);
     }
 
     protected void downloadRecords(List<T> entries, List<String> selectedColumnIds, List<String> possibleColumnIds,
                                    List<ExcelSheetDefinition> optionalSheets, String sheetName, Path sourceFilePath,
                                    boolean addSourceFile, boolean enableSourcesCheckbox) {
+        downloadWindow.clear();
         downloadWindow.setEntries(entries);
         downloadWindow.setPossibleExportColumns(
                 mapper.getPropertyCaptions(entries.iterator().next(), possibleColumnIds));
@@ -68,7 +70,7 @@ public abstract class AbstractDownloadHandler<T> extends AbstractWindowHandler<V
         }
         downloadWindow.setSheetName(sheetName);
         downloadWindow.setIncludeSourcesEnabled(enableSourcesCheckbox);
-
+        downloadWindow.initDownloadButton();
         UI.getCurrent().addWindow(downloadWindow);
     }
 

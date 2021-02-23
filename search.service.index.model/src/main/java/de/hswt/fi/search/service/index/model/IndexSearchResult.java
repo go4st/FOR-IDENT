@@ -56,10 +56,10 @@ public class IndexSearchResult {
 
     private String stationaryPhase;
 
-    @BeanColumn(format = "%.2f", selector = true, i18nId = de.hswt.fi.search.service.index.model.I18nKeys.RTI_MODEL_RTI)
+    @BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_SIGNAL_MODEL_RTI)
     protected Double retentionTimeSignal;
 
-    @BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_MODEL_RTI)
+    @BeanColumn(format = "%.2f", selector = true, i18nId = I18nKeys.RTI_DELTA_SIGNAL_MODEL_RTI)
     protected Double deltaRetentionTimeSignal;
 
     // Entry is already annotated as BeanColumn in the mandatory processing result MassSearchResult

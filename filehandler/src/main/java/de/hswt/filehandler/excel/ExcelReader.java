@@ -85,6 +85,12 @@ public abstract class ExcelReader implements Reader<Workbook> {
 			return 0.0;
 		}
 
+		try {
+			workbook.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		return scoreValue;
 	}
 

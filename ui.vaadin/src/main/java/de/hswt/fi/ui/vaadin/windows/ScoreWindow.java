@@ -38,7 +38,7 @@ public class ScoreWindow extends AbstractWindow {
 
     private final ProcessingUnitStateFieldEditable msmsField;
 
-    private final ProcessingUnitStateFieldEditable tpField;
+//    private final ProcessingUnitStateFieldEditable tpField;
 
     private final ProcessingUnitStateFieldEditable massBankStateField;
 
@@ -64,7 +64,7 @@ public class ScoreWindow extends AbstractWindow {
         this.massScreeningStateField = massScreeningStateField;
         this.rtiScreeningStateField = rtiScreeningStateField;
         this.msmsField = msmsField;
-        this.tpField = tpField;
+//        this.tpField = tpField;
         this.massBankStateField = massBankStateField;
     }
 
@@ -123,9 +123,9 @@ public class ScoreWindow extends AbstractWindow {
         binder.forField(msmsField)
                 .bind(processingSettings -> processingSettings.getScoreSettings().getMsmsState(),
                         (processingSettings, processingUnitState) -> processingSettings.getScoreSettings().setMsmsState(processingUnitState));
-        binder.forField(tpField)
-                .bind(processingSettings -> processingSettings.getScoreSettings().getTpState(),
-                        (processingSettings, processingUnitState) -> processingSettings.getScoreSettings().setTpState(processingUnitState));
+//        binder.forField(tpField)
+//                .bind(processingSettings -> processingSettings.getScoreSettings().getTpState(),
+//                        (processingSettings, processingUnitState) -> processingSettings.getScoreSettings().setTpState(processingUnitState));
         binder.forField(massBankStateField)
                 .bind(processingSettings -> processingSettings.getScoreSettings().getMassBankSimpleState(),
                         (processingSettings, processingUnitState) -> processingSettings.getScoreSettings().setMassBankSimpleState(processingUnitState));
@@ -189,12 +189,12 @@ public class ScoreWindow extends AbstractWindow {
         scoringContainerLayout.addComponent(msmsField);
 
 
-        tpField.setCaptionLabel(i18n.get(UIMessageKeys.PROCESSING_FORM_TP_SCORE));
-        tpField.addStyleName(CustomValoTheme.MARGIN_HALF_BOTTOM);
+//        tpField.setCaptionLabel(i18n.get(UIMessageKeys.PROCESSING_FORM_TP_SCORE));
+//        tpField.addStyleName(CustomValoTheme.MARGIN_HALF_BOTTOM);
 
         //TODO Change if TP score is avialable
-        scoringContainerLayout.addComponent(tpField);
-        tpField.setScorable(false);
+//        scoringContainerLayout.addComponent(tpField);
+//        tpField.setScorable(false);
 
         massBankStateField.setCaptionLabel(
                 i18n.get(UIMessageKeys.PROCESSING_FORM_MASSBANK_SIMPLE_SCORE_WEIGHT));
@@ -240,7 +240,7 @@ public class ScoreWindow extends AbstractWindow {
         massScreeningStateField.setWeight(0);
         rtiScreeningStateField.setWeight(0);
         msmsField.setWeight(0);
-        tpField.setWeight(0);
+//        tpField.setWeight(0);
         massBankStateField.setWeight(0);
     }
 

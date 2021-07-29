@@ -22,6 +22,9 @@ public class DefaultLoginUI extends AbstractLoginUI {
 
 	private static final long serialVersionUID = 2939745829111476077L;
 
+	@Value("${de.hswt.fi.ui.header.logo}")
+	private String logo;
+
 	@Autowired
     public DefaultLoginUI(SpringProfileUtil springProfileUtil, I18N i18n, EventBus.UIEventBus uiEventBus,
                           UIScopeHandler uiscopeHandler, @Value("${de.hswt.fi.ui.header.caption}") String title) {
@@ -35,7 +38,7 @@ public class DefaultLoginUI extends AbstractLoginUI {
 		iconLayout.addStyleName("logo");
 		cssLayout.addComponent(iconLayout);
 
-		Embedded logoEmbedded = new Embedded(null, new ThemeResource("img/logo.png"));
+		Embedded logoEmbedded = new Embedded(null, new ThemeResource(logo));
 		logoEmbedded.addStyleName(CustomValoTheme.FLOAT_RIGHT);
 		logoEmbedded.addStyleName(CustomValoTheme.MARGIN);
 		logoEmbedded.addStyleName(CustomValoTheme.BLOCK);

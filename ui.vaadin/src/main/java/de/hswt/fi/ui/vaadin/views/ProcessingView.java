@@ -35,7 +35,7 @@ public class ProcessingView extends AbstractLayoutView {
 	private final DatabaseSourceComponent databaseSourceComponent;
 	private final AbstractProcessingSearchHistoryComponent processingHistoryComponent;
 	private final AbstractProcessingResultsComponent processingResultsComponent;
-	private final ProcessingDataComponent processingDataComponent;
+	private final AbstractProcessingDataComponent processingDataComponent;
 	private final ProcessingHelpComponent processingHelpComponent;
 	private final ProcessingDetailsComponent processingDetailsComponent;
 	private final MsDetailsComponent msmsDetailsComponent;
@@ -45,7 +45,7 @@ public class ProcessingView extends AbstractLayoutView {
 						  AbstractProcessingFormComponent processingFormComponent, DatabaseSourceComponent databaseSourceComponent,
 						  AbstractProcessingSearchHistoryComponent processingHistoryComponent,
 						  AbstractProcessingResultsComponent processingResultsComponent,
-						  ProcessingDataComponent processingDataComponent,
+						  AbstractProcessingDataComponent processingDataComponent,
 						  ProcessingHelpComponent processingHelpComponent,
 						  ProcessingDetailsComponent processingDetailsComponent,
 						  MsDetailsComponent msmsDetailsComponent) {
@@ -124,7 +124,7 @@ public class ProcessingView extends AbstractLayoutView {
 				currentTab, EventBusTopics.PROCESSING_RESULTS_TAB_CHANGED);
 		
 		//When Search content tab is selected change details to msmsdetails
-		if(ProcessingDataComponent.class.isInstance(currentTab)) {
+		if(ProcessingDataComponentGC.class.isInstance(currentTab)) {
 			changeDetailsComponent(msmsDetailsComponent);
 		}
 		else {

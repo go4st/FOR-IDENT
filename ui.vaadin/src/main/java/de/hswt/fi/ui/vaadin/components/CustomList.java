@@ -169,6 +169,8 @@ public class CustomList<COMPONENT extends CssLayout> extends CssLayout {
 	}
 
 	public void removeItem(COMPONENT item) {
+		if (item.equals(currentItem)) currentItem = null;
+		if (item.equals(selectedItem)) selectedItem = null;
 		containerLayout.removeComponent(item);
 	}
 
@@ -252,6 +254,7 @@ public class CustomList<COMPONENT extends CssLayout> extends CssLayout {
 	}
 
 	public void clear() {
+		currentItem = null;
 		selectedItem = null;
 		clickListenerRegistrations.forEach(Registration::remove);
 		containerLayout.removeAllComponents();

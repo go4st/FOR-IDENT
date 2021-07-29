@@ -9,6 +9,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.renderers.HtmlRenderer;
 import com.vaadin.ui.renderers.NumberRenderer;
+import de.hswt.fi.common.spring.Profiles;
 import de.hswt.fi.model.Feature;
 import de.hswt.fi.model.RTICalibrationData;
 import de.hswt.fi.processing.service.model.ProcessingJob;
@@ -21,6 +22,7 @@ import de.hswt.fi.ui.vaadin.eventbus.EventBusTopics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.vaadin.spring.events.EventBus.ViewEventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -30,13 +32,14 @@ import org.vaadin.spring.i18n.I18N;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+@Profile({Profiles.GC, Profiles.DEVELOPMENT_GC})
 @SpringComponent
 @ViewScope
-public class ProcessingDataComponent extends ContainerContentComponent {
+public class ProcessingDataComponentGC extends AbstractProcessingDataComponent {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessingDataComponent.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProcessingDataComponentGC.class);
 
 	private static final int FOLLOWING_DIGITS_RTI = 1;
 
@@ -63,7 +66,7 @@ public class ProcessingDataComponent extends ContainerContentComponent {
 	private boolean isRtiAvailable;
 
 	@Autowired
-	public ProcessingDataComponent(ViewEventBus eventBus, I18N i18n) {
+	public ProcessingDataComponentGC(ViewEventBus eventBus, I18N i18n) {
 		this.eventBus = eventBus;
 		this.i18n = i18n;
 	}
@@ -202,7 +205,7 @@ public class ProcessingDataComponent extends ContainerContentComponent {
 
 		calibrationDataGrid.addColumn(RTICalibrationData::getSignal)
 				.setWidth(LayoutConstants.COLUMN_WIDTH_SMALL)
-				.setCaption(i18n.get(UIMessageKeys.RTI_DATA_CALIBRATION_COLUMN_SIGNAL))
+				.setCaption(i18n.get(UIMessageKeys.RTI_DATA_CALIBRATION_COLUMN_SIGNAL_HENRY))
 				.setRenderer(GridRendererProvider.getLocalizedRenderer(FOLLOWING_DIGITS_LOGD));
 
 		calibrationDataGrid.addColumn(RTICalibrationData::getMeanRt)

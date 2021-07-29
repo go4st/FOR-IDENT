@@ -30,7 +30,7 @@ task pathingJar(type: Jar) {
 	}
 }
 
-def profiles = 'development'
+def profiles = 'development-lc'
 
 bootRun {
 	dependsOn pathingJar
@@ -99,6 +99,7 @@ dependencies {
 	compile project(":search.service.search.stoffident")
 	compile project(":search.service.search.plantident")
 	compile project(":search.service.search.duftstoffident")
+	compile project(":search.service.search.pfcident")
 	compile project(":search.service.tp.api")
 	compile project(":search.service.tp.default")
 	compile project(":search.service.tp.model")

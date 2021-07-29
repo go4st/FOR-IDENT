@@ -85,9 +85,8 @@ public class ExcelFeatureContentImporter
 
 	@Override
 	public boolean canHandle(Path path) {
-		try {
-			return POIXMLDocument.hasOOXMLHeader(new BufferedInputStream( new FileInputStream(path.toFile()))) ||
-					POIFSFileSystem.hasPOIFSHeader(new BufferedInputStream( new FileInputStream(path.toFile())));
+		try (BufferedInputStream is = new BufferedInputStream( new FileInputStream(path.toFile()))){
+			return POIXMLDocument.hasOOXMLHeader(is) || POIFSFileSystem.hasPOIFSHeader(is);
 		} catch (IOException e) {
 			LOGGER.error("An error occured",e);
 		}
@@ -119,6 +118,7 @@ public class ExcelFeatureContentImporter
 		LOGGER.debug("choosing reader with id {}", readerID);
 
 		Object object = mainReader.parseFile(calibrationPath, List.class, readerID);
+
 		if (List.class.isInstance(object)) {
 			calibrationsData = (List<RTICalibrationData>) object;
 		} else {

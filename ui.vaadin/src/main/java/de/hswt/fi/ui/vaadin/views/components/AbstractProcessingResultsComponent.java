@@ -181,14 +181,14 @@ public abstract class AbstractProcessingResultsComponent extends
     }
 
     private void initTPPresentColumn() {
-//        if (isProcessExecuted(ProcessingUnit.TP)) {
-//            grid.addColumn(processCandidate ->
-//                    componentFactory.getCheckedIconHtml(processCandidate.getPathwayCandidate() != null))
-//                    .setWidth(LayoutConstants.COLUMN_WIDTH_TINY)
-//                    .setCaption(i18n.get(UIMessageKeys.PROCESSING_RESULT_COLUMN_HAS_PATHWAY))
-//                    .setStyleGenerator(item -> CustomValoTheme.TEXT_CENTER)
-//                    .setRenderer(new HtmlRenderer());
-//        }
+        if (isProcessExecuted(ProcessingUnit.TP)) {
+            grid.addColumn(processCandidate ->
+                    componentFactory.getCheckedIconHtml(processCandidate.getPathwayCandidate() != null))
+                    .setWidth(LayoutConstants.COLUMN_WIDTH_TINY)
+                    .setCaption(i18n.get(UIMessageKeys.PROCESSING_RESULT_COLUMN_HAS_PATHWAY))
+                    .setStyleGenerator(item -> CustomValoTheme.TEXT_CENTER)
+                    .setRenderer(new HtmlRenderer());
+        }
     }
 
     private void initResultColumns() {

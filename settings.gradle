@@ -61,5 +61,5 @@ include "userproperties.service.default"
 include "userproperties.service.model"
 include "web.service.default"
 include 'search.service.search.pfcident'
-include 'search.service.search.pfcident'
+include 'search.service.search.pollenident'
 

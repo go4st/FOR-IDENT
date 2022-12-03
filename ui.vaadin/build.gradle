@@ -49,6 +49,7 @@ dependencies {
 	compile "javax.inject:javax.inject"
 
 	compile name: "de.hswt.vaadin-pathway-0.0.1-SNAPSHOT"
+	compile "com.google.gwt:gwt-user"
 	compile "com.google.code.gson:gson"
 
 	compile name: "de.hswt.vaadin-score-renderer-0.0.1-SNAPSHOT"

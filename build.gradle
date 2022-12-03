@@ -131,6 +131,7 @@ subprojects {
             dependency "commons-validator:commons-validator:1.6"
             dependency "com.google.guava:guava:23.0"
             dependency "com.google.code.gson:gson:2.8.2"
+            dependency "com.google.gwt:gwt-user:2.8.2"
             dependency "javax.inject:javax.inject:1"
             dependency "javax.servlet:javax.servlet-api:4.0.0"
 

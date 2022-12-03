@@ -87,8 +87,8 @@ public class TaskWindow extends AbstractWindow {
 				return i18n.get(UIMessageKeys.TASK_WINDOW_PROCESSING_RTI);
 			case MSMS:
 				return i18n.get(UIMessageKeys.TASK_WINDOW_PROCESSING_MSMS);
-//			case TP:
-//				return i18n.get(UIMessageKeys.TASK_WINDOW_PROCESSING_TP);
+			case TP:
+				return i18n.get(UIMessageKeys.TASK_WINDOW_PROCESSING_TP);
 			case MASSBANK_SIMPLE:
 				return i18n.get(UIMessageKeys.TASK_WINDOW_PROCESSING_MASSBANK);
 			default:

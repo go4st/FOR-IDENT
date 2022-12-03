@@ -29,6 +29,7 @@ import de.hswt.fi.search.service.tp.model.TransformationProductSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -51,6 +52,9 @@ public class DefaultProcessingService implements ProcessingService {
 	private Consumer<ProcessingUnitState> stateUpdateCallback;
 	private ProcessResultSummary resultSummary;
 	private ProcessingSettings settings;
+
+	@Value("${spring.datasource.pathway.enabled}")
+	private boolean tpEnabled;
 
 	@Override
 	public ProcessingResult executeJob(ProcessingJob job, Consumer<ProcessingUnitState> stateUpdateCallback) {
@@ -105,9 +109,9 @@ public class DefaultProcessingService implements ProcessingService {
 			units.add(ProcessingUnit.MSMS);
 		}
 
-//		if (isTpPossible()) {
-//			units.add(ProcessingUnit.TP);
-//		}
+		if (isTpPossible()) {
+			units.add(ProcessingUnit.TP);
+		}
 
 		units.add(ProcessingUnit.MASSBANK_SIMPLE);
 
@@ -132,9 +136,9 @@ public class DefaultProcessingService implements ProcessingService {
 			order.add(ProcessingUnit.MSMS);
 		}
 
-//		if (settings.getScoreSettings().getTpState().isExecute()) {
-//			order.add(ProcessingUnit.TP);
-//		}
+		if (tpEnabled && settings.getScoreSettings().getTpState().isExecute()) {
+			order.add(ProcessingUnit.TP);
+		}
 
 		if (settings.getScoreSettings().getMassBankSimpleState().isExecute()) {
 			order.add(ProcessingUnit.MASSBANK_SIMPLE);
@@ -153,8 +157,8 @@ public class DefaultProcessingService implements ProcessingService {
 				return executeRti(job, results);
 			case MSMS:
 				return executeMsMs(job, results);
-//			case TP:
-//				return executeTp(job, results);
+			case TP:
+				return executeTp(job, results);
 			case MASSBANK_SIMPLE:
 				return executeMassBankSimple(job, results);
 			default:
@@ -214,41 +218,41 @@ public class DefaultProcessingService implements ProcessingService {
 		return processResults;
 	}
 
-//	private List<ProcessResultWrapper> executeTp(ProcessingJob job, List<ProcessResultWrapper> results) {
-//		updateState(job.getSettings().getScoreSettings().getTpState(), UnitState.PROCESSING);
-//
-//		List<ProcessCandidate> candidates = new ArrayList<>();
-//		for (ProcessResultWrapper result : results) {
-//			candidates.addAll(result.getCandidates());
-//		}
-//
-//		Map<String, ProcessCandidate> known = new HashMap<>();
-//		for (ProcessCandidate candidate : candidates) {
-//			String inChiKey = null;
-//			if (candidate.getEntry() != null) {
-//				inChiKey = candidate.getEntry().getInchiKey().getValue();
-//			}
-//			if (inChiKey != null) {
-//				known.put(inChiKey, candidate);
-//			}
-//		}
-//
-//		TransformationProductSettings tpSettings = new TransformationProductSettings();
-//		tpSettings.setPpm(job.getSettings().getPrecursorPpm());
-//
-//		TransformationProductJob tpJob = new TransformationProductJob(tpSettings,
-//				new ArrayList<>(known.keySet()), job.getFeatureSet());
-//
-//		TransformationProductResult result = tpService.executeJob(tpJob);
-//
-//		for (PathwayCandidate pathwayCandidate : result.getInChiKeyPathwayCandidates()) {
-//			known.get(pathwayCandidate.getInChiKey()).setPathwayCandidate(pathwayCandidate);
-//		}
-//
-//		updateState(job.getSettings().getScoreSettings().getTpState(), UnitState.FINISHED);
-//
-//		return results;
-//	}
+	private List<ProcessResultWrapper> executeTp(ProcessingJob job, List<ProcessResultWrapper> results) {
+		updateState(job.getSettings().getScoreSettings().getTpState(), UnitState.PROCESSING);
+
+		List<ProcessCandidate> candidates = new ArrayList<>();
+		for (ProcessResultWrapper result : results) {
+			candidates.addAll(result.getCandidates());
+		}
+
+		Map<String, ProcessCandidate> known = new HashMap<>();
+		for (ProcessCandidate candidate : candidates) {
+			String inChiKey = null;
+			if (candidate.getEntry() != null) {
+				inChiKey = candidate.getEntry().getInchiKey().getValue();
+			}
+			if (inChiKey != null) {
+				known.put(inChiKey, candidate);
+			}
+		}
+
+		TransformationProductSettings tpSettings = new TransformationProductSettings();
+		tpSettings.setPpm(job.getSettings().getPrecursorPpm());
+
+		TransformationProductJob tpJob = new TransformationProductJob(tpSettings,
+				new ArrayList<>(known.keySet()), job.getFeatureSet());
+
+		TransformationProductResult result = tpService.executeJob(tpJob);
+
+		for (PathwayCandidate pathwayCandidate : result.getInChiKeyPathwayCandidates()) {
+			known.get(pathwayCandidate.getInChiKey()).setPathwayCandidate(pathwayCandidate);
+		}
+
+		updateState(job.getSettings().getScoreSettings().getTpState(), UnitState.FINISHED);
+
+		return results;
+	}
 
 	private List<ProcessResultWrapper> executeRti(ProcessingJob job, List<ProcessResultWrapper> results) {
 
@@ -487,7 +491,7 @@ public class DefaultProcessingService implements ProcessingService {
 	}
 
 	private boolean isTpPossible() {
-		return true;
+		return tpEnabled;
 	}
 
 	private boolean isMsMsPossible(ProcessingJob job) {
@@ -522,7 +526,9 @@ public class DefaultProcessingService implements ProcessingService {
 				job.getFeatureSet().getFeatures().stream()
 						.anyMatch(f -> !f.getPeaks().isEmpty()));
 
-//		job.getSettings().getScoreSettings().getTpState().setDataAvailable(true);
+		if (job.getSettings().getScoreSettings().getTpState() != null ) {
+			job.getSettings().getScoreSettings().getTpState().setDataAvailable(true);
+		}
 
 		job.getSettings().getScoreSettings().getMassBankSimpleState().setDataAvailable(true);
 	}

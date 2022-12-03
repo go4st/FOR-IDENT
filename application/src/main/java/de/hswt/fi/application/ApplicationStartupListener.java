@@ -33,6 +33,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
             LOGGER.debug("Running application in initialization mode!");
             initAdminAccount(securityService);
         }
+
     }
 
     private void initAdminAccount(SecurityService securityService) {

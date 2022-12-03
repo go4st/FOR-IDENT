@@ -4,7 +4,7 @@ public enum ProcessingUnit {
 
 	MASS_SCREENING,
 	RTI_SCREENING,
-//	TP,
+	TP,
 	MSMS,
 	MASSBANK_SIMPLE
 

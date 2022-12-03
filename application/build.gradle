@@ -98,6 +98,7 @@ dependencies {
 	compile project(":search.service.search.api")
 	compile project(":search.service.search.stoffident")
 	compile project(":search.service.search.plantident")
+	compile project(":search.service.search.pollenident")
 	compile project(":search.service.search.duftstoffident")
 	compile project(":search.service.search.pfcident")
 	compile project(":search.service.tp.api")

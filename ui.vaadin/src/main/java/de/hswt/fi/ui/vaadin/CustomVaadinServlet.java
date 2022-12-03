@@ -4,6 +4,7 @@ import com.vaadin.server.*;
 import com.vaadin.spring.server.SpringVaadinServlet;
 import de.hswt.fi.common.spring.Profiles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,9 @@ public class CustomVaadinServlet extends SpringVaadinServlet
 	private static final long serialVersionUID = 1L;
 
 	private final RequestParameterHandler requestHandler;
+
+	@Value("${de.hswt.fi.ui.title}")
+	public String uiTitle;
 
 	@Autowired
 	public CustomVaadinServlet(RequestParameterHandler requestHandler) {
@@ -51,7 +55,7 @@ public class CustomVaadinServlet extends SpringVaadinServlet
 			public void modifyBootstrapPage(BootstrapPageResponse response) {
 				response.getDocument().head().prependElement("meta")
 						.attr("name", "description")
-						.attr("content", "DuftSTOFF-IDENT: improvement in the identification of " +
+						.attr("content", uiTitle + ": improvement in the identification of " +
 								"organic trace substances: merging of resources and standardization of " +
 								"suspected- and non-target analysis");
 			}}

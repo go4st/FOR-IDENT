@@ -34,7 +34,7 @@ public class ScoreSettingsComponent extends CustomField<ScoreSettings> {
 	private ProcessingUnitStateField massScreeningStateField;
 	private ProcessingUnitStateField rtiScreeningStateField;
 	private ProcessingUnitStateField msmsStateField;
-//	private ProcessingUnitStateField tpStateField;
+	private ProcessingUnitStateField tpStateField;
 	private ProcessingUnitStateField massBankStateField;
 	private List<ProcessingUnitStateField> stateFields;
 	private Binder<ScoreSettings> binder;
@@ -75,7 +75,7 @@ public class ScoreSettingsComponent extends CustomField<ScoreSettings> {
 		binder.bind(massScreeningStateField, ScoreSettings::getMassScreeningState, ScoreSettings::setMassScreeningState);
 		binder.bind(rtiScreeningStateField, ScoreSettings::getRtiScreeningState, ScoreSettings::setRtiScreeningState);
 		binder.bind(msmsStateField, ScoreSettings::getMsmsState, ScoreSettings::setMsmsState);
-//		binder.bind(tpStateField, ScoreSettings::getTpState, ScoreSettings::setTpState);
+		binder.bind(tpStateField, ScoreSettings::getTpState, ScoreSettings::setTpState);
 		binder.bind(massBankStateField, ScoreSettings::getMassBankSimpleState, ScoreSettings::setMassBankSimpleState);
 	}
 
@@ -97,10 +97,10 @@ public class ScoreSettingsComponent extends CustomField<ScoreSettings> {
 		scoringContainerLayout.addComponent(msmsStateField);
 		stateFields.add(msmsStateField);
 
-//		tpStateField = new ProcessingUnitStateField(i18n.get(UIMessageKeys.
-//				PROCESSING_FORM_TP_SCORE));
-//		scoringContainerLayout.addComponent(tpStateField);
-//		stateFields.add(tpStateField);
+		tpStateField = new ProcessingUnitStateField(i18n.get(UIMessageKeys.
+				PROCESSING_FORM_TP_SCORE));
+		scoringContainerLayout.addComponent(tpStateField);
+		stateFields.add(tpStateField);
 
 		massBankStateField = new ProcessingUnitStateField(
 				i18n.get(UIMessageKeys.PROCESSING_FORM_MASSBANK_SIMPLE_SCORE_WEIGHT));

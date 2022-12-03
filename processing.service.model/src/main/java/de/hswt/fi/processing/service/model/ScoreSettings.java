@@ -23,8 +23,8 @@ public class ScoreSettings implements Serializable {
 	@BeanColumn(selector = true, i18nId = I18nKeys.PROCESS_MODEL_MSMS_SCORE_SETTINGS)
 	private ProcessingUnitState msmsState;
 
-//	@BeanColumn(selector = true, i18nId = I18nKeys.PROCESS_MODEL_TP_SCORE_SETTINGS)
-//	private ProcessingUnitState tpState;
+	@BeanColumn(selector = true, i18nId = I18nKeys.PROCESS_MODEL_TP_SCORE_SETTINGS)
+	private ProcessingUnitState tpState;
 
 	@BeanColumn(selector = true, i18nId = I18nKeys.PROCESS_MODEL_MASSBANK_SIMPLE_SCORE_SETTINGS)
 	private ProcessingUnitState massBankSimpleState;
@@ -32,7 +32,7 @@ public class ScoreSettings implements Serializable {
 	public ScoreSettings() {
 		massScreeningState = new ProcessingUnitState(ProcessingUnit.MASS_SCREENING, 0.0, true);
 		rtiScreeningState = new ProcessingUnitState(ProcessingUnit.RTI_SCREENING, 0.0, true);
-//		tpState = new ProcessingUnitState(ProcessingUnit.TP, 0.0, false);
+		tpState = new ProcessingUnitState(ProcessingUnit.TP, 0.0, false);
 		msmsState = new ProcessingUnitState(ProcessingUnit.MSMS, 0.0, true);
 		massBankSimpleState = new ProcessingUnitState(ProcessingUnit.MASSBANK_SIMPLE, 0.0, true);
 	}
@@ -53,13 +53,13 @@ public class ScoreSettings implements Serializable {
 		this.rtiScreeningState = rtiScreeningState;
 	}
 
-//	public ProcessingUnitState getTpState() {
-//		return tpState;
-//	}
-//
-//	public void setTpState(ProcessingUnitState tpState) {
-//		this.tpState = tpState;
-//	}
+	public ProcessingUnitState getTpState() {
+		return tpState;
+	}
+
+	public void setTpState(ProcessingUnitState tpState) {
+		this.tpState = tpState;
+	}
 
 	public ProcessingUnitState getMsmsState() {
 		return msmsState;
@@ -80,7 +80,7 @@ public class ScoreSettings implements Serializable {
 	public List<ProcessingUnitState> getProcessingUnitStates() {
 		return new LinkedList<>(
 				Arrays.asList(massScreeningState, rtiScreeningState,
-//						tpState,
+						tpState,
 						msmsState, massBankSimpleState));
 	}
 
@@ -92,14 +92,14 @@ public class ScoreSettings implements Serializable {
 		return Objects.equals(massScreeningState, that.massScreeningState) &&
 				Objects.equals(rtiScreeningState, that.rtiScreeningState) &&
 				Objects.equals(msmsState, that.msmsState) &&
-//				Objects.equals(tpState, that.tpState) &&
+				Objects.equals(tpState, that.tpState) &&
 				Objects.equals(massBankSimpleState, that.massBankSimpleState);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(massScreeningState, rtiScreeningState, msmsState,
-//				tpState,
+				tpState,
 				massBankSimpleState);
 	}
 

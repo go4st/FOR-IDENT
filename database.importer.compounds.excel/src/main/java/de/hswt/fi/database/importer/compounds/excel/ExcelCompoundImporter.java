@@ -365,9 +365,9 @@ public class ExcelCompoundImporter implements CompoundImporter {
         Integer charge = null;
 
         try {
-            value = Double.parseDouble(getStringValue(row, columnId));
-            ph = Double.parseDouble(getStringValue(row, columnId + 1));
-            charge = Integer.parseInt(getStringValue(row, columnId + 2));
+            value = Double.parseDouble(getStringValue(row, columnId).replace(',', '.'));
+            ph = Double.parseDouble(getStringValue(row, columnId + 1).replace(',', '.'));
+            charge = Integer.parseInt(getStringValue(row, columnId + 2).replace(',', '.'));
         } catch (NumberFormatException e1) {
         } catch (IllegalStateException e) {
             // Do not log/throw if optional cell chas wrong cell type
